@@ -80,15 +80,14 @@
   ============================================================ */
   .urgency-bar {
     background: var(--charcoal);
-    color: rgba(255,255,255,0.88);
+    color: rgba(255,255,255,0.75);
     text-align: center;
-    padding: 0.55rem 1rem;
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 600; font-size: 0.82rem;
-    letter-spacing: 0.14em; text-transform: uppercase;
+    padding: 0.6rem 1rem;
+    font-family: 'Barlow', sans-serif;
+    font-weight: 400; font-size: 0.875rem;
     position: sticky; top: 0; z-index: 60;
   }
-  .urgency-bar span { color: var(--red); }
+  .urgency-bar strong { color: #fff; font-weight: 600; }
 
   /* ============================================================
      HEADER / NAV
@@ -297,12 +296,22 @@
   ============================================================ */
   .gallery-section { background: var(--warm); }
   .gallery {
-    display: grid; grid-template-columns: repeat(3, 1fr);
-    gap: 0.75rem; margin-top: 2.5rem;
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    grid-template-rows: auto auto;
+    gap: 0.625rem; margin-top: 2.5rem;
   }
-  .gallery img { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 4px; }
-  .gallery .wide { grid-column: span 2; aspect-ratio: 2/1; }
-  @media (max-width: 680px) { .gallery { grid-template-columns: repeat(2, 1fr); } }
+  .gallery img { width: 100%; height: 100%; object-fit: cover; border-radius: 4px; display: block; }
+  .gallery .g1 { grid-column: 1; grid-row: 1; aspect-ratio: 4/3; }
+  .gallery .g2 { grid-column: 2; grid-row: 1; aspect-ratio: 1; }
+  .gallery .g3 { grid-column: 3; grid-row: 1; aspect-ratio: 1; }
+  .gallery .g4 { grid-column: 1; grid-row: 2; aspect-ratio: 1; }
+  .gallery .g5 { grid-column: 2; grid-row: 2; aspect-ratio: 1; }
+  .gallery .g6 { grid-column: 3; grid-row: 2; aspect-ratio: 4/3; }
+  @media (max-width: 680px) {
+    .gallery { grid-template-columns: 1fr 1fr; grid-template-rows: auto; }
+    .gallery img { grid-column: auto; grid-row: auto; aspect-ratio: 1; }
+  }
 
   /* ============================================================
      SOCIAL PROOF CALLOUT
@@ -411,7 +420,7 @@
 
 <!-- URGENCY BAR -->
 <div class="urgency-bar">
-  <span>Limited spots this week</span> — Your first 7 days at Lift STL are completely free. No card, no commitment.
+  Your first 7 days at Lift STL are <strong>completely free</strong> — no card, no commitment, no strings.
 </div>
 
 <!-- HEADER -->
@@ -560,11 +569,12 @@
       <h2 class="section-heading">Take a Look Around</h2>
     </div>
     <div class="gallery">
-      <img class="wide" src="./assets/images/facility-2.webp" alt="Main training floor" />
-      <img src="./assets/images/facility-4.webp" alt="Free weight area" />
-      <img src="./assets/images/facility-6.webp" alt="Conditioning and turf" />
-      <img src="./assets/images/facility-turf.jpg" alt="Turf training lane" />
-      <img class="wide" src="./assets/images/facility-interior.jpg" alt="Lift STL interior" />
+      <img class="g1" src="./assets/images/facility-2.webp" alt="Main training floor" />
+      <img class="g2" src="./assets/images/facility-4.webp" alt="Free weight area" />
+      <img class="g3" src="./assets/images/facility-6.webp" alt="Conditioning and turf" />
+      <img class="g4" src="./assets/images/facility-turf.jpg" alt="Turf training lane" />
+      <img class="g5" src="./assets/images/facility-1.webp" alt="Coaching floor" />
+      <img class="g6" src="./assets/images/facility-interior.jpg" alt="Lift STL interior" />
     </div>
   </div>
 </section>
