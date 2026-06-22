@@ -5,387 +5,559 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Lift STL — 7 Days Free</title>
 
-<!--
-  ============================================================================
-  LIFT STL — "7 DAYS FREE" LANDING PAGE
-  Style modeled on free.romanempiregym.com · Branding = lift-stl.com DNA
-  ----------------------------------------------------------------------------
-  HOSTING ON WIX:
-    Option A (fastest): paste this whole file into a Wix "Embed > Custom HTML
-      (iframe)" element. Then re-upload the files in ./assets/ to Wix Media and
-      swap every `./assets/...` src for its Wix Media URL.
-    Option B (reference build): use this page as a pixel/copy reference and
-      rebuild the sections natively in the Wix editor.
-
-  IMAGE PATHS: bundled locally under ./assets/ so the page renders standalone
-    when index.html is opened in a browser. On Wix, replace each src.
-
-  >>> PLACEHOLDERS for Eric to fill in are marked  <!-- EDIT: ... -->
-      (Google review count, testimonials, FAQ answers, address/hours, links)
-  ============================================================================
--->
-
 <style>
-  /* ---- Fonts (matches client/src/index.css) ---- */
-  @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,400;0,600;0,700;0,800;0,900;1,700;1,800&family=Barlow:wght@300;400;500;600&family=DM+Serif+Display:ital@0;1&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,400;0,600;0,700;0,800;0,900;1,700&family=Barlow:wght@300;400;500;600&family=DM+Serif+Display:ital@0;1&display=swap');
 
-  /* ---- Lift brand tokens (from client/src/index.css) ---- */
   :root {
-    --lift-red: #ED1C24;
-    --lift-red-dark: #c8151c;
-    --lift-black: #16181A;
-    --lift-surface: #20242A;
-    --lift-surface-2: #2a2e36;
-    --lift-border: #333840;
-    --lift-cream: #F5F3EE;
-    --lift-warm: #EDEAE3;
-    --lift-gray: #6b6b6b;
-    --lift-muted: #404040;
+    --cream:   #F3F1EC;
+    --warm:    #EAE8E2;
+    --charcoal:#2E3036;
+    --char2:   #23262B;
+    --red:     #E14747;
+    --red-dk:  #C73A3A;
+    --muted:   #95979D;
+    --border-light: rgba(46,48,54,0.12);
+    --border-dark:  rgba(255,255,255,0.1);
   }
 
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-
-  html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
-
-  body {
-    font-family: 'Barlow', sans-serif;
-    font-weight: 400;
-    background: var(--lift-black);
-    color: #fff;
-    line-height: 1.5;
-  }
-
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+  body { font-family: 'Barlow', sans-serif; font-weight: 400; background: var(--cream); color: var(--charcoal); line-height: 1.55; }
   img { display: block; max-width: 100%; }
   a { text-decoration: none; color: inherit; }
 
-  .font-display { font-family: 'Barlow Condensed', sans-serif; }
-  .font-serif  { font-family: 'DM Serif Display', serif; }
+  .container { width: 100%; max-width: 1180px; margin: 0 auto; padding: 0 1.5rem; }
+  @media (min-width: 768px)  { .container { padding: 0 2.5rem; } }
+  @media (min-width: 1100px) { .container { padding: 0 3rem; } }
 
-  .container { width: 100%; max-width: 1180px; margin: 0 auto; padding: 0 1.25rem; }
-  @media (min-width: 640px)  { .container { padding: 0 2rem; } }
-  @media (min-width: 1024px) { .container { padding: 0 3rem; } }
-
-  /* ---- Section overline label (from index.css) ---- */
-  .section-label {
+  /* ---- Typography helpers ---- */
+  .eyebrow {
     font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 600;
-    font-size: 0.7rem;
-    letter-spacing: 0.3em;
-    text-transform: uppercase;
-    color: var(--lift-red);
-    display: block;
-    margin-bottom: 0.75rem;
+    font-weight: 700; font-size: 0.68rem;
+    letter-spacing: 0.32em; text-transform: uppercase;
+    color: var(--red); display: block; margin-bottom: 0.65rem;
   }
-
-  /* ---- Primary CTA (.btn-lift from index.css) ---- */
-  .btn-lift {
-    background-color: var(--lift-red);
-    color: #fff;
+  .section-heading {
     font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    padding: 1rem 2.75rem;
-    font-size: 0.95rem;
-    border: none;
-    cursor: pointer;
-    transition: background-color 0.2s, transform 0.15s, box-shadow 0.2s;
+    font-weight: 900; text-transform: uppercase;
+    line-height: 0.96; letter-spacing: -0.01em;
+    font-size: clamp(2rem, 4.5vw, 3.2rem);
+  }
+  .section-lead {
+    font-size: 1.05rem; font-weight: 300;
+    color: var(--muted); max-width: 580px; margin-top: 0.85rem;
+  }
+  .on-dark .section-lead { color: rgba(255,255,255,0.6); }
+  .on-dark .section-heading { color: #fff; }
+  .on-dark .eyebrow { color: var(--red); }
+
+  .center { text-align: center; }
+  .center .section-lead { margin-left: auto; margin-right: auto; }
+
+  /* ---- Buttons ---- */
+  .btn {
     display: inline-block;
-    border-radius: 9999px;
-  }
-  .btn-lift:hover { background-color: var(--lift-red-dark); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(237,28,36,0.3); }
-  .btn-lift:active { transform: translateY(0); box-shadow: none; }
-  .btn-lift:focus-visible { outline: 2px solid rgba(255,255,255,0.6); outline-offset: 3px; }
-  .btn-lift.btn-sm { padding: 0.7rem 1.6rem; font-size: 0.8rem; }
-
-  /* ---- Ghost button ---- */
-  .btn-ghost {
-    background: transparent;
-    color: rgba(255,255,255,0.75);
     font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
-    padding: 0.875rem 2rem;
-    font-size: 0.85rem;
-    border: 1px solid rgba(255,255,255,0.18);
-    cursor: pointer;
-    border-radius: 9999px;
-    transition: border-color 0.2s, color 0.2s;
-    display: inline-block;
+    font-weight: 800; text-transform: uppercase; letter-spacing: 0.09em;
+    border: none; cursor: pointer; border-radius: 9999px;
+    transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
   }
-  .btn-ghost:hover { border-color: rgba(255,255,255,0.45); color: #fff; }
+  .btn-red {
+    background: var(--red); color: #fff;
+    padding: 1rem 2.5rem; font-size: 0.95rem;
+  }
+  .btn-red:hover { background: var(--red-dk); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(225,71,71,0.35); }
+  .btn-white {
+    background: #fff; color: var(--red);
+    padding: 1rem 2.5rem; font-size: 0.95rem;
+  }
+  .btn-white:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(0,0,0,0.18); }
+  .btn-lg { padding: 1.15rem 3rem; font-size: 1.05rem; }
+  .btn-full { width: 100%; text-align: center; display: block; }
 
-  /* ---- Ratings badge ---- */
-  .rating-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
+  /* ============================================================
+     URGENCY BAR
+  ============================================================ */
+  .urgency-bar {
+    background: var(--charcoal);
+    color: rgba(255,255,255,0.88);
+    text-align: center;
+    padding: 0.55rem 1rem;
     font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 600;
-    font-size: 0.72rem;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    color: rgba(255,255,255,0.85);
-    background: rgba(255,255,255,0.05);
-    border: 1px solid rgba(255,255,255,0.12);
-    border-radius: 9999px;
-    padding: 0.4rem 0.95rem;
+    font-weight: 600; font-size: 0.82rem;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    position: sticky; top: 0; z-index: 60;
   }
-  .rating-badge .stars { color: #FFC93C; letter-spacing: 0; }
+  .urgency-bar span { color: var(--red); }
 
-  /* ============================ HEADER ============================ */
+  /* ============================================================
+     HEADER / NAV
+  ============================================================ */
   header {
-    position: sticky;
-    top: 0;
-    z-index: 50;
-    background: rgba(22,24,26,0.82);
-    backdrop-filter: blur(10px);
-    border-bottom: 1px solid rgba(255,255,255,0.07);
+    position: sticky; top: 37px; z-index: 50;
+    background: rgba(243,241,236,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border-light);
   }
-  .nav { display: flex; align-items: center; justify-content: space-between; height: 64px; }
-  .nav .logo { height: 30px; width: auto; }
+  .nav { display: flex; align-items: center; justify-content: space-between; height: 62px; }
+  .nav .logo { height: 28px; width: auto; }
   .nav-right { display: flex; align-items: center; gap: 1rem; }
-  .nav-badge {
+  .nav-rating {
     font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 600; font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase;
-    color: rgba(255,255,255,0.7);
+    font-weight: 600; font-size: 0.72rem;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--muted);
   }
-  .nav-badge .stars { color: #FFC93C; }
-  @media (max-width: 640px) { .nav-badge { display: none; } }
+  .nav-rating .stars { color: #F5A623; }
+  @media (max-width: 600px) { .nav-rating { display: none; } }
 
-  /* ============================ HERO ============================ */
-  .hero { position: relative; min-height: 92vh; display: flex; align-items: center; overflow: hidden; }
-  .hero-media { position: absolute; inset: 0; z-index: 0; }
-  .hero-media video, .hero-media img { width: 100%; height: 100%; object-fit: cover; }
-  .hero-media::after {
+  /* ============================================================
+     HERO
+  ============================================================ */
+  .hero {
+    position: relative;
+    min-height: 90vh;
+    display: flex; align-items: center;
+    overflow: hidden;
+  }
+  .hero-bg { position: absolute; inset: 0; z-index: 0; }
+  .hero-bg video, .hero-bg img { width: 100%; height: 100%; object-fit: cover; }
+  .hero-bg::after {
     content: ""; position: absolute; inset: 0;
-    background: linear-gradient(180deg, rgba(22,24,26,0.55) 0%, rgba(22,24,26,0.78) 60%, rgba(22,24,26,0.95) 100%);
-  }
-  .hero-inner { position: relative; z-index: 1; padding: 5rem 0; max-width: 760px; }
-  .hero h1 {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 900;
-    text-transform: uppercase;
-    line-height: 0.95;
-    letter-spacing: -0.01em;
-    font-size: clamp(2.6rem, 7vw, 5.2rem);
-    margin: 1.25rem 0 1.25rem;
-  }
-  .hero h1 .accent { color: var(--lift-red); }
-  .hero .sub {
-    font-size: clamp(1.05rem, 2.2vw, 1.35rem);
-    color: rgba(255,255,255,0.82);
-    font-weight: 300;
-    max-width: 600px;
-    margin-bottom: 2rem;
-  }
-  .hero .sub strong { font-weight: 600; color: #fff; }
-  .cta-row { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
-  .cta-sub {
-    margin-top: 0.9rem;
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 600; font-size: 0.78rem; letter-spacing: 0.18em; text-transform: uppercase;
-    color: rgba(255,255,255,0.55);
+    background: linear-gradient(110deg, rgba(46,48,54,0.82) 0%, rgba(46,48,54,0.65) 50%, rgba(46,48,54,0.45) 100%);
   }
 
-  /* ============================ STATS STRIP ============================ */
-  .stats {
-    background: var(--lift-cream);
-    color: var(--lift-black);
+  .hero-inner {
+    position: relative; z-index: 1;
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 3rem; align-items: center;
+    padding: 5rem 0 4rem;
+    width: 100%;
   }
+  @media (max-width: 860px) {
+    .hero-inner { grid-template-columns: 1fr; gap: 2rem; padding: 3.5rem 0; }
+    .hero-form-col { max-width: 460px; }
+  }
+
+  /* Hero copy */
+  .hero-copy .rating-pill {
+    display: inline-flex; align-items: center; gap: 0.45rem;
+    background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 9999px; padding: 0.35rem 0.9rem;
+    font-family: 'Barlow Condensed', sans-serif; font-weight: 600;
+    font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase;
+    color: rgba(255,255,255,0.85); margin-bottom: 1.25rem;
+  }
+  .hero-copy .rating-pill .stars { color: #F5A623; letter-spacing: 0; }
+  .hero-copy h1 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900; text-transform: uppercase;
+    line-height: 0.94; letter-spacing: -0.01em;
+    font-size: clamp(2.8rem, 5.5vw, 4.6rem);
+    color: #fff; margin-bottom: 1.25rem;
+  }
+  .hero-copy h1 .accent { color: var(--red); }
+  .hero-copy .sub {
+    font-size: clamp(1rem, 1.8vw, 1.2rem);
+    color: rgba(255,255,255,0.78); font-weight: 300;
+    max-width: 520px; margin-bottom: 1.75rem;
+  }
+  .hero-copy .sub strong { color: #fff; font-weight: 600; }
+  .hero-copy .no-commitment {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600; font-size: 0.72rem;
+    letter-spacing: 0.2em; text-transform: uppercase;
+    color: rgba(255,255,255,0.45); margin-top: 0.85rem;
+  }
+
+  /* Hero form card */
+  .hero-form-col {
+    background: #fff;
+    border-radius: 8px;
+    padding: 2.25rem 2rem;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.35);
+  }
+  .hero-form-col h2 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900; text-transform: uppercase;
+    font-size: 1.5rem; line-height: 1.05;
+    color: var(--charcoal); margin-bottom: 0.4rem;
+  }
+  .hero-form-col .form-sub {
+    font-size: 0.9rem; color: var(--muted);
+    margin-bottom: 1.4rem; font-weight: 300;
+  }
+  .form-field { margin-bottom: 0.85rem; }
+  .form-field input {
+    width: 100%;
+    background: var(--cream);
+    border: 1px solid var(--border-light);
+    border-radius: 6px;
+    padding: 0.85rem 1rem;
+    font-family: 'Barlow', sans-serif;
+    font-size: 0.95rem;
+    color: var(--charcoal);
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .form-field input::placeholder { color: var(--muted); }
+  .form-field input:focus { border-color: var(--red); }
+  .form-disclaimer {
+    font-size: 0.72rem; color: var(--muted);
+    text-align: center; margin-top: 0.85rem; line-height: 1.4;
+  }
+
+  /* ============================================================
+     STATS STRIP
+  ============================================================ */
+  .stats { background: var(--charcoal); }
   .stats-inner {
-    display: flex; flex-wrap: wrap; justify-content: center; align-items: stretch;
-    gap: 0; padding: 0;
+    display: flex; flex-wrap: wrap;
+    justify-content: center; align-items: stretch;
   }
   .stat {
-    flex: 1 1 0; min-width: 140px; text-align: center;
-    padding: 1.6rem 1rem;
-    border-right: 1px solid rgba(0,0,0,0.08);
+    flex: 1 1 0; min-width: 130px; text-align: center;
+    padding: 1.5rem 1rem;
+    border-right: 1px solid var(--border-dark);
   }
   .stat:last-child { border-right: none; }
-  .stat .num { font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: clamp(1.8rem, 4vw, 2.6rem); line-height: 1; color: var(--lift-red); }
-  .stat .lbl { font-family: 'Barlow Condensed', sans-serif; font-weight: 600; font-size: 0.7rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--lift-gray); margin-top: 0.45rem; }
-  @media (max-width: 640px) {
-    .stat { flex: 1 1 50%; border-bottom: 1px solid rgba(0,0,0,0.08); }
+  .stat .num {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900; font-size: clamp(1.8rem, 3.5vw, 2.4rem);
+    line-height: 1; color: var(--red);
+  }
+  .stat .lbl {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600; font-size: 0.68rem;
+    letter-spacing: 0.2em; text-transform: uppercase;
+    color: rgba(255,255,255,0.5); margin-top: 0.4rem;
+  }
+  @media (max-width: 580px) {
+    .stat { flex: 1 1 50%; border-bottom: 1px solid var(--border-dark); }
     .stat:nth-child(2n) { border-right: none; }
   }
 
-  /* ============================ SECTION SHELL ============================ */
-  section.block { padding: clamp(4rem, 9vw, 7rem) 0; }
-  .block h2 {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 800; text-transform: uppercase; line-height: 1;
-    font-size: clamp(2rem, 5vw, 3.4rem);
-    margin-bottom: 1rem;
-  }
-  .block .lead { color: rgba(255,255,255,0.7); font-size: 1.1rem; font-weight: 300; max-width: 620px; }
-  .head-center { text-align: center; }
-  .head-center .lead, .head-center .section-label { margin-left: auto; margin-right: auto; }
+  /* ============================================================
+     SHARED SECTION SHELL
+  ============================================================ */
+  .section { padding: clamp(4rem, 8vw, 6.5rem) 0; }
 
-  /* ---- Why Lift cards ---- */
-  .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; margin-top: 3rem; }
-  @media (max-width: 880px) { .cards { grid-template-columns: 1fr; max-width: 460px; margin-left: auto; margin-right: auto; } }
-  .card {
-    background: var(--lift-surface);
-    border: 1px solid var(--lift-border);
+  /* ============================================================
+     WHAT YOU'LL GET — feature cards on dark bg
+  ============================================================ */
+  .features { background: var(--char2); }
+  .feature-grid {
+    display: grid; grid-template-columns: repeat(2, 1fr);
+    gap: 1.25rem; margin-top: 3rem;
+  }
+  @media (min-width: 900px) { .feature-grid { grid-template-columns: repeat(4, 1fr); } }
+  @media (max-width: 580px)  { .feature-grid { grid-template-columns: 1fr; max-width: 420px; margin-left: auto; margin-right: auto; } }
+  .feat-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border-dark);
     border-radius: 6px;
-    overflow: hidden;
+    padding: 1.75rem 1.5rem;
   }
-  .card .card-img { aspect-ratio: 4/3; width: 100%; object-fit: cover; }
-  .card .card-body { padding: 1.5rem; }
-  .card h3 { font-family: 'Barlow Condensed', sans-serif; font-weight: 800; text-transform: uppercase; font-size: 1.35rem; letter-spacing: 0.02em; margin-bottom: 0.5rem; }
-  .card p { color: rgba(255,255,255,0.65); font-weight: 300; font-size: 0.98rem; }
+  .feat-icon {
+    font-size: 1.6rem; margin-bottom: 1rem;
+    display: block;
+  }
+  .feat-card h3 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800; text-transform: uppercase;
+    font-size: 1.15rem; letter-spacing: 0.03em;
+    color: #fff; margin-bottom: 0.5rem;
+  }
+  .feat-card p { font-size: 0.9rem; color: rgba(255,255,255,0.55); font-weight: 300; line-height: 1.5; }
 
-  /* ---- Facility showcase ---- */
-  .gallery { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; margin-top: 3rem; }
+  /* ============================================================
+     WHY LIFT — 3 photo cards on cream bg
+  ============================================================ */
+  .why { background: var(--cream); }
+  .why-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem; margin-top: 3rem;
+  }
+  @media (max-width: 860px) { .why-grid { grid-template-columns: 1fr; max-width: 460px; margin-left: auto; margin-right: auto; } }
+  .why-card {
+    background: #fff; border-radius: 6px; overflow: hidden;
+    border: 1px solid var(--border-light);
+  }
+  .why-card img { width: 100%; aspect-ratio: 4/3; object-fit: cover; }
+  .why-card-body { padding: 1.4rem; }
+  .why-card h3 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800; text-transform: uppercase;
+    font-size: 1.25rem; color: var(--charcoal); margin-bottom: 0.4rem;
+  }
+  .why-card p { font-size: 0.92rem; color: var(--muted); font-weight: 300; }
+
+  /* ============================================================
+     FACILITY GALLERY
+  ============================================================ */
+  .gallery-section { background: var(--warm); }
+  .gallery {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 0.75rem; margin-top: 2.5rem;
+  }
   .gallery img { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 4px; }
-  .gallery .wide { grid-column: span 2; aspect-ratio: 2 / 1; }
-  @media (max-width: 720px) { .gallery { grid-template-columns: repeat(2, 1fr); } .gallery .wide { grid-column: span 2; } }
+  .gallery .wide { grid-column: span 2; aspect-ratio: 2/1; }
+  @media (max-width: 680px) { .gallery { grid-template-columns: repeat(2, 1fr); } }
 
-  /* ---- Testimonials ---- */
-  .testimonials { background: var(--lift-surface); }
-  .t-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; margin-top: 3rem; }
-  @media (max-width: 880px) { .t-grid { grid-template-columns: 1fr; max-width: 520px; margin-left: auto; margin-right: auto; } }
-  .t-card { background: var(--lift-black); border: 1px solid var(--lift-border); border-radius: 6px; padding: 1.75rem; display: flex; flex-direction: column; gap: 1.1rem; }
-  .t-card .quote { font-family: 'DM Serif Display', serif; font-style: italic; font-size: 1.2rem; line-height: 1.4; color: #fff; }
-  .t-card .who { display: flex; align-items: center; gap: 0.85rem; margin-top: auto; }
-  .t-card .who img { width: 46px; height: 46px; border-radius: 9999px; object-fit: cover; }
-  .t-card .who .name { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; }
-  .t-card .who .meta { font-size: 0.8rem; color: var(--lift-gray); }
-  .t-card .stars { color: #FFC93C; letter-spacing: 0.1em; font-size: 0.95rem; }
-
-  /* ---- FAQ ---- */
-  .faq { max-width: 760px; margin: 3rem auto 0; }
-  .faq details {
-    border-bottom: 1px solid var(--lift-border);
-    padding: 1.25rem 0;
+  /* ============================================================
+     SOCIAL PROOF CALLOUT
+  ============================================================ */
+  .proof-band { background: var(--charcoal); text-align: center; padding: clamp(3rem, 7vw, 5rem) 0; }
+  .proof-stars { color: #F5A623; font-size: 2.5rem; letter-spacing: 0.15em; }
+  .proof-score {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900; font-size: clamp(3.5rem, 9vw, 6rem);
+    color: #fff; line-height: 1; margin: 0.3rem 0;
   }
+  .proof-score span { color: var(--red); }
+  .proof-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600; font-size: 0.8rem;
+    letter-spacing: 0.24em; text-transform: uppercase;
+    color: rgba(255,255,255,0.5);
+  }
+
+  /* ============================================================
+     TESTIMONIALS
+  ============================================================ */
+  .testimonials { background: var(--cream); }
+  .t-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem; margin-top: 3rem;
+  }
+  @media (max-width: 860px) { .t-grid { grid-template-columns: 1fr; max-width: 500px; margin-left: auto; margin-right: auto; } }
+  .t-card {
+    background: #fff; border: 1px solid var(--border-light);
+    border-radius: 6px; padding: 1.75rem;
+    display: flex; flex-direction: column; gap: 1rem;
+  }
+  .t-card .stars { color: #F5A623; letter-spacing: 0.08em; font-size: 0.95rem; }
+  .t-card .quote {
+    font-family: 'DM Serif Display', serif; font-style: italic;
+    font-size: 1.1rem; line-height: 1.45; color: var(--charcoal);
+    flex: 1;
+  }
+  .t-card .who { display: flex; align-items: center; gap: 0.75rem; margin-top: auto; }
+  .t-card .who img { width: 44px; height: 44px; border-radius: 9999px; object-fit: cover; }
+  .t-card .name { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; font-size: 0.95rem; color: var(--charcoal); }
+  .t-card .meta { font-size: 0.78rem; color: var(--muted); }
+
+  /* ============================================================
+     FAQ
+  ============================================================ */
+  .faq-section { background: var(--warm); }
+  .faq { max-width: 740px; margin: 2.75rem auto 0; }
+  .faq details { border-bottom: 1px solid var(--border-light); }
   .faq summary {
-    list-style: none; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 1rem;
-    font-family: 'Barlow Condensed', sans-serif; font-weight: 700; text-transform: uppercase; letter-spacing: 0.03em;
-    font-size: 1.15rem;
+    list-style: none; cursor: pointer;
+    display: flex; justify-content: space-between; align-items: center; gap: 1rem;
+    padding: 1.2rem 0;
+    font-family: 'Barlow Condensed', sans-serif; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.03em;
+    font-size: 1.1rem; color: var(--charcoal);
   }
   .faq summary::-webkit-details-marker { display: none; }
-  .faq summary::after { content: "+"; color: var(--lift-red); font-size: 1.6rem; font-weight: 400; line-height: 1; transition: transform 0.2s; }
+  .faq summary::after { content: "+"; color: var(--red); font-size: 1.5rem; font-weight: 300; line-height: 1; flex-shrink: 0; transition: transform 0.2s; }
   .faq details[open] summary::after { transform: rotate(45deg); }
-  .faq p { color: rgba(255,255,255,0.7); font-weight: 300; margin-top: 0.85rem; max-width: 640px; }
+  .faq .faq-body { padding-bottom: 1.1rem; font-size: 0.95rem; color: var(--muted); font-weight: 300; max-width: 620px; }
 
-  /* ---- Final CTA band ---- */
-  .cta-band { background: var(--lift-red); text-align: center; padding: clamp(3.5rem, 8vw, 6rem) 0; }
-  .cta-band h2 { font-family: 'Barlow Condensed', sans-serif; font-weight: 900; text-transform: uppercase; line-height: 0.98; font-size: clamp(2.2rem, 6vw, 4rem); color: #fff; margin-bottom: 1.5rem; }
-  .cta-band .btn-white {
-    background: #fff; color: var(--lift-red);
-    font-family: 'Barlow Condensed', sans-serif; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em;
-    padding: 1.1rem 3rem; font-size: 1rem; border-radius: 9999px; display: inline-block;
-    transition: transform 0.15s, box-shadow 0.2s;
+  /* ============================================================
+     FINAL CTA BAND
+  ============================================================ */
+  .cta-band {
+    background: var(--red); text-align: center;
+    padding: clamp(3.5rem, 8vw, 6rem) 0;
   }
-  .cta-band .btn-white:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(0,0,0,0.25); }
-  .cta-band .cta-sub { color: rgba(255,255,255,0.85); }
+  .cta-band h2 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900; text-transform: uppercase; line-height: 0.96;
+    font-size: clamp(2.2rem, 6vw, 4rem); color: #fff;
+    margin-bottom: 1.5rem;
+  }
+  .cta-band .cta-sub {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600; font-size: 0.78rem;
+    letter-spacing: 0.2em; text-transform: uppercase;
+    color: rgba(255,255,255,0.7); margin-top: 0.9rem;
+  }
 
-  /* ---- Footer ---- */
-  footer { background: var(--lift-black); border-top: 1px solid rgba(255,255,255,0.08); padding: 3rem 0; }
+  /* ============================================================
+     FOOTER
+  ============================================================ */
+  footer { background: var(--char2); border-top: 1px solid var(--border-dark); padding: 2.5rem 0; }
   .foot { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1.5rem; }
-  .foot .logo { height: 28px; }
-  .foot .links { display: flex; gap: 1.5rem; flex-wrap: wrap; }
-  .foot .links a { font-family: 'Barlow Condensed', sans-serif; font-weight: 600; text-transform: uppercase; letter-spacing: 0.12em; font-size: 0.8rem; color: rgba(255,255,255,0.6); transition: color 0.2s; }
+  .foot .logo { height: 26px; filter: brightness(0) invert(1); opacity: 0.85; }
+  .foot .links { display: flex; gap: 1.75rem; flex-wrap: wrap; }
+  .foot .links a {
+    font-family: 'Barlow Condensed', sans-serif; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.12em; font-size: 0.78rem;
+    color: rgba(255,255,255,0.5); transition: color 0.2s;
+  }
   .foot .links a:hover { color: #fff; }
-  .foot-legal { color: var(--lift-gray); font-size: 0.8rem; margin-top: 1.5rem; }
+  .foot-legal { color: rgba(255,255,255,0.3); font-size: 0.78rem; margin-top: 1.5rem; }
 
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
-    .btn-lift:hover, .cta-band .btn-white:hover { transform: none !important; box-shadow: none !important; }
+    .btn:hover { transform: none !important; box-shadow: none !important; }
   }
 </style>
 </head>
 <body>
 
-<!-- ============================ HEADER ============================ -->
+<!-- URGENCY BAR -->
+<div class="urgency-bar">
+  <span>Limited spots this week</span> — Your first 7 days at Lift STL are completely free. No card, no commitment.
+</div>
+
+<!-- HEADER -->
 <header>
   <div class="container nav">
     <a href="#top"><img class="logo" src="./assets/images/lift-logo-transparent.png" alt="Lift STL" /></a>
     <div class="nav-right">
-      <!-- EDIT: replace 500 with the real Google review count -->
-      <span class="nav-badge"><span class="stars">★</span> 4.9 on Google · 500+ reviews</span>
-      <a href="#claim" class="btn-lift btn-sm">Claim 7 Days Free</a>
+      <!-- EDIT: replace 500 with real Google review count -->
+      <span class="nav-rating"><span class="stars">★</span> 4.9 · 500+ Google reviews</span>
+      <a href="#claim" class="btn btn-red" style="padding:.65rem 1.5rem;font-size:.78rem;">Claim Free Pass</a>
     </div>
   </div>
 </header>
 
-<!-- ============================ HERO ============================ -->
+<!-- HERO -->
 <section class="hero" id="top">
-  <div class="hero-media">
-    <!-- Background: hero video w/ poster fallback. Swap for Wix Media URL on Wix. -->
+  <div class="hero-bg">
     <video autoplay muted loop playsinline poster="./assets/videos/hero-poster.jpg">
       <source src="./assets/videos/hero.mp4" type="video/mp4" />
       <img src="./assets/images/lift_stl_hero.webp" alt="Inside Lift STL" />
     </video>
   </div>
-  <div class="container hero-inner">
-    <!-- EDIT: replace 500 with the real Google review count -->
-    <span class="rating-badge"><span class="stars">★★★★★</span> 4.9 on Google · 500+ five-star reviews</span>
-    <h1>The St. Louis Gym You've Been Looking For —<br /><span class="accent">Yours Free for 7 Days.</span></h1>
-    <p class="sub">8,600 sq ft of real iron, real coaching, and a community 550 strong in the heart of Brentwood. <strong>Your first week is completely on us — no strings.</strong></p>
-    <div class="cta-row">
-      <a href="#claim" class="btn-lift">Claim Your 7-Day Free Pass</a>
-      <a href="#why" class="btn-ghost">See the gym</a>
+  <div class="container">
+    <div class="hero-inner">
+
+      <!-- Copy side -->
+      <div class="hero-copy">
+        <!-- EDIT: replace 500 with real review count -->
+        <div class="rating-pill"><span class="stars">★★★★★</span> 4.9 on Google · 500+ reviews</div>
+        <h1>The St. Louis Gym<br/>You've Been<br/>Looking For —<br/><span class="accent">Yours Free<br/>for 7 Days.</span></h1>
+        <p class="sub">8,600 sq ft of real iron, real coaching, and a community 550 strong in the heart of Brentwood. <strong>No commitment, no payment — just come train.</strong></p>
+        <p class="no-commitment">No credit card &nbsp;·&nbsp; No contract &nbsp;·&nbsp; No strings</p>
+      </div>
+
+      <!-- Form side -->
+      <div class="hero-form-col" id="claim">
+        <h2>Claim Your<br/>7-Day Free Pass</h2>
+        <p class="form-sub">Fill out the form and we'll get you set up — usually within the hour.</p>
+        <form action="#" method="post">
+          <div class="form-field">
+            <input type="text" name="first_name" placeholder="First name" required />
+          </div>
+          <div class="form-field">
+            <input type="text" name="last_name" placeholder="Last name" required />
+          </div>
+          <div class="form-field">
+            <input type="email" name="email" placeholder="Email address" required />
+          </div>
+          <div class="form-field">
+            <input type="tel" name="phone" placeholder="Phone number" />
+          </div>
+          <button type="submit" class="btn btn-red btn-full btn-lg">Claim My Free Pass →</button>
+        </form>
+        <p class="form-disclaimer">By submitting you agree to be contacted about your free pass. We'll never spam you or share your info.</p>
+      </div>
+
     </div>
-    <p class="cta-sub">No commitment · No payment</p>
   </div>
 </section>
 
-<!-- ============================ STATS STRIP ============================ -->
+<!-- STATS STRIP -->
 <section class="stats">
   <div class="container">
     <div class="stats-inner">
       <div class="stat"><div class="num">7</div><div class="lbl">Years Strong</div></div>
       <div class="stat"><div class="num">550+</div><div class="lbl">Members</div></div>
       <div class="stat"><div class="num">8,600</div><div class="lbl">Sq Ft</div></div>
-      <div class="stat"><div class="num">4.9★</div><div class="lbl">Google Rated</div></div>
+      <div class="stat"><div class="num">4.9★</div><div class="lbl">Google Rating</div></div>
+      <div class="stat"><div class="num">24/7</div><div class="lbl">Access</div></div>
     </div>
   </div>
 </section>
 
-<!-- ============================ WHY LIFT ============================ -->
-<section class="block" id="why">
+<!-- WHAT YOU'LL GET FULL ACCESS TO -->
+<section class="section features on-dark" id="why">
   <div class="container">
-    <div class="head-center">
-      <span class="section-label">Why Lift</span>
-      <h2>Not Another Big-Box Gym</h2>
-      <p class="lead">No contracts hanging over your head, no rows of broken machines, no staff who don't know your name. Just a serious place to train — and people who'll have your back while you do.</p>
+    <div class="center">
+      <span class="eyebrow">What's included</span>
+      <h2 class="section-heading">What You'll Get Full Access To</h2>
+      <p class="section-lead on-dark">Every piece of equipment, every square foot — yours for a full week, no asterisks.</p>
     </div>
-    <div class="cards">
-      <div class="card">
-        <img class="card-img" src="./assets/images/facility-1.webp" alt="Coaching on the floor at Lift STL" />
-        <div class="card-body">
+    <div class="feature-grid">
+      <div class="feat-card">
+        <span class="feat-icon">🏋️</span>
+        <h3>Elite Equipment</h3>
+        <p>Free weights, barbells, racks, sleds, turf, and conditioning gear — everything serious athletes need.</p>
+      </div>
+      <div class="feat-card">
+        <span class="feat-icon">👥</span>
+        <h3>Real Community</h3>
+        <p>550 members who actually know each other. No anonymous cardio zombies — a real training family.</p>
+      </div>
+      <div class="feat-card">
+        <span class="feat-icon">🕐</span>
+        <h3>Open 24/7</h3>
+        <p>Staffed during peak hours and key-fob access around the clock. Train on your schedule, not ours.</p>
+      </div>
+      <div class="feat-card">
+        <span class="feat-icon">📉</span>
+        <h3>No Crowds</h3>
+        <p>Membership is intentionally capped. You'll never wait for a rack or fight over floor space.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY LIFT — photo cards -->
+<section class="section why">
+  <div class="container">
+    <div class="center">
+      <span class="eyebrow">Why Lift</span>
+      <h2 class="section-heading">Not Another Big-Box Gym</h2>
+      <p class="section-lead">No contracts, no broken machines, no staff who don't know your name.</p>
+    </div>
+    <div class="why-grid">
+      <div class="why-card">
+        <img src="./assets/images/facility-1.webp" alt="Coaching at Lift STL" />
+        <div class="why-card-body">
           <h3>Real Coaching</h3>
-          <p>Experienced coaches on the floor who actually program, correct, and push you — not just swipe you in at the door.</p>
+          <p>Coaches who actually program, correct form, and push you — not just swipe you in at the door.</p>
         </div>
       </div>
-      <div class="card">
-        <img class="card-img" src="./assets/images/facility-3.webp" alt="The Lift STL community training together" />
-        <div class="card-body">
+      <div class="why-card">
+        <img src="./assets/images/facility-3.webp" alt="Lift STL community" />
+        <div class="why-card-body">
           <h3>A Real Community</h3>
-          <p>550 members who show up for each other. Walk in a stranger, leave knowing half the room. That's the Lift standard.</p>
+          <p>Walk in a stranger, leave knowing half the room. That's the Lift standard — every single day.</p>
         </div>
       </div>
-      <div class="card">
-        <img class="card-img" src="./assets/images/facility-5.webp" alt="Equipment and turf at Lift STL" />
-        <div class="card-body">
+      <div class="why-card">
+        <img src="./assets/images/facility-5.webp" alt="Lift STL equipment" />
+        <div class="why-card-body">
           <h3>Everything You Need</h3>
-          <p>Free weights, racks, turf, and conditioning across 8,600 sq ft — built for people who train with intent.</p>
+          <p>8,600 sq ft of free weights, racks, turf, and conditioning gear — built for people who train with intent.</p>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ============================ FACILITY SHOWCASE ============================ -->
-<section class="block" style="padding-top:0;">
+<!-- FACILITY GALLERY -->
+<section class="section gallery-section" style="padding-top:0;">
   <div class="container">
-    <div class="head-center">
-      <span class="section-label">Inside Lift</span>
-      <h2>Take a Look Around</h2>
+    <div class="center">
+      <span class="eyebrow">Inside Lift</span>
+      <h2 class="section-heading">Take a Look Around</h2>
     </div>
     <div class="gallery">
       <img class="wide" src="./assets/images/facility-2.webp" alt="Main training floor" />
@@ -397,36 +569,44 @@
   </div>
 </section>
 
-<!-- ============================ TESTIMONIALS ============================ -->
-<section class="block testimonials">
+<!-- SOCIAL PROOF CALLOUT -->
+<div class="proof-band">
+  <div class="stars proof-stars">★★★★★</div>
+  <div class="proof-score">4.9 <span>out of 5</span></div>
+  <!-- EDIT: replace 500 with real Google review count -->
+  <div class="proof-label">Based on 500+ Google reviews</div>
+</div>
+
+<!-- TESTIMONIALS -->
+<section class="section testimonials">
   <div class="container">
-    <div class="head-center">
-      <span class="section-label">Member Stories</span>
-      <h2>What Members Are Saying</h2>
+    <div class="center">
+      <span class="eyebrow">Member Stories</span>
+      <h2 class="section-heading">What Members Are Saying</h2>
     </div>
-    <!-- EDIT: replace names, quotes, and meta with real member reviews -->
+    <!-- EDIT: swap in real member names, quotes, and photos -->
     <div class="t-grid">
       <div class="t-card">
         <div class="stars">★★★★★</div>
-        <p class="quote">"Best decision I've made for my health. The coaches actually care and the community keeps me coming back."</p>
+        <p class="quote">"Best decision I've made for my health. The coaches actually care and the community keeps me coming back every single week."</p>
         <div class="who">
-          <img src="./assets/images/transformation-1.webp" alt="Member" />
+          <img src="./assets/images/transformation-1.webp" alt="Jordan M." />
           <div><div class="name">Jordan M.</div><div class="meta">Member, 3 years</div></div>
         </div>
       </div>
       <div class="t-card">
         <div class="stars">★★★★★</div>
-        <p class="quote">"I'd avoided gyms my whole life. One free week at Lift and I never left. This place is different."</p>
+        <p class="quote">"I'd avoided gyms my whole life. One free week at Lift and I never left. This place is genuinely different."</p>
         <div class="who">
-          <img src="./assets/images/transformation-4.webp" alt="Member" />
+          <img src="./assets/images/transformation-4.webp" alt="Alex R." />
           <div><div class="name">Alex R.</div><div class="meta">Member, 2 years</div></div>
         </div>
       </div>
       <div class="t-card">
         <div class="stars">★★★★★</div>
-        <p class="quote">"Down 40 lbs and stronger than I've ever been. Lift gave me the structure and the people to do it."</p>
+        <p class="quote">"Down 40 lbs and stronger than I've ever been. Lift gave me the structure and the people to make it happen."</p>
         <div class="who">
-          <img src="./assets/images/transformation-6.webp" alt="Member" />
+          <img src="./assets/images/transformation-6.webp" alt="Sam T." />
           <div><div class="name">Sam T.</div><div class="meta">Member, 4 years</div></div>
         </div>
       </div>
@@ -434,49 +614,54 @@
   </div>
 </section>
 
-<!-- ============================ FAQ ============================ -->
-<section class="block">
+<!-- FAQ -->
+<section class="section faq-section">
   <div class="container">
-    <div class="head-center">
-      <span class="section-label">Good to Know</span>
-      <h2>Questions, Answered</h2>
+    <div class="center">
+      <span class="eyebrow">Good to Know</span>
+      <h2 class="section-heading">Frequently Asked Questions</h2>
     </div>
-    <!-- EDIT: confirm/adjust every answer below to match Lift's actual trial policy -->
+    <!-- EDIT: confirm/fill every answer below -->
     <div class="faq">
       <details open>
         <summary>What's included in the 7-day free pass?</summary>
-        <p>Full access to the gym floor for a full week — every rack, free weights, turf, and conditioning equipment, plus the staff and community that make Lift, Lift. <!-- EDIT: add classes/coaching if included --></p>
+        <p class="faq-body">Full access to the entire gym floor for a full week — every rack, free weight, turf, and conditioning station, plus the staff and community that make Lift, Lift. <!-- EDIT: add group classes or coaching sessions if included --></p>
       </details>
       <details>
-        <summary>Is it really free? Do I need a card?</summary>
-        <p>Your first week is on us — no charge during the trial. <!-- EDIT: state whether a card/ID is required to set up a profile --></p>
+        <summary>Is it really free? Do you need my credit card?</summary>
+        <p class="faq-body">Your first week is completely on us — no charge and no card required to get started. <!-- EDIT: confirm whether an ID or waiver is needed to set up the pass --></p>
       </details>
       <details>
         <summary>Who's eligible?</summary>
-        <p>First-time guests, 18+, in the St. Louis area. <!-- EDIT: confirm eligibility rules (one-per-person, residency, etc.) --></p>
+        <p class="faq-body">First-time guests, 18 or older, in the St. Louis area. One pass per person. <!-- EDIT: confirm residency, one-per-household, or other eligibility rules --></p>
       </details>
       <details>
-        <summary>Where are you and what are the hours?</summary>
-        <p><!-- EDIT: add full address, parking note, and staffed/access hours -->Brentwood, MO. Address and hours coming here.</p>
+        <summary>Where are you and what are your hours?</summary>
+        <!-- EDIT: fill in address, parking, and full staffed vs. keycard hours -->
+        <p class="faq-body">We're in Brentwood, MO. Staffed hours and keycard access hours coming here — check lift-stl.com for the latest.</p>
+      </details>
+      <details>
+        <summary>What if I just moved and my address isn't updated?</summary>
+        <p class="faq-body">No problem — reach out directly and we'll get you set up. The pass is for anyone new to Lift, regardless of where your ID says you live. <!-- EDIT: confirm this policy --></p>
       </details>
       <details>
         <summary>What happens after my free week?</summary>
-        <p>If Lift's your place, pick the membership that fits — no contract pressure. If it's not, no hard feelings and nothing owed. <!-- EDIT: confirm membership options / pricing --></p>
+        <p class="faq-body">If Lift's your place, we'll walk you through the membership options — no pressure, no contract. If it's not the right fit, no hard feelings and nothing owed. <!-- EDIT: add membership pricing tiers if you want to convert curious visitors --></p>
       </details>
     </div>
   </div>
 </section>
 
-<!-- ============================ FINAL CTA ============================ -->
-<section class="cta-band" id="claim">
+<!-- FINAL CTA -->
+<section class="cta-band">
   <div class="container">
-    <h2>Your First Week Is On Us.</h2>
-    <a href="#" class="btn-white">Claim Your 7-Day Free Pass</a>
-    <p class="cta-sub" style="margin-top:1rem;">No commitment · No payment</p>
+    <h2>Your First Week<br/>Is On Us.</h2>
+    <a href="#claim" class="btn btn-white btn-lg">Claim Your Free Pass →</a>
+    <p class="cta-sub">No commitment &nbsp;·&nbsp; No payment &nbsp;·&nbsp; No strings</p>
   </div>
 </section>
 
-<!-- ============================ FOOTER ============================ -->
+<!-- FOOTER -->
 <footer>
   <div class="container">
     <div class="foot">
@@ -488,8 +673,8 @@
         <a href="#claim">Claim Free Pass</a>
       </div>
     </div>
-    <!-- EDIT: address / hours -->
-    <p class="foot-legal">Lift STL · Brentwood, MO · © 2026 Lift STL. All rights reserved.</p>
+    <!-- EDIT: address -->
+    <p class="foot-legal">Lift STL &nbsp;·&nbsp; Brentwood, MO &nbsp;·&nbsp; © 2026 Lift STL. All rights reserved.</p>
   </div>
 </footer>
 
