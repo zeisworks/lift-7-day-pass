@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Lift STL — 7 Days Free</title>
+
+<!--
+  ============================================================================
+  LIFT STL — "7 DAYS FREE" LANDING PAGE
+  Style modeled on free.romanempiregym.com · Branding = lift-stl.com DNA
+  ----------------------------------------------------------------------------
+  HOSTING ON WIX:
+    Option A (fastest): paste this whole file into a Wix "Embed > Custom HTML
+      (iframe)" element. Then re-upload the files in ./assets/ to Wix Media and
+      swap every `./assets/...` src for its Wix Media URL.
+    Option B (reference build): use this page as a pixel/copy reference and
+      rebuild the sections natively in the Wix editor.
+
+  IMAGE PATHS: bundled locally under ./assets/ so the page renders standalone
+    when index.html is opened in a browser. On Wix, replace each src.
+
+  >>> PLACEHOLDERS for Eric to fill in are marked  <!-- EDIT: ... -->
+      (Google review count, testimonials, FAQ answers, address/hours, links)
+  ============================================================================
+-->
+
+<style>
+  /* ---- Fonts (matches client/src/index.css) ---- */
+  @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,400;0,600;0,700;0,800;0,900;1,700;1,800&family=Barlow:wght@300;400;500;600&family=DM+Serif+Display:ital@0;1&display=swap');
+
+  /* ---- Lift brand tokens (from client/src/index.css) ---- */
+  :root {
+    --lift-red: #ED1C24;
+    --lift-red-dark: #c8151c;
+    --lift-black: #16181A;
+    --lift-surface: #20242A;
+    --lift-surface-2: #2a2e36;
+    --lift-border: #333840;
+    --lift-cream: #F5F3EE;
+    --lift-warm: #EDEAE3;
+    --lift-gray: #6b6b6b;
+    --lift-muted: #404040;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+
+  body {
+    font-family: 'Barlow', sans-serif;
+    font-weight: 400;
+    background: var(--lift-black);
+    color: #fff;
+    line-height: 1.5;
+  }
+
+  img { display: block; max-width: 100%; }
+  a { text-decoration: none; color: inherit; }
+
+  .font-display { font-family: 'Barlow Condensed', sans-serif; }
+  .font-serif  { font-family: 'DM Serif Display', serif; }
+
+  .container { width: 100%; max-width: 1180px; margin: 0 auto; padding: 0 1.25rem; }
+  @media (min-width: 640px)  { .container { padding: 0 2rem; } }
+  @media (min-width: 1024px) { .container { padding: 0 3rem; } }
+
+  /* ---- Section overline label (from index.css) ---- */
+  .section-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    font-size: 0.7rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--lift-red);
+    display: block;
+    margin-bottom: 0.75rem;
+  }
+
+  /* ---- Primary CTA (.btn-lift from index.css) ---- */
+  .btn-lift {
+    background-color: var(--lift-red);
+    color: #fff;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: 1rem 2.75rem;
+    font-size: 0.95rem;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.15s, box-shadow 0.2s;
+    display: inline-block;
+    border-radius: 9999px;
+  }
+  .btn-lift:hover { background-color: var(--lift-red-dark); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(237,28,36,0.3); }
+  .btn-lift:active { transform: translateY(0); box-shadow: none; }
+  .btn-lift:focus-visible { outline: 2px solid rgba(255,255,255,0.6); outline-offset: 3px; }
+  .btn-lift.btn-sm { padding: 0.7rem 1.6rem; font-size: 0.8rem; }
+
+  /* ---- Ghost button ---- */
+  .btn-ghost {
+    background: transparent;
+    color: rgba(255,255,255,0.75);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    padding: 0.875rem 2rem;
+    font-size: 0.85rem;
+    border: 1px solid rgba(255,255,255,0.18);
+    cursor: pointer;
+    border-radius: 9999px;
+    transition: border-color 0.2s, color 0.2s;
+    display: inline-block;
+  }
+  .btn-ghost:hover { border-color: rgba(255,255,255,0.45); color: #fff; }
+
+  /* ---- Ratings badge ---- */
+  .rating-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    font-size: 0.72rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.85);
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 9999px;
+    padding: 0.4rem 0.95rem;
+  }
+  .rating-badge .stars { color: #FFC93C; letter-spacing: 0; }
+
+  /* ============================ HEADER ============================ */
+  header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: rgba(22,24,26,0.82);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+  }
+  .nav { display: flex; align-items: center; justify-content: space-between; height: 64px; }
+  .nav .logo { height: 30px; width: auto; }
+  .nav-right { display: flex; align-items: center; gap: 1rem; }
+  .nav-badge {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600; font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase;
+    color: rgba(255,255,255,0.7);
+  }
+  .nav-badge .stars { color: #FFC93C; }
+  @media (max-width: 640px) { .nav-badge { display: none; } }
+
+  /* ============================ HERO ============================ */
+  .hero { position: relative; min-height: 92vh; display: flex; align-items: center; overflow: hidden; }
+  .hero-media { position: absolute; inset: 0; z-index: 0; }
+  .hero-media video, .hero-media img { width: 100%; height: 100%; object-fit: cover; }
+  .hero-media::after {
+    content: ""; position: absolute; inset: 0;
+    background: linear-gradient(180deg, rgba(22,24,26,0.55) 0%, rgba(22,24,26,0.78) 60%, rgba(22,24,26,0.95) 100%);
+  }
+  .hero-inner { position: relative; z-index: 1; padding: 5rem 0; max-width: 760px; }
+  .hero h1 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    text-transform: uppercase;
+    line-height: 0.95;
+    letter-spacing: -0.01em;
+    font-size: clamp(2.6rem, 7vw, 5.2rem);
+    margin: 1.25rem 0 1.25rem;
+  }
+  .hero h1 .accent { color: var(--lift-red); }
+  .hero .sub {
+    font-size: clamp(1.05rem, 2.2vw, 1.35rem);
+    color: rgba(255,255,255,0.82);
+    font-weight: 300;
+    max-width: 600px;
+    margin-bottom: 2rem;
+  }
+  .hero .sub strong { font-weight: 600; color: #fff; }
+  .cta-row { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
+  .cta-sub {
+    margin-top: 0.9rem;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600; font-size: 0.78rem; letter-spacing: 0.18em; text-transform: uppercase;
+    color: rgba(255,255,255,0.55);
+  }
+
+  /* ============================ STATS STRIP ============================ */
+  .stats {
+    background: var(--lift-cream);
+    color: var(--lift-black);
+  }
+  .stats-inner {
+    display: flex; flex-wrap: wrap; justify-content: center; align-items: stretch;
+    gap: 0; padding: 0;
+  }
+  .stat {
+    flex: 1 1 0; min-width: 140px; text-align: center;
+    padding: 1.6rem 1rem;
+    border-right: 1px solid rgba(0,0,0,0.08);
+  }
+  .stat:last-child { border-right: none; }
+  .stat .num { font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: clamp(1.8rem, 4vw, 2.6rem); line-height: 1; color: var(--lift-red); }
+  .stat .lbl { font-family: 'Barlow Condensed', sans-serif; font-weight: 600; font-size: 0.7rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--lift-gray); margin-top: 0.45rem; }
+  @media (max-width: 640px) {
+    .stat { flex: 1 1 50%; border-bottom: 1px solid rgba(0,0,0,0.08); }
+    .stat:nth-child(2n) { border-right: none; }
+  }
+
+  /* ============================ SECTION SHELL ============================ */
+  section.block { padding: clamp(4rem, 9vw, 7rem) 0; }
+  .block h2 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800; text-transform: uppercase; line-height: 1;
+    font-size: clamp(2rem, 5vw, 3.4rem);
+    margin-bottom: 1rem;
+  }
+  .block .lead { color: rgba(255,255,255,0.7); font-size: 1.1rem; font-weight: 300; max-width: 620px; }
+  .head-center { text-align: center; }
+  .head-center .lead, .head-center .section-label { margin-left: auto; margin-right: auto; }
+
+  /* ---- Why Lift cards ---- */
+  .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; margin-top: 3rem; }
+  @media (max-width: 880px) { .cards { grid-template-columns: 1fr; max-width: 460px; margin-left: auto; margin-right: auto; } }
+  .card {
+    background: var(--lift-surface);
+    border: 1px solid var(--lift-border);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  .card .card-img { aspect-ratio: 4/3; width: 100%; object-fit: cover; }
+  .card .card-body { padding: 1.5rem; }
+  .card h3 { font-family: 'Barlow Condensed', sans-serif; font-weight: 800; text-transform: uppercase; font-size: 1.35rem; letter-spacing: 0.02em; margin-bottom: 0.5rem; }
+  .card p { color: rgba(255,255,255,0.65); font-weight: 300; font-size: 0.98rem; }
+
+  /* ---- Facility showcase ---- */
+  .gallery { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; margin-top: 3rem; }
+  .gallery img { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 4px; }
+  .gallery .wide { grid-column: span 2; aspect-ratio: 2 / 1; }
+  @media (max-width: 720px) { .gallery { grid-template-columns: repeat(2, 1fr); } .gallery .wide { grid-column: span 2; } }
+
+  /* ---- Testimonials ---- */
+  .testimonials { background: var(--lift-surface); }
+  .t-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; margin-top: 3rem; }
+  @media (max-width: 880px) { .t-grid { grid-template-columns: 1fr; max-width: 520px; margin-left: auto; margin-right: auto; } }
+  .t-card { background: var(--lift-black); border: 1px solid var(--lift-border); border-radius: 6px; padding: 1.75rem; display: flex; flex-direction: column; gap: 1.1rem; }
+  .t-card .quote { font-family: 'DM Serif Display', serif; font-style: italic; font-size: 1.2rem; line-height: 1.4; color: #fff; }
+  .t-card .who { display: flex; align-items: center; gap: 0.85rem; margin-top: auto; }
+  .t-card .who img { width: 46px; height: 46px; border-radius: 9999px; object-fit: cover; }
+  .t-card .who .name { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; }
+  .t-card .who .meta { font-size: 0.8rem; color: var(--lift-gray); }
+  .t-card .stars { color: #FFC93C; letter-spacing: 0.1em; font-size: 0.95rem; }
+
+  /* ---- FAQ ---- */
+  .faq { max-width: 760px; margin: 3rem auto 0; }
+  .faq details {
+    border-bottom: 1px solid var(--lift-border);
+    padding: 1.25rem 0;
+  }
+  .faq summary {
+    list-style: none; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 1rem;
+    font-family: 'Barlow Condensed', sans-serif; font-weight: 700; text-transform: uppercase; letter-spacing: 0.03em;
+    font-size: 1.15rem;
+  }
+  .faq summary::-webkit-details-marker { display: none; }
+  .faq summary::after { content: "+"; color: var(--lift-red); font-size: 1.6rem; font-weight: 400; line-height: 1; transition: transform 0.2s; }
+  .faq details[open] summary::after { transform: rotate(45deg); }
+  .faq p { color: rgba(255,255,255,0.7); font-weight: 300; margin-top: 0.85rem; max-width: 640px; }
+
+  /* ---- Final CTA band ---- */
+  .cta-band { background: var(--lift-red); text-align: center; padding: clamp(3.5rem, 8vw, 6rem) 0; }
+  .cta-band h2 { font-family: 'Barlow Condensed', sans-serif; font-weight: 900; text-transform: uppercase; line-height: 0.98; font-size: clamp(2.2rem, 6vw, 4rem); color: #fff; margin-bottom: 1.5rem; }
+  .cta-band .btn-white {
+    background: #fff; color: var(--lift-red);
+    font-family: 'Barlow Condensed', sans-serif; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em;
+    padding: 1.1rem 3rem; font-size: 1rem; border-radius: 9999px; display: inline-block;
+    transition: transform 0.15s, box-shadow 0.2s;
+  }
+  .cta-band .btn-white:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(0,0,0,0.25); }
+  .cta-band .cta-sub { color: rgba(255,255,255,0.85); }
+
+  /* ---- Footer ---- */
+  footer { background: var(--lift-black); border-top: 1px solid rgba(255,255,255,0.08); padding: 3rem 0; }
+  .foot { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1.5rem; }
+  .foot .logo { height: 28px; }
+  .foot .links { display: flex; gap: 1.5rem; flex-wrap: wrap; }
+  .foot .links a { font-family: 'Barlow Condensed', sans-serif; font-weight: 600; text-transform: uppercase; letter-spacing: 0.12em; font-size: 0.8rem; color: rgba(255,255,255,0.6); transition: color 0.2s; }
+  .foot .links a:hover { color: #fff; }
+  .foot-legal { color: var(--lift-gray); font-size: 0.8rem; margin-top: 1.5rem; }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+    .btn-lift:hover, .cta-band .btn-white:hover { transform: none !important; box-shadow: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ============================ HEADER ============================ -->
+<header>
+  <div class="container nav">
+    <a href="#top"><img class="logo" src="./assets/images/lift-logo-transparent.png" alt="Lift STL" /></a>
+    <div class="nav-right">
+      <!-- EDIT: replace 500 with the real Google review count -->
+      <span class="nav-badge"><span class="stars">★</span> 4.9 on Google · 500+ reviews</span>
+      <a href="#claim" class="btn-lift btn-sm">Claim 7 Days Free</a>
+    </div>
+  </div>
+</header>
+
+<!-- ============================ HERO ============================ -->
+<section class="hero" id="top">
+  <div class="hero-media">
+    <!-- Background: hero video w/ poster fallback. Swap for Wix Media URL on Wix. -->
+    <video autoplay muted loop playsinline poster="./assets/videos/hero-poster.jpg">
+      <source src="./assets/videos/hero.mp4" type="video/mp4" />
+      <img src="./assets/images/lift_stl_hero.webp" alt="Inside Lift STL" />
+    </video>
+  </div>
+  <div class="container hero-inner">
+    <!-- EDIT: replace 500 with the real Google review count -->
+    <span class="rating-badge"><span class="stars">★★★★★</span> 4.9 on Google · 500+ five-star reviews</span>
+    <h1>The St. Louis Gym You've Been Looking For —<br /><span class="accent">Yours Free for 7 Days.</span></h1>
+    <p class="sub">8,600 sq ft of real iron, real coaching, and a community 550 strong in the heart of Brentwood. <strong>Your first week is completely on us — no strings.</strong></p>
+    <div class="cta-row">
+      <a href="#claim" class="btn-lift">Claim Your 7-Day Free Pass</a>
+      <a href="#why" class="btn-ghost">See the gym</a>
+    </div>
+    <p class="cta-sub">No commitment · No payment</p>
+  </div>
+</section>
+
+<!-- ============================ STATS STRIP ============================ -->
+<section class="stats">
+  <div class="container">
+    <div class="stats-inner">
+      <div class="stat"><div class="num">7</div><div class="lbl">Years Strong</div></div>
+      <div class="stat"><div class="num">550+</div><div class="lbl">Members</div></div>
+      <div class="stat"><div class="num">8,600</div><div class="lbl">Sq Ft</div></div>
+      <div class="stat"><div class="num">4.9★</div><div class="lbl">Google Rated</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ WHY LIFT ============================ -->
+<section class="block" id="why">
+  <div class="container">
+    <div class="head-center">
+      <span class="section-label">Why Lift</span>
+      <h2>Not Another Big-Box Gym</h2>
+      <p class="lead">No contracts hanging over your head, no rows of broken machines, no staff who don't know your name. Just a serious place to train — and people who'll have your back while you do.</p>
+    </div>
+    <div class="cards">
+      <div class="card">
+        <img class="card-img" src="./assets/images/facility-1.webp" alt="Coaching on the floor at Lift STL" />
+        <div class="card-body">
+          <h3>Real Coaching</h3>
+          <p>Experienced coaches on the floor who actually program, correct, and push you — not just swipe you in at the door.</p>
+        </div>
+      </div>
+      <div class="card">
+        <img class="card-img" src="./assets/images/facility-3.webp" alt="The Lift STL community training together" />
+        <div class="card-body">
+          <h3>A Real Community</h3>
+          <p>550 members who show up for each other. Walk in a stranger, leave knowing half the room. That's the Lift standard.</p>
+        </div>
+      </div>
+      <div class="card">
+        <img class="card-img" src="./assets/images/facility-5.webp" alt="Equipment and turf at Lift STL" />
+        <div class="card-body">
+          <h3>Everything You Need</h3>
+          <p>Free weights, racks, turf, and conditioning across 8,600 sq ft — built for people who train with intent.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ FACILITY SHOWCASE ============================ -->
+<section class="block" style="padding-top:0;">
+  <div class="container">
+    <div class="head-center">
+      <span class="section-label">Inside Lift</span>
+      <h2>Take a Look Around</h2>
+    </div>
+    <div class="gallery">
+      <img class="wide" src="./assets/images/facility-2.webp" alt="Main training floor" />
+      <img src="./assets/images/facility-4.webp" alt="Free weight area" />
+      <img src="./assets/images/facility-6.webp" alt="Conditioning and turf" />
+      <img src="./assets/images/facility-turf.jpg" alt="Turf training lane" />
+      <img class="wide" src="./assets/images/facility-interior.jpg" alt="Lift STL interior" />
+    </div>
+  </div>
+</section>
+
+<!-- ============================ TESTIMONIALS ============================ -->
+<section class="block testimonials">
+  <div class="container">
+    <div class="head-center">
+      <span class="section-label">Member Stories</span>
+      <h2>What Members Are Saying</h2>
+    </div>
+    <!-- EDIT: replace names, quotes, and meta with real member reviews -->
+    <div class="t-grid">
+      <div class="t-card">
+        <div class="stars">★★★★★</div>
+        <p class="quote">"Best decision I've made for my health. The coaches actually care and the community keeps me coming back."</p>
+        <div class="who">
+          <img src="./assets/images/transformation-1.webp" alt="Member" />
+          <div><div class="name">Jordan M.</div><div class="meta">Member, 3 years</div></div>
+        </div>
+      </div>
+      <div class="t-card">
+        <div class="stars">★★★★★</div>
+        <p class="quote">"I'd avoided gyms my whole life. One free week at Lift and I never left. This place is different."</p>
+        <div class="who">
+          <img src="./assets/images/transformation-4.webp" alt="Member" />
+          <div><div class="name">Alex R.</div><div class="meta">Member, 2 years</div></div>
+        </div>
+      </div>
+      <div class="t-card">
+        <div class="stars">★★★★★</div>
+        <p class="quote">"Down 40 lbs and stronger than I've ever been. Lift gave me the structure and the people to do it."</p>
+        <div class="who">
+          <img src="./assets/images/transformation-6.webp" alt="Member" />
+          <div><div class="name">Sam T.</div><div class="meta">Member, 4 years</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ FAQ ============================ -->
+<section class="block">
+  <div class="container">
+    <div class="head-center">
+      <span class="section-label">Good to Know</span>
+      <h2>Questions, Answered</h2>
+    </div>
+    <!-- EDIT: confirm/adjust every answer below to match Lift's actual trial policy -->
+    <div class="faq">
+      <details open>
+        <summary>What's included in the 7-day free pass?</summary>
+        <p>Full access to the gym floor for a full week — every rack, free weights, turf, and conditioning equipment, plus the staff and community that make Lift, Lift. <!-- EDIT: add classes/coaching if included --></p>
+      </details>
+      <details>
+        <summary>Is it really free? Do I need a card?</summary>
+        <p>Your first week is on us — no charge during the trial. <!-- EDIT: state whether a card/ID is required to set up a profile --></p>
+      </details>
+      <details>
+        <summary>Who's eligible?</summary>
+        <p>First-time guests, 18+, in the St. Louis area. <!-- EDIT: confirm eligibility rules (one-per-person, residency, etc.) --></p>
+      </details>
+      <details>
+        <summary>Where are you and what are the hours?</summary>
+        <p><!-- EDIT: add full address, parking note, and staffed/access hours -->Brentwood, MO. Address and hours coming here.</p>
+      </details>
+      <details>
+        <summary>What happens after my free week?</summary>
+        <p>If Lift's your place, pick the membership that fits — no contract pressure. If it's not, no hard feelings and nothing owed. <!-- EDIT: confirm membership options / pricing --></p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ FINAL CTA ============================ -->
+<section class="cta-band" id="claim">
+  <div class="container">
+    <h2>Your First Week Is On Us.</h2>
+    <a href="#" class="btn-white">Claim Your 7-Day Free Pass</a>
+    <p class="cta-sub" style="margin-top:1rem;">No commitment · No payment</p>
+  </div>
+</section>
+
+<!-- ============================ FOOTER ============================ -->
+<footer>
+  <div class="container">
+    <div class="foot">
+      <img class="logo" src="./assets/images/lift-logo-transparent.png" alt="Lift STL" />
+      <div class="links">
+        <!-- EDIT: confirm links -->
+        <a href="https://lift-stl.com" target="_blank" rel="noopener">lift-stl.com</a>
+        <a href="https://instagram.com/liftstl" target="_blank" rel="noopener">Instagram</a>
+        <a href="#claim">Claim Free Pass</a>
+      </div>
+    </div>
+    <!-- EDIT: address / hours -->
+    <p class="foot-legal">Lift STL · Brentwood, MO · © 2026 Lift STL. All rights reserved.</p>
+  </div>
+</footer>
+
+</body>
+</html>
