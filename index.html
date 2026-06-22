@@ -441,6 +441,24 @@
   }
   .features > .container, .stats > .container, .proof-band > .container { position: relative; z-index: 1; }
 
+  /* ============================================================
+     MOBILE STICKY CTA — keeps the action one tap away below the fold
+  ============================================================ */
+  .mobile-cta {
+    display: none;
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 70;
+    background: rgba(35,38,43,0.96); backdrop-filter: blur(10px);
+    border-top: 1px solid var(--border-dark);
+    padding: 0.7rem 1rem;
+    padding-bottom: calc(0.7rem + env(safe-area-inset-bottom));
+    box-shadow: 0 -6px 24px rgba(0,0,0,0.3);
+  }
+  .mobile-cta .btn { display: block; width: 100%; text-align: center; padding: 0.95rem; }
+  @media (max-width: 860px) {
+    .mobile-cta { display: block; }
+    body { padding-bottom: 4.5rem; }
+  }
+
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
     .reveal { opacity: 1 !important; transform: none !important; }
@@ -461,7 +479,7 @@
     <a href="#top"><img class="logo" src="./assets/images/lift-logo-transparent.png" alt="Lift STL" /></a>
     <div class="nav-right">
       <span class="nav-rating"><span class="stars">★</span> 4.8 · 77 Google reviews</span>
-      <a href="#claim" class="btn btn-red" style="padding:.65rem 1.5rem;font-size:.78rem;">Claim Free Pass</a>
+      <a href="#claim" class="btn btn-red" style="padding:.65rem 1.5rem;font-size:.78rem;">Start Free Week</a>
     </div>
   </div>
 </header>
@@ -498,7 +516,8 @@
           <div class="form-field">
             <input type="tel" name="phone" placeholder="Phone number" />
           </div>
-          <button type="submit" class="btn btn-red btn-full btn-lg">Claim My Free Pass</button>
+          <button type="submit" class="btn btn-red btn-full btn-lg">Start My Free Week</button>
+          <p class="form-disclaimer" style="margin-top:.6rem;margin-bottom:-.25rem;">Takes 30 seconds · No card required</p>
         </form>
         <p class="form-disclaimer">By submitting you agree to be contacted about your free pass. We'll never spam you or share your info.</p>
       </div>
@@ -720,10 +739,15 @@
 <section class="cta-band">
   <div class="container">
     <h2>Your First Week<br/>Is On Us.</h2>
-    <a href="#claim" class="btn btn-white btn-lg">Claim Your Free Pass</a>
+    <a href="#claim" class="btn btn-white btn-lg">Start Your Free Week</a>
     <p class="cta-sub">No commitment &nbsp;·&nbsp; No payment &nbsp;·&nbsp; No strings</p>
   </div>
 </section>
+
+<!-- MOBILE STICKY CTA -->
+<div class="mobile-cta">
+  <a href="#claim" class="btn btn-red">Start My Free Week</a>
+</div>
 
 <!-- FOOTER -->
 <footer>
@@ -733,7 +757,7 @@
       <div class="links">
         <a href="https://lift-stl.com" target="_blank" rel="noopener">lift-stl.com</a>
         <a href="https://instagram.com/liftstl" target="_blank" rel="noopener">Instagram</a>
-        <a href="#claim">Claim Free Pass</a>
+        <a href="#claim">Start Free Week</a>
       </div>
     </div>
     <!-- EDIT: address -->
