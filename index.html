@@ -5,6 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Lift STL — 7 Days Free</title>
 
+<!-- LCP: warm up font + hero asset connections, preload the hero poster -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="preload" as="image" href="./assets/videos/hero-poster.jpg" fetchpriority="high" />
+
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,400;0,600;0,700;0,800;0,900;1,700&family=Barlow:wght@300;400;500;600&family=DM+Serif+Display:ital@0;1&display=swap');
 
@@ -405,9 +410,41 @@
   .foot .links a:hover { color: #fff; }
   .foot-legal { color: rgba(255,255,255,0.3); font-size: 0.78rem; margin-top: 1.5rem; }
 
+  /* ============================================================
+     CRAFT — entrance motion, hover-lift, chalk-grain wildcard
+  ============================================================ */
+
+  /* Subtle, deliberate entrance (vibe: confident, not bouncy).
+     Elements start lowered + faded, reveal on scroll via IntersectionObserver. */
+  .reveal { opacity: 0; transform: translateY(18px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .reveal.in { opacity: 1; transform: none; }
+  /* Stagger children inside a revealed group */
+  .reveal.in .stagger > * { animation: rise 0.55s ease backwards; }
+  .reveal.in .stagger > *:nth-child(1) { animation-delay: 0.05s; }
+  .reveal.in .stagger > *:nth-child(2) { animation-delay: 0.13s; }
+  .reveal.in .stagger > *:nth-child(3) { animation-delay: 0.21s; }
+  .reveal.in .stagger > *:nth-child(4) { animation-delay: 0.29s; }
+  @keyframes rise { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+
+  /* Hover-lift on cards */
+  .feat-card, .why-card, .t-card { transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease; }
+  .feat-card:hover { transform: translateY(-4px); border-color: rgba(225,71,71,0.5); }
+  .why-card:hover  { transform: translateY(-4px); }
+  .t-card:hover    { transform: translateY(-4px); box-shadow: 0 14px 32px rgba(46,48,54,0.12); }
+
+  /* WILDCARD: faint chalk-grain over the dark sections only */
+  .features, .stats, .proof-band { position: relative; }
+  .features::before, .stats::before, .proof-band::before {
+    content: ""; position: absolute; inset: 0; z-index: 0; pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+    opacity: 0.05;
+  }
+  .features > .container, .stats > .container, .proof-band > .container { position: relative; z-index: 1; }
+
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
-    .btn:hover { transform: none !important; box-shadow: none !important; }
+    .reveal { opacity: 1 !important; transform: none !important; }
+    .btn:hover, .feat-card:hover, .why-card:hover, .t-card:hover { transform: none !important; box-shadow: none !important; }
   }
 </style>
 </head>
@@ -434,7 +471,7 @@
   <div class="hero-bg">
     <video autoplay muted loop playsinline poster="./assets/videos/hero-poster.jpg">
       <source src="./assets/videos/hero.mp4" type="video/mp4" />
-      <img src="./assets/images/lift_stl_hero.webp" alt="Inside Lift STL" />
+      <img src="./assets/images/lift_stl_hero.webp" alt="Inside Lift STL" fetchpriority="high" />
     </video>
   </div>
   <div class="container">
@@ -493,7 +530,7 @@
       <h2 class="section-heading">Everything's Included. No Asterisks.</h2>
       <p class="section-lead on-dark">Every piece of equipment, every square foot — yours for a full week.</p>
     </div>
-    <div class="feature-grid">
+    <div class="feature-grid reveal stagger">
       <div class="feat-card">
         <span class="feat-icon">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -542,7 +579,7 @@
       <h2 class="section-heading">Not Another Big-Box Gym</h2>
       <p class="section-lead on-dark">No contracts, no broken machines, no staff who don't know your name.</p>
     </div>
-    <div class="why-grid">
+    <div class="why-grid reveal stagger">
       <div class="why-card">
         <img src="./assets/images/facility-1.webp" alt="Coaching at Lift STL" />
         <div class="why-card-body">
@@ -576,7 +613,7 @@
       <span class="eyebrow">Inside Lift</span>
       <h2 class="section-heading">Take a Look Around</h2>
     </div>
-    <div class="gallery">
+    <div class="gallery reveal">
       <img class="g1" src="./assets/images/facility-2.webp" alt="Main training floor" />
       <img class="g2" src="./assets/images/facility-4.webp" alt="Free weight area" />
       <img class="g3" src="./assets/images/facility-6.webp" alt="Conditioning and turf" />
@@ -612,7 +649,7 @@
       <h2 class="section-heading">What Members Are Saying</h2>
     </div>
     <!-- EDIT: swap in real member names and quotes -->
-    <div class="t-grid">
+    <div class="t-grid reveal stagger">
       <div class="t-card">
         <div class="stars">★★★★★</div>
         <p class="quote">"Best decision I've made for my health. The coaches actually care and the community keeps me coming back every single week."</p>
@@ -649,7 +686,7 @@
       <h2 class="section-heading">Frequently Asked Questions</h2>
     </div>
     <!-- EDIT: confirm/fill every answer below -->
-    <div class="faq">
+    <div class="faq reveal">
       <details open>
         <summary>What's included in the 7-day free pass?</summary>
         <p class="faq-body">Full access to the entire gym floor for a full week — every rack, free weight, turf, and conditioning station, plus the staff and community that make Lift, Lift. <!-- EDIT: add group classes or coaching if included --></p>
@@ -703,6 +740,23 @@
     <p class="foot-legal">Lift STL &nbsp;·&nbsp; Brentwood, MO &nbsp;·&nbsp; © 2026 Lift STL. All rights reserved.</p>
   </div>
 </footer>
+
+<script>
+  // Reveal-on-scroll: confident, one-shot entrance (vibe: deliberate, not bouncy).
+  (function () {
+    var els = document.querySelectorAll('.reveal');
+    if (!('IntersectionObserver' in window) || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      els.forEach(function (el) { el.classList.add('in'); });
+      return;
+    }
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+    els.forEach(function (el) { io.observe(el); });
+  })();
+</script>
 
 </body>
 </html>
