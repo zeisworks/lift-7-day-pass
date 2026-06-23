@@ -459,10 +459,104 @@
     body { padding-bottom: 4.5rem; }
   }
 
+  /* ============================================================
+     POST-SUBMIT MODAL — confirms the signup + invites a few
+     quick questions about the member's fitness journey
+  ============================================================ */
+  .modal-overlay {
+    position: fixed; inset: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: center;
+    padding: 1.5rem;
+    background: rgba(35,38,43,0.72);
+    -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px);
+    opacity: 0; visibility: hidden;
+    transition: opacity 0.25s ease, visibility 0.25s ease;
+  }
+  .modal-overlay.open { opacity: 1; visibility: visible; }
+  .modal {
+    background: #fff; border-radius: 10px;
+    width: 100%; max-width: 480px;
+    max-height: calc(100vh - 3rem); overflow-y: auto;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.45);
+    padding: 2.5rem 2rem 2rem; position: relative;
+    transform: translateY(16px) scale(0.98);
+    transition: transform 0.25s ease;
+  }
+  .modal-overlay.open .modal { transform: none; }
+  .modal-close {
+    position: absolute; top: 0.8rem; right: 0.9rem;
+    background: none; border: none; cursor: pointer;
+    font-size: 1.5rem; line-height: 1; color: var(--muted);
+    width: 2rem; height: 2rem; border-radius: 9999px;
+    display: flex; align-items: center; justify-content: center;
+    transition: color 0.2s, background 0.2s;
+  }
+  .modal-close:hover { color: var(--charcoal); background: var(--cream); }
+  .modal-check {
+    width: 54px; height: 54px; border-radius: 9999px;
+    background: rgba(225,71,71,0.12); color: var(--red);
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 1.1rem;
+  }
+  .modal-check svg { width: 28px; height: 28px; }
+  .modal h2 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900; font-size: 1.9rem; line-height: 1.02;
+    color: var(--charcoal); margin-bottom: 0.5rem;
+  }
+  .modal .modal-sub {
+    font-size: 0.95rem; color: var(--muted); font-weight: 300;
+    line-height: 1.5; margin-bottom: 1.5rem;
+  }
+  .modal .modal-sub strong { color: var(--charcoal); font-weight: 600; }
+  .modal-divider { border: none; border-top: 1px solid var(--border-light); margin: 0 0 1.4rem; }
+  .modal-invite {
+    font-family: 'Barlow Condensed', sans-serif; font-weight: 700;
+    font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--red); margin-bottom: 1.25rem;
+  }
+  .modal-q { margin-bottom: 1.25rem; }
+  .modal-q > label {
+    display: block; font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700; font-size: 0.8rem; letter-spacing: 0.06em;
+    text-transform: uppercase; color: var(--charcoal); margin-bottom: 0.55rem;
+  }
+  .modal-chips { display: flex; flex-wrap: wrap; gap: 0.45rem; }
+  .modal-chip {
+    font-family: 'Barlow Condensed', sans-serif; font-weight: 600;
+    font-size: 0.82rem; letter-spacing: 0.03em;
+    padding: 0.48rem 0.85rem; border-radius: 9999px;
+    border: 1px solid var(--border-light); background: #fff;
+    color: var(--charcoal); cursor: pointer;
+    transition: background 0.15s, border-color 0.15s, color 0.15s;
+  }
+  .modal-chip:hover { border-color: var(--red); }
+  .modal-chip.selected { background: var(--red); border-color: var(--red); color: #fff; }
+  .modal-q select {
+    width: 100%; background: var(--cream);
+    border: 1px solid var(--border-light); border-radius: 6px;
+    padding: 0.72rem 0.9rem; font-family: 'Barlow', sans-serif;
+    font-size: 0.95rem; color: var(--charcoal); outline: none;
+    transition: border-color 0.2s;
+  }
+  .modal-q select:focus { border-color: var(--red); }
+  .modal-skip {
+    display: block; width: 100%; text-align: center;
+    background: none; border: none; cursor: pointer; margin-top: 0.9rem;
+    font-family: 'Barlow Condensed', sans-serif; font-weight: 600;
+    font-size: 0.76rem; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--muted); transition: color 0.2s;
+  }
+  .modal-skip:hover { color: var(--charcoal); }
+  .modal-step { display: none; }
+  .modal-step.active { display: block; }
+  body.modal-locked { overflow: hidden; }
+
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
     .reveal { opacity: 1 !important; transform: none !important; }
     .btn:hover, .feat-card:hover, .why-card:hover, .t-card:hover { transform: none !important; box-shadow: none !important; }
+    .modal { transform: none !important; }
   }
 </style>
 </head>
@@ -765,6 +859,71 @@
   </div>
 </footer>
 
+<!-- POST-SUBMIT MODAL -->
+<div class="modal-overlay" id="signup-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title" hidden>
+  <div class="modal">
+    <button type="button" class="modal-close" id="modal-close" aria-label="Close">&times;</button>
+
+    <!-- Step 1: confirmation + a few questions -->
+    <div class="modal-step active" id="modal-step-1">
+      <span class="modal-check" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+      </span>
+      <h2 id="modal-title">You're In — Your Free Week Is Reserved.</h2>
+      <p class="modal-sub">We've got your details and a coach will reach out <strong>usually within the hour</strong> to lock in your start. <strong>No card, no commitment.</strong></p>
+      <hr class="modal-divider" />
+      <p class="modal-invite">While you're here — tell us about your journey</p>
+      <form id="journey-form">
+        <div class="modal-q">
+          <label>What's your main goal?</label>
+          <div class="modal-chips" data-group="goal" role="group" aria-label="Main goal">
+            <button type="button" class="modal-chip">Lose Fat</button>
+            <button type="button" class="modal-chip">Build Muscle</button>
+            <button type="button" class="modal-chip">Get Stronger</button>
+            <button type="button" class="modal-chip">Overall Health</button>
+            <button type="button" class="modal-chip">Sport Performance</button>
+          </div>
+          <input type="hidden" name="goal" />
+        </div>
+        <div class="modal-q">
+          <label>How often do you train right now?</label>
+          <div class="modal-chips" data-group="frequency" role="group" aria-label="Training frequency">
+            <button type="button" class="modal-chip">Just starting</button>
+            <button type="button" class="modal-chip">1–2× / week</button>
+            <button type="button" class="modal-chip">3–4× / week</button>
+            <button type="button" class="modal-chip">5+× / week</button>
+          </div>
+          <input type="hidden" name="frequency" />
+        </div>
+        <div class="modal-q">
+          <label for="journey-challenge">What's held you back before?</label>
+          <select id="journey-challenge" name="challenge">
+            <option value="" selected>Pick one (optional)</option>
+            <option>Staying consistent</option>
+            <option>Not knowing what to do</option>
+            <option>Finding the time</option>
+            <option>Staying motivated</option>
+            <option>Coming back after a break</option>
+            <option>Nothing — I'm ready</option>
+          </select>
+        </div>
+        <button type="submit" class="btn btn-red btn-full btn-lg">Send &amp; Finish</button>
+        <button type="button" class="modal-skip" id="modal-skip">Skip — I'll share later</button>
+      </form>
+    </div>
+
+    <!-- Step 2: thank-you confirmation -->
+    <div class="modal-step" id="modal-step-2">
+      <span class="modal-check" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+      </span>
+      <h2>Thanks — You're All Set.</h2>
+      <p class="modal-sub">That helps us tailor your first session. Keep an eye on your phone and email — we'll be in touch shortly to get you training. <strong>Welcome to Lift.</strong></p>
+      <button type="button" class="btn btn-red btn-full btn-lg" id="modal-done">Done</button>
+    </div>
+  </div>
+</div>
+
 <script>
   // Reveal-on-scroll: confident, one-shot entrance (vibe: deliberate, not bouncy).
   (function () {
@@ -779,6 +938,81 @@
       });
     }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
     els.forEach(function (el) { io.observe(el); });
+  })();
+
+  // Post-submit modal: confirm the signup, then invite a few quick questions.
+  (function () {
+    var overlay = document.getElementById('signup-modal');
+    if (!overlay) return;
+    var signupForm = document.querySelector('.hero-form-col form');
+    var journeyForm = document.getElementById('journey-form');
+    var step1 = document.getElementById('modal-step-1');
+    var step2 = document.getElementById('modal-step-2');
+    var lastFocus = null;
+
+    function openModal() {
+      lastFocus = document.activeElement;
+      overlay.hidden = false;
+      // next frame so the transition runs
+      requestAnimationFrame(function () { overlay.classList.add('open'); });
+      document.body.classList.add('modal-locked');
+      var close = document.getElementById('modal-close');
+      if (close) close.focus();
+    }
+    function closeModal() {
+      overlay.classList.remove('open');
+      document.body.classList.remove('modal-locked');
+      var onEnd = function () {
+        overlay.hidden = true;
+        overlay.removeEventListener('transitionend', onEnd);
+      };
+      overlay.addEventListener('transitionend', onEnd);
+      // fallback in case transitionend doesn't fire
+      setTimeout(function () { if (!overlay.classList.contains('open')) overlay.hidden = true; }, 350);
+      if (lastFocus && lastFocus.focus) lastFocus.focus();
+    }
+    function showStep(n) {
+      step1.classList.toggle('active', n === 1);
+      step2.classList.toggle('active', n === 2);
+    }
+
+    if (signupForm) {
+      signupForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+        showStep(1);
+        openModal();
+        // NOTE: wire signupForm data to your booking/CRM here.
+      });
+    }
+
+    // Single-select chip groups -> mirror value into the hidden input.
+    overlay.querySelectorAll('.modal-chips').forEach(function (group) {
+      var hidden = group.parentNode.querySelector('input[type="hidden"]');
+      group.addEventListener('click', function (e) {
+        var chip = e.target.closest('.modal-chip');
+        if (!chip) return;
+        var wasSelected = chip.classList.contains('selected');
+        group.querySelectorAll('.modal-chip').forEach(function (c) { c.classList.remove('selected'); });
+        if (!wasSelected) { chip.classList.add('selected'); if (hidden) hidden.value = chip.textContent.trim(); }
+        else if (hidden) { hidden.value = ''; }
+      });
+    });
+
+    if (journeyForm) {
+      journeyForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+        showStep(2);
+        // NOTE: wire journey answers (goal / frequency / challenge) to your CRM here.
+      });
+    }
+
+    document.getElementById('modal-close').addEventListener('click', closeModal);
+    document.getElementById('modal-skip').addEventListener('click', closeModal);
+    document.getElementById('modal-done').addEventListener('click', closeModal);
+    overlay.addEventListener('click', function (e) { if (e.target === overlay) closeModal(); });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && overlay.classList.contains('open')) closeModal();
+    });
   })();
 </script>
 
