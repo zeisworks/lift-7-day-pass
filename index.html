@@ -135,6 +135,15 @@
     color: #fff; margin-bottom: 1.25rem;
   }
   .hero-copy .rating-pill .stars { color: #F5A623; letter-spacing: 0; }
+  .hero-copy .location-pill {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.28);
+    border-radius: 9999px; padding: 0.5rem 1.05rem;
+    font-family: 'Barlow Condensed', sans-serif; font-weight: 600;
+    font-size: 0.82rem; letter-spacing: 0.05em;
+    color: rgba(255,255,255,0.92); margin-bottom: 1.5rem;
+  }
+  .hero-copy .location-pill svg { width: 16px; height: 16px; color: var(--red); flex-shrink: 0; }
   .hero-copy h1 {
     font-family: 'Barlow Condensed', sans-serif;
     font-weight: 900; text-transform: uppercase;
@@ -187,6 +196,16 @@
     font-size: 0.71rem; color: var(--muted);
     text-align: center; margin-top: 0.85rem; line-height: 1.4;
   }
+  .form-rules {
+    background: rgba(225,71,71,0.06);
+    border-left: 3px solid var(--red);
+    border-radius: 4px;
+    padding: 0.85rem 1rem;
+    font-size: 0.78rem; line-height: 1.5;
+    color: var(--charcoal); font-weight: 300;
+    margin: 0.35rem 0 0.9rem;
+  }
+  .form-rules strong { font-weight: 600; }
 
   /* ============================================================
      STATS STRIP
@@ -564,7 +583,7 @@
 
 <!-- URGENCY BAR -->
 <div class="urgency-bar">
-  Your first 7 days at Lift STL are <strong>completely free</strong> — no card, no commitment, no strings.
+  Your first 7 days at Lift STL are <strong>completely free</strong> — no commitment, no contract, no strings.
 </div>
 
 <!-- HEADER -->
@@ -591,9 +610,14 @@
 
       <div class="hero-copy">
         <div class="rating-pill"><span class="stars">★★★★★</span> 4.8 on Google · 77 reviews</div>
-        <h1>7 Days Free.<br/><span class="accent">Zero Pressure.</span></h1>
-        <p class="sub">8,600 sq ft of real iron, real coaching, and a community 550 strong in the heart of Brentwood. <strong>No commitment, no payment — just come train.</strong></p>
-        <p class="no-commitment">No credit card &nbsp;·&nbsp; No contract &nbsp;·&nbsp; No strings</p>
+        <h1>Train More.<br/><span class="accent">Deal With Less.</span></h1>
+        <p class="sub">Clean, organized, and built around one thing: strength training done at the highest level. No fluff, no chaos, no wasted reps. Our owner and performance coaches are on the floor and excited to help with anything. <strong>Come in, enjoy the work, leave better than you came.</strong></p>
+        <!-- EDIT: add the full street address before the city -->
+        <span class="location-pill">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          Brentwood, MO 63144
+        </span>
+        <p class="no-commitment">No contract &nbsp;·&nbsp; No commitment &nbsp;·&nbsp; No strings</p>
       </div>
 
       <div class="hero-form-col" id="claim">
@@ -610,8 +634,11 @@
           <div class="form-field">
             <input type="tel" name="phone" placeholder="Phone number" />
           </div>
+          <div class="form-rules">
+            By submitting, you confirm you're a <strong>first-time guest</strong> at Lift STL, <strong>18 or older</strong>, a <strong>local resident within 20 miles</strong> of the gym, and that you'll bring a <strong>photo ID</strong> and a <strong>card to put on file</strong> when you arrive.
+          </div>
           <button type="submit" class="btn btn-red btn-full btn-lg">Start My Free Week</button>
-          <p class="form-disclaimer" style="margin-top:.6rem;margin-bottom:-.25rem;">Takes 30 seconds · No card required</p>
+          <p class="form-disclaimer" style="margin-top:.6rem;margin-bottom:-.25rem;">Takes 30 seconds · No commitment</p>
         </form>
         <p class="form-disclaimer">By submitting you agree to be contacted about your free pass. We'll never spam you or share your info.</p>
       </div>
@@ -625,7 +652,6 @@
   <div class="container">
     <div class="stats-inner">
       <div class="stat"><div class="num">7</div><div class="lbl">Years Strong</div></div>
-      <div class="stat"><div class="num">550+</div><div class="lbl">Members</div></div>
       <div class="stat stat-secondary"><div class="num">8,600 sq ft</div><div class="lbl">Training Space</div></div>
       <div class="stat"><div class="num">4.8★</div><div class="lbl">Google Rating</div></div>
       <div class="stat"><div class="num">24/7</div><div class="lbl">Access</div></div>
@@ -640,7 +666,7 @@
     <!-- Feature cards -->
     <div class="center">
       <span class="eyebrow">What's Included</span>
-      <h2 class="section-heading">Everything's Included. No Asterisks.</h2>
+      <h2 class="section-heading">What You'll Get Full Access To</h2>
       <p class="section-lead on-dark">Every piece of equipment, every square foot — yours for a full week.</p>
     </div>
     <div class="feature-grid reveal stagger">
@@ -651,17 +677,16 @@
           </svg>
         </span>
         <h3>Elite Equipment</h3>
-        <p>Free weights, barbells, racks, sleds, turf, and conditioning gear — everything serious athletes need.</p>
+        <p>Individually picked equipment for the best results. Sorinex racks and platforms. Equipment from Atlantis, Prime, Bootybuilder, Watson and more.</p>
       </div>
       <div class="feat-card">
         <span class="feat-icon">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="9" cy="7" r="3"/><circle cx="17" cy="7" r="3"/>
-            <path d="M3 21v-2a5 5 0 0 1 5-5h2M13 21v-2a5 5 0 0 1 5-5h2a2 2 0 0 1 2 2v2"/>
+            <path d="M6 16c1.8-1.8 1.8-4.2 0-6M12 16c1.8-1.8 1.8-4.2 0-6M18 16c1.8-1.8 1.8-4.2 0-6"/>
           </svg>
         </span>
-        <h3>Real Community</h3>
-        <p>550 members who actually know each other. Walk in a stranger, leave knowing half the room.</p>
+        <h3>Infrared Sauna</h3>
+        <p>Recover like you train. Infrared sauna access is included with your pass — standard for every member, not a premium upsell.</p>
       </div>
       <div class="feat-card">
         <span class="feat-icon">
@@ -669,8 +694,8 @@
             <circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/>
           </svg>
         </span>
-        <h3>Open 24/7</h3>
-        <p>Staffed during peak hours, key-fob access around the clock. Train on your schedule, not ours.</p>
+        <h3>24/7 Access, 365 Days a Year</h3>
+        <p>Train on your schedule, not ours. The doors are open around the clock, every single day of the year.</p>
       </div>
       <div class="feat-card">
         <span class="feat-icon">
@@ -678,8 +703,8 @@
             <polyline points="20 6 9 17 4 12"/>
           </svg>
         </span>
-        <h3>No Crowds</h3>
-        <p>Membership is intentionally capped. You'll never wait for a rack or fight over floor space.</p>
+        <h3>No Crowds, No Waiting</h3>
+        <p>Plenty of space and equipment to go around. No fighting over a rack, no standing around waiting your turn.</p>
       </div>
     </div>
 
@@ -806,11 +831,11 @@
       </details>
       <details>
         <summary>Is it really free? Do you need my credit card?</summary>
-        <p class="faq-body">Your first week is completely on us — no charge and no card required to get started. <!-- EDIT: confirm whether an ID or waiver is needed --></p>
+        <p class="faq-body">Your first week is completely on us — no charge to claim it and nothing due during your trial. We do ask that you bring a photo ID and a card to keep on file when you arrive; it won't be charged during your free week. <!-- EDIT: confirm card-on-file / waiver policy --></p>
       </details>
       <details>
         <summary>Who's eligible?</summary>
-        <p class="faq-body">First-time guests, 18 or older, in the St. Louis area. One pass per person. <!-- EDIT: confirm residency or one-per-household rules --></p>
+        <p class="faq-body">First-time guests, 18 or older, who live within about 20 miles of the gym. One pass per person. <!-- EDIT: confirm residency or one-per-household rules --></p>
       </details>
       <details>
         <summary>Where are you and what are your hours?</summary>
@@ -870,7 +895,7 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
       </span>
       <h2 id="modal-title">You're In — Your Free Week Is Reserved.</h2>
-      <p class="modal-sub">We've got your details and a coach will reach out <strong>usually within the hour</strong> to lock in your start. <strong>No card, no commitment.</strong></p>
+      <p class="modal-sub">We've got your details and a coach will reach out <strong>usually within the hour</strong> to lock in your start. <strong>No commitment, no contract.</strong></p>
       <hr class="modal-divider" />
       <p class="modal-invite">While you're here — tell us about your journey</p>
       <form id="journey-form">
