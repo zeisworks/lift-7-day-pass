@@ -14,12 +14,14 @@
   @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,400;0,600;0,700;0,800;0,900;1,700&family=Barlow:wght@300;400;500;600&family=DM+Serif+Display:ital@0;1&display=swap');
 
   :root {
-    --cream:   #F3F1EC;
-    --charcoal:#2E3036;
-    --char2:   #23262B;
-    --red:     #E14747;
-    --red-dk:  #C73A3A;
-    --muted:   #95979D;
+    /* Brand palette verified against lift-stl.com (live CSS) + the Lift logo (#E14749).
+       These are Lift's colors — NOT the Roman Empire sample's (pure black + brighter crimson). */
+    --cream:   #F3F1EC; /* lift-stl.com */
+    --charcoal:#2E3036; /* lift-stl.com */
+    --char2:   #23262B; /* darker shade of charcoal for depth */
+    --red:     #E14747; /* lift-stl.com / logo red */
+    --red-dk:  #C73A3A; /* darkened brand red — hover/gradient */
+    --muted:   #95979D; /* lift-stl.com */
     --border-light: rgba(46,48,54,0.12);
     --border-dark:  rgba(255,255,255,0.1);
   }
@@ -315,47 +317,6 @@
   }
   .access-card p { font-size: 0.9rem; color: rgba(255,255,255,0.82); font-weight: 300; line-height: 1.5; }
 
-  /* Photo cards (3-up, below feature cards, same dark section) */
-  .why-divider {
-    border: none; border-top: 1px solid var(--border-dark);
-    margin: clamp(3rem, 6vw, 5rem) 0;
-  }
-  .why-grid {
-    display: grid; grid-template-columns: repeat(3, 1fr);
-    gap: 1.25rem; margin-top: 2.5rem;
-  }
-  @media (max-width: 760px) { .why-grid { grid-template-columns: 1fr; max-width: 420px; margin-left: auto; margin-right: auto; } }
-  .why-card { border-radius: 6px; overflow: hidden; }
-  .why-card img { width: 100%; aspect-ratio: 4/3; object-fit: cover; }
-  .why-card-body { padding: 1.25rem 0 0; }
-  .why-card h3 {
-    font-family: 'Barlow Condensed', sans-serif; font-weight: 800;
-    font-size: 1.2rem; color: #fff; margin-bottom: 0.35rem;
-  }
-  .why-card p { font-size: 0.9rem; color: rgba(255,255,255,0.6); font-weight: 300; }
-
-  /* ============================================================
-     FACILITY GALLERY
-  ============================================================ */
-  .gallery-section { background: var(--cream); }
-  .gallery {
-    display: grid;
-    grid-template-columns: 2fr 1fr 1fr;
-    grid-template-rows: auto auto;
-    gap: 0.625rem; margin-top: 2.5rem;
-  }
-  .gallery img { width: 100%; height: 100%; object-fit: cover; border-radius: 4px; display: block; }
-  .gallery .g1 { grid-column: 1; grid-row: 1; aspect-ratio: 4/3; }
-  .gallery .g2 { grid-column: 2; grid-row: 1; aspect-ratio: 1; }
-  .gallery .g3 { grid-column: 3; grid-row: 1; aspect-ratio: 1; }
-  .gallery .g4 { grid-column: 1; grid-row: 2; aspect-ratio: 1; }
-  .gallery .g5 { grid-column: 2; grid-row: 2; aspect-ratio: 1; }
-  .gallery .g6 { grid-column: 3; grid-row: 2; aspect-ratio: 4/3; }
-  @media (max-width: 680px) {
-    .gallery { grid-template-columns: 1fr 1fr; grid-template-rows: auto; }
-    .gallery img { grid-column: auto; grid-row: auto; aspect-ratio: 1; }
-  }
-
   /* ============================================================
      SOCIAL PROOF CALLOUT
   ============================================================ */
@@ -493,10 +454,8 @@
   @keyframes rise { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
 
   /* Hover-lift on cards */
-  .feat-card, .why-card, .t-card { transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease; }
-  .feat-card:hover { transform: translateY(-4px); border-color: rgba(225,71,71,0.5); }
-  .why-card:hover  { transform: translateY(-4px); }
-  .t-card:hover    { transform: translateY(-4px); box-shadow: 0 14px 32px rgba(46,48,54,0.12); }
+  .t-card { transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease; }
+  .t-card:hover { transform: translateY(-4px); box-shadow: 0 14px 32px rgba(46,48,54,0.12); }
 
   /* WILDCARD: faint chalk-grain over the dark sections only */
   .features, .stats, .proof-band { position: relative; }
@@ -621,7 +580,8 @@
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
     .reveal { opacity: 1 !important; transform: none !important; }
-    .btn:hover, .feat-card:hover, .why-card:hover, .t-card:hover { transform: none !important; box-shadow: none !important; }
+    .btn:hover, .t-card:hover { transform: none !important; box-shadow: none !important; }
+    .access-card:hover img { transform: none !important; }
     .modal { transform: none !important; }
   }
 </style>
@@ -707,7 +667,7 @@
 </section>
 
 <!-- FEATURES + WHY LIFT — merged, single dark section -->
-<section class="section features on-dark" id="why">
+<section class="section features on-dark" id="access">
   <div class="container">
 
     <!-- Feature cards -->
@@ -748,57 +708,6 @@
       </article>
     </div>
 
-    <!-- Divider -->
-    <hr class="why-divider" />
-
-    <!-- Photo cards -->
-    <div class="center">
-      <span class="eyebrow">Why Lift</span>
-      <h2 class="section-heading">Not Another Big-Box Gym</h2>
-      <p class="section-lead on-dark">No contracts, no broken machines, no staff who don't know your name.</p>
-    </div>
-    <div class="why-grid reveal stagger">
-      <div class="why-card">
-        <img src="./assets/images/facility-1.webp" alt="Coaching at Lift STL" />
-        <div class="why-card-body">
-          <h3>Real Coaching</h3>
-          <p>Coaches who program, correct form, and push you — not just swipe you in at the door.</p>
-        </div>
-      </div>
-      <div class="why-card">
-        <img src="./assets/images/facility-3.webp" alt="Lift STL community" />
-        <div class="why-card-body">
-          <h3>A Real Community</h3>
-          <p>Walk in a stranger, leave knowing half the room. That's the Lift standard, every day.</p>
-        </div>
-      </div>
-      <div class="why-card">
-        <img src="./assets/images/facility-5.webp" alt="Lift STL equipment" />
-        <div class="why-card-body">
-          <h3>Everything You Need</h3>
-          <p>8,600 sq ft of free weights, racks, turf, and conditioning — built for people who train with intent.</p>
-        </div>
-      </div>
-    </div>
-
-  </div>
-</section>
-
-<!-- FACILITY GALLERY -->
-<section class="section gallery-section">
-  <div class="container">
-    <div class="center">
-      <span class="eyebrow">Inside Lift</span>
-      <h2 class="section-heading">Take a Look Around</h2>
-    </div>
-    <div class="gallery reveal">
-      <img class="g1" src="./assets/images/facility-2.webp" alt="Main training floor" />
-      <img class="g2" src="./assets/images/facility-4.webp" alt="Free weight area" />
-      <img class="g3" src="./assets/images/facility-6.webp" alt="Conditioning and turf" />
-      <img class="g4" src="./assets/images/facility-turf.jpg" alt="Turf training lane" />
-      <img class="g5" src="./assets/images/facility-1.webp" alt="Coaching floor" />
-      <img class="g6" src="./assets/images/facility-interior.jpg" alt="Lift STL interior" />
-    </div>
   </div>
 </section>
 
@@ -850,6 +759,30 @@
         <div class="who">
           <div class="t-avatar" style="background:#3B4A3F;">A</div>
           <div><div class="name">Andy Atchison</div><div class="meta">Google Review</div></div>
+        </div>
+      </div>
+      <div class="t-card">
+        <div class="stars" aria-hidden="true">★★★★★</div>
+        <p class="quote">"Outstanding gym in a great location in Brentwood. The equipment is top notch and the facility is always clean. Most importantly, they have the best staff — you can tell the owner and his team are passionate about what they do."</p>
+        <div class="who">
+          <div class="t-avatar" style="background:#5C3D3D;">K</div>
+          <div><div class="name">Kevin Schnepp</div><div class="meta">Local Guide · Google Review</div></div>
+        </div>
+      </div>
+      <div class="t-card">
+        <div class="stars" aria-hidden="true">★★★★★</div>
+        <p class="quote">"LiftSTL might be the most aesthetically pleasing gym in town. The facility is beautiful, they're constantly upgrading equipment, and the atmosphere is incredibly welcoming. They also just added saunas, which I'm really excited about."</p>
+        <div class="who">
+          <div class="t-avatar" style="background:#45503B;">E</div>
+          <div><div class="name">Ed Pilgrim</div><div class="meta">Google Review</div></div>
+        </div>
+      </div>
+      <div class="t-card">
+        <div class="stars" aria-hidden="true">★★★★★</div>
+        <p class="quote">"When most gyms are obnoxiously busy in the evenings, Lift was chill. I didn't have to wait for any machines or carve out my space. Loved the space and vibe — plus cool equipment you won't see at many gyms."</p>
+        <div class="who">
+          <div class="t-avatar" style="background:#3B4F57;">S</div>
+          <div><div class="name">Sarah Jordan</div><div class="meta">Local Guide · Google Review</div></div>
         </div>
       </div>
     </div>
