@@ -413,20 +413,20 @@
   /* ============================================================
      FAQ
   ============================================================ */
-  .faq-section { background: var(--cream); border-top: 1px solid var(--border-light); }
+  .faq-section { background: var(--char2); border-top: 1px solid var(--border-dark); }
   .faq { max-width: 740px; margin: 2.75rem auto 0; }
-  .faq details { border-bottom: 1px solid var(--border-light); }
+  .faq details { border-bottom: 1px solid var(--border-dark); }
   .faq summary {
     list-style: none; cursor: pointer;
     display: flex; justify-content: space-between; align-items: center; gap: 1rem;
     padding: 1.2rem 0;
     font-family: 'Barlow', sans-serif; font-weight: 600;
-    font-size: 1rem; color: var(--charcoal);
+    font-size: 1rem; color: #fff;
   }
   .faq summary::-webkit-details-marker { display: none; }
   .faq summary::after { content: "+"; color: var(--red); font-size: 1.5rem; font-weight: 300; line-height: 1; flex-shrink: 0; transition: transform 0.2s; }
   .faq details[open] summary::after { transform: rotate(45deg); }
-  .faq .faq-body { padding-bottom: 1.1rem; font-size: 0.95rem; color: var(--muted); font-weight: 300; max-width: 620px; }
+  .faq .faq-body { padding-bottom: 1.1rem; font-size: 0.95rem; color: rgba(255,255,255,0.62); font-weight: 300; max-width: 620px; }
 
   /* ============================================================
      FINAL CTA
@@ -841,7 +841,7 @@
 </section>
 
 <!-- FAQ -->
-<section class="section faq-section">
+<section class="section faq-section on-dark">
   <div class="container">
     <div class="center">
       <span class="eyebrow">Good to Know</span>
