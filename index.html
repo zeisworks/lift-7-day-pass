@@ -121,22 +121,27 @@
   /* ============================================================
      HERO
   ============================================================ */
-  .hero { position: relative; min-height: 90vh; display: flex; align-items: center; overflow: hidden; }
-  .hero-bg { position: absolute; inset: 0; z-index: 0; }
-  .hero-bg video, .hero-bg img { width: 100%; height: 100%; object-fit: cover; }
-  .hero-bg::after {
-    content: ""; position: absolute; inset: 0;
-    background: linear-gradient(110deg, rgba(46,48,54,0.85) 0%, rgba(46,48,54,0.68) 50%, rgba(46,48,54,0.42) 100%);
+  .hero {
+    position: relative; overflow: hidden;
+    background:
+      radial-gradient(130% 75% at 50% 0%, rgba(225,71,71,0.24) 0%, rgba(35,38,43,0) 56%),
+      var(--char2);
+    padding: clamp(2.75rem, 6vw, 4.5rem) 0 clamp(3rem, 6vw, 4.5rem);
   }
   .hero-inner {
     position: relative; z-index: 1;
-    display: grid; grid-template-columns: 1fr 1fr;
-    gap: 3rem; align-items: center;
-    padding: 5rem 0 4rem; width: 100%;
+    max-width: 680px; margin: 0 auto; width: 100%;
   }
-  @media (max-width: 860px) {
-    .hero-inner { grid-template-columns: 1fr; gap: 2rem; padding: 3.5rem 0; }
-    .hero-form-col { max-width: 460px; }
+  /* Video moved below the form (reference layout) */
+  .hero-media {
+    margin-top: clamp(1.5rem, 3vw, 2.25rem);
+    border-radius: 10px; overflow: hidden;
+    border: 1px solid var(--border-dark);
+    box-shadow: 0 24px 60px rgba(0,0,0,0.45);
+  }
+  .hero-media video {
+    display: block; width: 100%; height: auto;
+    aspect-ratio: 16 / 9; object-fit: cover;
   }
 
   /* Hero copy */
@@ -178,23 +183,21 @@
     color: rgba(255,255,255,0.45);
   }
 
-  /* Hero form card */
+  /* Hero form card — red "Claim Your Free Pass" box (reference style) */
   .hero-form-col {
-    background: #fff; border-radius: 8px;
-    padding: 2.25rem 2rem;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.35);
+    background: linear-gradient(180deg, var(--red) 0%, var(--red-dk) 100%);
+    border-radius: 10px;
+    padding: 1.75rem 1.5rem;
+    box-shadow: 0 24px 60px rgba(0,0,0,0.4);
+    margin-top: clamp(1.5rem, 3vw, 2rem);
   }
   .hero-form-col h2 {
     font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 900; font-size: 1.65rem; line-height: 1.05;
-    color: var(--charcoal); margin-bottom: 0.35rem;
+    font-weight: 900; font-size: 1.55rem; line-height: 1.05;
+    text-transform: uppercase; letter-spacing: 0.02em; text-align: center;
+    color: #fff; margin-bottom: 1.1rem;
   }
-  .hero-form-col .form-sub {
-    font-size: 0.88rem; color: var(--muted);
-    margin-bottom: 1.5rem; font-weight: 300;
-    padding-bottom: 1.25rem;
-    border-bottom: 1px solid var(--border-light);
-  }
+  .hero-form-col .form-disclaimer { color: rgba(255,255,255,0.72); }
   .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; margin-bottom: 0.6rem; }
   .form-field { margin-bottom: 0.6rem; }
   .form-field input, .form-row input {
@@ -211,15 +214,15 @@
     text-align: center; margin-top: 0.85rem; line-height: 1.4;
   }
   .form-rules {
-    background: rgba(225,71,71,0.06);
-    border-left: 3px solid var(--red);
+    background: rgba(0,0,0,0.26);
+    border-left: 3px solid #fff;
     border-radius: 4px;
     padding: 0.85rem 1rem;
     font-size: 0.78rem; line-height: 1.5;
-    color: var(--charcoal); font-weight: 300;
+    color: rgba(255,255,255,0.92); font-weight: 300;
     margin: 0.35rem 0 0.9rem;
   }
-  .form-rules strong { font-weight: 600; }
+  .form-rules strong { font-weight: 600; color: #fff; }
 
   /* ============================================================
      STATS STRIP
@@ -281,6 +284,36 @@
     color: #fff; margin-bottom: 0.5rem;
   }
   .feat-card p { font-size: 0.9rem; color: rgba(255,255,255,0.72); font-weight: 300; line-height: 1.55; }
+
+  /* Full-access photo cards (2x2, text overlaid on image — reference style) */
+  .access-grid {
+    display: grid; grid-template-columns: repeat(2, 1fr);
+    gap: 1.25rem; margin-top: 3rem;
+  }
+  @media (max-width: 680px) {
+    .access-grid { grid-template-columns: 1fr; max-width: 460px; margin-left: auto; margin-right: auto; }
+  }
+  .access-card {
+    position: relative; display: flex;
+    min-height: 320px; border-radius: 8px; overflow: hidden;
+    border: 1px solid var(--border-dark);
+  }
+  .access-card img {
+    position: absolute; inset: 0; width: 100%; height: 100%;
+    object-fit: cover; transition: transform 0.4s ease;
+  }
+  .access-card::after {
+    content: ""; position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.55) 38%, rgba(0,0,0,0.05) 72%);
+  }
+  .access-card:hover img { transform: scale(1.04); }
+  .access-body { position: relative; z-index: 1; margin-top: auto; padding: 1.5rem; }
+  .access-card h3 {
+    font-family: 'Barlow Condensed', sans-serif; font-weight: 800;
+    font-size: 1.35rem; text-transform: uppercase; letter-spacing: 0.02em;
+    color: #fff; margin-bottom: 0.4rem;
+  }
+  .access-card p { font-size: 0.9rem; color: rgba(255,255,255,0.82); font-weight: 300; line-height: 1.5; }
 
   /* Photo cards (3-up, below feature cards, same dark section) */
   .why-divider {
@@ -613,29 +646,20 @@
 
 <!-- HERO -->
 <section class="hero" id="top">
-  <div class="hero-bg">
-    <video autoplay muted loop playsinline poster="./assets/videos/hero-poster.jpg">
-      <source src="./assets/videos/hero.mp4" type="video/mp4" />
-      <img src="./assets/images/lift_stl_hero.webp" alt="Inside Lift STL" fetchpriority="high" />
-    </video>
-  </div>
   <div class="container">
     <div class="hero-inner">
 
       <div class="hero-copy">
-        <div class="rating-pill"><span class="stars" aria-hidden="true">★★★★★</span> 4.8 on Google · 77 reviews</div>
         <h1>Train More.<br/><span class="accent">Deal With Less.</span></h1>
         <p class="sub">Clean, organized, and built around one thing: strength training done at the highest level. No fluff, no chaos, no wasted reps. Our owner and performance coaches are on the floor and excited to help with anything. <strong>Come in, enjoy the work, leave better than you came.</strong></p>
         <a class="location-pill" href="https://maps.google.com/?q=8356+Musick+Memorial+Drive,+Brentwood,+MO+63144" target="_blank" rel="noopener">
           <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
           8356 Musick Memorial Dr, Brentwood, MO 63144
         </a>
-        <p class="no-commitment">No contract &nbsp;·&nbsp; No commitment &nbsp;·&nbsp; No strings</p>
       </div>
 
       <div class="hero-form-col" id="claim">
-        <h2>Claim Your 7-Day Free Pass</h2>
-        <p class="form-sub">Fill out the form and we'll get you set up — usually within the hour.</p>
+        <h2>Claim Your Free 7-Day Pass</h2>
         <form action="#" method="post">
           <div class="form-row">
             <label class="sr-only" for="first_name">First name</label>
@@ -654,10 +678,16 @@
           <div class="form-rules">
             By submitting, you confirm you're a <strong>first-time guest</strong> at Lift STL, <strong>18 or older</strong>, a <strong>local resident within 20 miles</strong> of the gym, and that you'll bring a <strong>photo ID</strong> and a <strong>card to put on file</strong> when you arrive.
           </div>
-          <button type="submit" class="btn btn-red btn-full btn-lg">Start My Free Week</button>
+          <button type="submit" class="btn btn-white btn-full btn-lg">Claim Your Free Pass</button>
           <p class="form-disclaimer" style="margin-top:.6rem;margin-bottom:-.25rem;">Takes 30 seconds · No commitment</p>
         </form>
-        <p class="form-disclaimer">By submitting you agree to be contacted about your free pass. We'll never spam you or share your info.</p>
+      </div>
+
+      <div class="hero-media">
+        <video autoplay muted loop playsinline poster="./assets/videos/hero-poster.jpg">
+          <source src="./assets/videos/hero.mp4" type="video/mp4" />
+          <img src="./assets/images/lift_stl_hero.webp" alt="Inside Lift STL" fetchpriority="high" />
+        </video>
       </div>
 
     </div>
@@ -686,43 +716,36 @@
       <h2 class="section-heading">What You'll Get Full Access To</h2>
       <p class="section-lead on-dark">Every piece of equipment, every square foot — yours for a full week.</p>
     </div>
-    <div class="feature-grid reveal stagger">
-      <div class="feat-card">
-        <span class="feat-icon" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M6 5v14M18 5v14M3 8h3M18 8h3M3 16h3M18 16h3M6 12h12"/>
-          </svg>
-        </span>
-        <h3>Elite Equipment</h3>
-        <p>Individually picked equipment for the best results. Sorinex racks and platforms. Equipment from Atlantis, Prime, Bootybuilder, Watson and more.</p>
-      </div>
-      <div class="feat-card">
-        <span class="feat-icon" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M6 16c1.8-1.8 1.8-4.2 0-6M12 16c1.8-1.8 1.8-4.2 0-6M18 16c1.8-1.8 1.8-4.2 0-6"/>
-          </svg>
-        </span>
-        <h3>Infrared Sauna</h3>
-        <p>Recover like you train. Infrared sauna access is included with your pass — standard for every member, not a premium upsell.</p>
-      </div>
-      <div class="feat-card">
-        <span class="feat-icon" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/>
-          </svg>
-        </span>
-        <h3>24/7 Access, 365 Days a Year</h3>
-        <p>Train on your schedule, not ours. The doors are open around the clock, every single day of the year.</p>
-      </div>
-      <div class="feat-card">
-        <span class="feat-icon" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="20 6 9 17 4 12"/>
-          </svg>
-        </span>
-        <h3>No Crowds, No Waiting</h3>
-        <p>Plenty of space and equipment to go around. No fighting over a rack, no standing around waiting your turn.</p>
-      </div>
+    <div class="access-grid reveal stagger">
+      <article class="access-card">
+        <img src="./assets/images/facility-5.webp" alt="Strength equipment on the Lift STL floor" />
+        <div class="access-body">
+          <h3>Elite Equipment</h3>
+          <p>Individually picked equipment for the best results. Sorinex racks and platforms. Equipment from Atlantis, Prime, Bootybuilder, Watson and more.</p>
+        </div>
+      </article>
+      <article class="access-card">
+        <!-- EDIT: swap for a real infrared sauna / recovery photo -->
+        <img src="./assets/images/facility-6.webp" alt="Recovery area at Lift STL" />
+        <div class="access-body">
+          <h3>Infrared Sauna</h3>
+          <p>Recover like you train. Infrared sauna access is included with your pass — standard for every member, not a premium upsell.</p>
+        </div>
+      </article>
+      <article class="access-card">
+        <img src="./assets/images/facility-interior.jpg" alt="Inside the Lift STL training floor" />
+        <div class="access-body">
+          <h3>24/7 Access, 365 Days a Year</h3>
+          <p>Train on your schedule, not ours. The doors are open around the clock, every single day of the year.</p>
+        </div>
+      </article>
+      <article class="access-card">
+        <img src="./assets/images/facility-2.webp" alt="Open training floor with room to move" />
+        <div class="access-body">
+          <h3>No Crowds, No Waiting</h3>
+          <p>Plenty of space and equipment to go around. No fighting over a rack, no standing around waiting your turn.</p>
+        </div>
+      </article>
     </div>
 
     <!-- Divider -->
