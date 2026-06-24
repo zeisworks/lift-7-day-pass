@@ -119,6 +119,13 @@
   }
   .nav-rating .stars { color: #F5A623; }
   @media (max-width: 600px) { .nav-rating { display: none; } }
+  /* Mobile: reduce clutter — let the urgency bar scroll away, keep only the
+     logo in a slim sticky header (the bottom sticky CTA covers the action). */
+  @media (max-width: 860px) {
+    .urgency-bar { position: static; }
+    header { top: 0; }
+    .nav-right .btn { display: none; }
+  }
 
   /* ============================================================
      HERO
