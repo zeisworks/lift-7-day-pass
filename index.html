@@ -136,7 +136,9 @@
     pointer-events: none; z-index: 0;
   }
   .hero-motif svg { width: 100%; height: auto; display: block; }
-  @media (max-width: 980px) { .hero-motif { display: none; } }
+  @media (max-width: 980px) {
+    .hero-motif { width: 300px; max-width: 64%; top: -2%; right: -12%; opacity: 0.12; }
+  }
   .hero-inner {
     position: relative; z-index: 1;
     max-width: 680px; margin: 0 auto; width: 100%;
