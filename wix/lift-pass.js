@@ -947,6 +947,7 @@ const HTML = `<div class="lift-root"><!-- URGENCY BAR -->
       <div class="links">
         <a href="https://lift-stl.com" target="_blank" rel="noopener">lift-stl.com</a>
         <a href="https://instagram.com/liftstl" target="_blank" rel="noopener">Instagram</a>
+        <a href="tel:+13142963117">314-296-3117</a>
         <a href="#claim">Start Free Week</a>
       </div>
     </div>
