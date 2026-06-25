@@ -165,11 +165,11 @@
   .hero-media.reveal { opacity: 0; transform: scale(0.95) translateY(16px); transition: opacity 0.7s ease, transform 0.7s ease; }
   .hero-media.reveal.in { opacity: 1; transform: none; }
   /* Hero CTA (opens the claim form popup) */
-  .hero-cta { margin-top: 0; }
+  .hero-cta { margin-top: 0; display: flex; flex-direction: column; align-items: flex-start; gap: 0.85rem; }
   .hero-cta-note {
     font-family: 'Barlow Condensed', sans-serif; font-weight: 600;
     font-size: 0.72rem; letter-spacing: 0.16em; text-transform: uppercase;
-    color: var(--muted); margin-top: 0.9rem;
+    color: var(--muted); margin-top: 0;
   }
   @media (max-width: 600px) { .hero-cta .btn { display: block; width: 100%; text-align: center; } }
   /* Mobile: tighten the hero so the top of the video shows above the fold */
@@ -191,15 +191,15 @@
     color: var(--charcoal); margin-bottom: 1rem;
   }
   .hero-copy .rating-pill .stars { color: #F5A623; letter-spacing: 0; }
-  .hero-copy .location-pill {
+  .hero .location-pill {
     display: inline-flex; align-items: center; gap: 0.5rem;
     background: rgba(46,48,54,0.05); border: 1px solid var(--border-light);
     border-radius: 9999px; padding: 0.5rem 1.05rem;
     font-family: 'Barlow Condensed', sans-serif; font-weight: 600;
     font-size: 0.82rem; letter-spacing: 0.05em;
-    color: var(--charcoal); margin-bottom: 1.5rem;
+    color: var(--charcoal);
   }
-  .hero-copy .location-pill svg { width: 16px; height: 16px; color: var(--red); flex-shrink: 0; }
+  .hero .location-pill svg { width: 16px; height: 16px; color: var(--red); flex-shrink: 0; }
   .hero-copy h1 {
     font-family: 'Barlow Condensed', sans-serif;
     font-weight: 900; text-transform: uppercase;
@@ -713,10 +713,14 @@
       <div class="hero-copy">
         <span class="eyebrow">Free 7-Day Pass · Brentwood</span>
         <h1>Train More.<br/><span class="accent">Deal With Less.</span></h1>
-        <p class="sub">Clean, organized, and built around one thing: strength training done at the highest level. No fluff, no chaos, no wasted reps. Our owner and performance coaches are on the floor and excited to help with anything. <strong>Come in, enjoy the work, leave better than you came.</strong></p>
+        <p class="sub">Clean, organized, and built around one thing: strength training done at the highest level. No fluff, no chaos, no wasted reps. <strong>Come in, enjoy the work, leave better than you came.</strong></p>
       </div>
 
       <div class="hero-cta">
+        <a class="location-pill" href="https://maps.google.com/?q=8356+Musick+Memorial+Drive,+Brentwood,+MO+63144" target="_blank" rel="noopener">
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          8356 Musick Memorial Dr, Brentwood, MO 63144
+        </a>
         <a href="#claim" class="btn btn-red btn-lg">Claim Your Free 7-Day Pass</a>
         <p class="hero-cta-note">Takes 30 seconds · No commitment</p>
       </div>
