@@ -161,9 +161,6 @@
     display: block; width: 100%; height: auto;
     aspect-ratio: 16 / 9; object-fit: cover;
   }
-  /* Scale-in when the video scrolls into view */
-  .hero-media.reveal { opacity: 0; transform: scale(0.95) translateY(16px); transition: opacity 0.7s ease, transform 0.7s ease; }
-  .hero-media.reveal.in { opacity: 1; transform: none; }
   /* Hero CTA (opens the claim form popup) */
   .hero-cta { margin-top: 0; display: flex; flex-direction: column; align-items: flex-start; gap: 0.85rem; }
   .hero-cta-note {
@@ -725,7 +722,7 @@
         <p class="hero-cta-note">Takes 30 seconds · No commitment</p>
       </div>
 
-      <div class="hero-media reveal">
+      <div class="hero-media">
         <video autoplay muted loop playsinline preload="auto" poster="./assets/videos/hero-poster.jpg">
           <source src="./assets/videos/hero.mp4" type="video/mp4" />
           <img src="./assets/images/lift_stl_hero.webp" alt="Inside Lift STL" fetchpriority="high" />
