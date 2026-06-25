@@ -1,0 +1,1147 @@
+// Lift STL — 7-Day Pass landing page as a Wix Custom Element.
+// Upload to Velo Public folder, then add Embed > Custom Element with tag <lift-pass>.
+const FONTS_URL = "https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,400;0,600;0,700;0,800;0,900;1,700&family=Barlow:wght@300;400;500;600&family=DM+Serif+Display:ital@0;1&display=swap";
+
+const CSS = `
+  @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,400;0,600;0,700;0,800;0,900;1,700&family=Barlow:wght@300;400;500;600&family=DM+Serif+Display:ital@0;1&display=swap');
+
+  :host {
+    /* Brand palette verified against lift-stl.com (live CSS) + the Lift logo (#E14749).
+       These are Lift's colors — NOT the Roman Empire sample's (pure black + brighter crimson). */
+    --cream:   #F3F1EC; /* lift-stl.com */
+    --charcoal:#2E3036; /* lift-stl.com */
+    --char2:   #23262B; /* darker shade of charcoal for depth */
+    --red:     #E14747; /* lift-stl.com / logo red */
+    --red-dk:  #C73A3A; /* darkened brand red — hover/gradient */
+    --muted:   #95979D; /* lift-stl.com */
+    --border-light: rgba(46,48,54,0.12);
+    --border-dark:  rgba(255,255,255,0.1);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :host { -webkit-font-smoothing: antialiased; }
+  :host { display: block; box-sizing: border-box; font-family: 'Barlow', sans-serif; font-weight: 400; background: var(--cream); color: var(--charcoal); line-height: 1.55; }
+  img { display: block; max-width: 100%; }
+  a { text-decoration: none; color: inherit; }
+
+  /* Screen-reader-only labels */
+  .sr-only {
+    position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+    overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+  }
+  /* Visible keyboard focus (inputs set outline:none; buttons/links had none) */
+  a:focus-visible, button:focus-visible, summary:focus-visible, select:focus-visible {
+    outline: 2px solid var(--red); outline-offset: 2px; border-radius: 4px;
+  }
+  .btn:focus-visible { outline: none; box-shadow: 0 0 0 2px #fff, 0 0 0 4px var(--red); }
+  .form-field input:focus-visible, .form-row input:focus-visible {
+    outline: 2px solid var(--red); outline-offset: 1px;
+  }
+
+  .container { width: 100%; max-width: 1180px; margin: 0 auto; padding: 0 1.5rem; }
+  @media (min-width: 768px)  { .container { padding: 0 2.5rem; } }
+  @media (min-width: 1100px) { .container { padding: 0 3rem; } }
+
+  /* ---- Typography ---- */
+  .eyebrow {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700; font-size: 0.68rem;
+    letter-spacing: 0.28em; text-transform: uppercase;
+    color: var(--red); display: block; margin-bottom: 0.65rem;
+  }
+  .section-heading {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900; line-height: 0.97; letter-spacing: -0.01em;
+    font-size: clamp(2rem, 4.5vw, 3.2rem);
+    color: var(--charcoal);
+  }
+  .section-lead {
+    font-size: 1.05rem; font-weight: 300;
+    color: var(--muted); max-width: 580px; margin-top: 0.85rem;
+  }
+  .on-dark .section-lead  { color: rgba(255,255,255,0.6); }
+  .on-dark .section-heading { color: #fff; }
+  .center { text-align: center; }
+  .center .section-lead { margin-left: auto; margin-right: auto; }
+
+  /* ---- Buttons ---- */
+  .btn {
+    display: inline-block;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800; text-transform: uppercase; letter-spacing: 0.09em;
+    border: none; cursor: pointer; border-radius: 9999px;
+    transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+  }
+  .btn-red  { background: var(--red); color: #fff; padding: 1rem 2.5rem; font-size: 0.95rem; }
+  .btn-red:hover { background: var(--red-dk); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(225,71,71,0.35); }
+  .btn-white { background: #fff; color: var(--red); padding: 1rem 2.5rem; font-size: 0.95rem; }
+  .btn-white:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(0,0,0,0.18); }
+  .btn-lg   { padding: 1.15rem 3rem; font-size: 1.05rem; }
+  .btn-full { width: 100%; text-align: center; display: block; }
+
+  /* ============================================================
+     URGENCY BAR
+  ============================================================ */
+  .urgency-bar {
+    background: var(--charcoal);
+    color: rgba(255,255,255,0.75);
+    text-align: center; padding: 0.6rem 1rem;
+    font-family: 'Barlow', sans-serif;
+    font-weight: 400; font-size: 0.875rem;
+    position: sticky; top: 0; z-index: 60;
+  }
+  .urgency-bar strong { color: #fff; font-weight: 600; }
+
+  /* ============================================================
+     HEADER
+  ============================================================ */
+  header {
+    position: sticky; top: 37px; z-index: 50;
+    background: rgba(243,241,236,0.93);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border-light);
+  }
+  .nav { display: flex; align-items: center; justify-content: space-between; height: 62px; }
+  .nav .logo { height: 28px; width: auto; }
+  .nav-right { display: flex; align-items: center; gap: 1rem; }
+  .nav-rating {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600; font-size: 0.72rem;
+    letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted);
+  }
+  .nav-rating .stars { color: #F5A623; }
+  @media (max-width: 600px) { .nav-rating { display: none; } }
+  /* Mobile: reduce clutter — let the urgency bar scroll away, keep only the
+     logo in a slim sticky header (the bottom sticky CTA covers the action). */
+  @media (max-width: 860px) {
+    .urgency-bar { position: static; }
+    header { top: 0; }
+    .nav-right .btn { display: none; }
+  }
+
+  /* ============================================================
+     HERO
+  ============================================================ */
+  .hero {
+    position: relative; overflow: hidden;
+    background: var(--cream);
+    padding: clamp(2.75rem, 6vw, 4.5rem) 0 clamp(3rem, 6vw, 4.5rem);
+  }
+  /* Triangle line-art motif (brand geometry) */
+  .hero-motif {
+    position: absolute; top: -6%; right: -3%;
+    width: 600px; max-width: 46%;
+    color: var(--charcoal); opacity: 0.16;
+    pointer-events: none; z-index: 0;
+  }
+  .hero-motif svg { width: 100%; height: auto; display: block; }
+  @media (max-width: 980px) {
+    .hero-motif { width: 300px; max-width: 64%; top: -2%; right: -12%; opacity: 0.12; }
+  }
+  .hero-inner {
+    position: relative; z-index: 1;
+    max-width: 680px; margin: 0 auto; width: 100%;
+  }
+  /* Video moved below the form (reference layout) */
+  .hero-media {
+    margin-top: clamp(1.5rem, 3vw, 2.25rem);
+    border-radius: 10px; overflow: hidden;
+    border: 1px solid var(--border-light);
+    box-shadow: 0 24px 60px rgba(46,48,54,0.28);
+  }
+  .hero-media video {
+    display: block; width: 100%; height: auto;
+    aspect-ratio: 16 / 9; object-fit: cover;
+  }
+  /* Hero CTA (opens the claim form popup) */
+  .hero-cta { margin-top: 0; display: flex; flex-direction: column; align-items: flex-start; gap: 0.85rem; }
+  .hero-cta-note {
+    font-family: 'Barlow Condensed', sans-serif; font-weight: 600;
+    font-size: 0.72rem; letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--muted); margin-top: 0;
+  }
+  @media (max-width: 600px) { .hero-cta .btn { display: block; width: 100%; text-align: center; } }
+  /* Mobile: tighten the hero so the top of the video shows above the fold */
+  @media (max-width: 600px) {
+    .hero { padding-top: 1.1rem; padding-bottom: 1.5rem; }
+    .hero-copy h1 { font-size: 2.4rem; margin-bottom: 0.7rem; }
+    .hero-copy .sub { font-size: 0.96rem; line-height: 1.45; margin-bottom: 1.4rem; }
+    .hero-cta { margin-top: 0; }
+    .urgency-bar { font-size: 0.78rem; padding: 0.5rem 1rem; }
+  }
+
+  /* Hero copy */
+  .hero-copy .rating-pill {
+    display: inline-flex; align-items: center; gap: 0.45rem;
+    background: rgba(46,48,54,0.05); border: 1px solid var(--border-light);
+    border-radius: 9999px; padding: 0.38rem 0.9rem;
+    font-family: 'Barlow Condensed', sans-serif; font-weight: 600;
+    font-size: 0.72rem; letter-spacing: 0.13em; text-transform: uppercase;
+    color: var(--charcoal); margin-bottom: 1rem;
+  }
+  .hero-copy .rating-pill .stars { color: #F5A623; letter-spacing: 0; }
+  .hero .location-pill {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: rgba(46,48,54,0.05); border: 1px solid var(--border-light);
+    border-radius: 9999px; padding: 0.5rem 1.05rem;
+    font-family: 'Barlow Condensed', sans-serif; font-weight: 600;
+    font-size: 0.82rem; letter-spacing: 0.05em;
+    color: var(--charcoal);
+  }
+  .hero .location-pill svg { width: 16px; height: 16px; color: var(--red); flex-shrink: 0; }
+  .hero-copy h1 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900; text-transform: uppercase;
+    line-height: 0.94; letter-spacing: -0.01em;
+    font-size: clamp(2.8rem, 5.5vw, 4.6rem);
+    color: var(--charcoal); margin-bottom: 1.1rem;
+  }
+  .hero-copy h1 .accent { color: var(--red); }
+  .hero-copy .sub {
+    font-size: clamp(1rem, 1.8vw, 1.2rem);
+    color: rgba(46,48,54,0.78); font-weight: 300;
+    max-width: 520px; margin-bottom: 1.75rem;
+  }
+  .hero-copy .sub strong { color: var(--charcoal); font-weight: 600; }
+  .hero-copy .no-commitment {
+    font-family: 'Barlow Condensed', sans-serif; font-weight: 600;
+    font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase;
+    color: rgba(255,255,255,0.45);
+  }
+
+  /* Hero form card — red "Claim Your Free Pass" box (reference style) */
+  .hero-form-col {
+    background: linear-gradient(180deg, var(--red) 0%, var(--red-dk) 100%);
+    border-radius: 10px;
+    padding: 1.75rem 1.5rem;
+    box-shadow: 0 24px 60px rgba(0,0,0,0.4);
+    margin-top: clamp(1.5rem, 3vw, 2rem);
+  }
+  .hero-form-col h2 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900; font-size: 1.55rem; line-height: 1.05;
+    text-transform: uppercase; letter-spacing: 0.02em; text-align: center;
+    color: #fff; margin-bottom: 1.1rem;
+  }
+  .hero-form-col .form-disclaimer { color: rgba(255,255,255,0.72); }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; margin-bottom: 0.6rem; }
+  .form-field { margin-bottom: 0.6rem; }
+  .form-field input, .form-row input {
+    width: 100%; background: var(--cream);
+    border: 1px solid var(--border-light); border-radius: 6px;
+    padding: 0.82rem 1rem; font-family: 'Barlow', sans-serif;
+    font-size: 16px; color: var(--charcoal); outline: none;
+    transition: border-color 0.2s;
+  }
+  .form-field input::placeholder, .form-row input::placeholder { color: var(--muted); }
+  .form-field input:focus, .form-row input:focus { border-color: var(--red); }
+  .form-disclaimer {
+    font-size: 0.71rem; color: var(--muted);
+    text-align: center; margin-top: 0.85rem; line-height: 1.4;
+  }
+  .form-privacy {
+    border-top: 1px solid var(--border-light);
+    padding-top: 0.7rem; margin-top: 0.7rem;
+  }
+  .form-rules {
+    background: rgba(225,71,71,0.06);
+    border-left: 3px solid var(--red);
+    border-radius: 4px;
+    padding: 0.85rem 1rem;
+    font-size: 0.78rem; line-height: 1.5;
+    color: var(--charcoal); font-weight: 300;
+    margin: 0.35rem 0 0.9rem;
+  }
+  .form-rules strong { font-weight: 600; }
+
+  /* ============================================================
+     STATS STRIP
+  ============================================================ */
+  .stats { background: var(--charcoal); }
+  .stats-inner { display: flex; flex-wrap: wrap; justify-content: center; align-items: stretch; }
+  .stat {
+    flex: 1 1 0; min-width: 130px; text-align: center;
+    padding: 1.5rem 1rem;
+    border-right: 1px solid var(--border-dark);
+  }
+  .stat:last-child { border-right: none; }
+  .stat .num {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900; font-size: clamp(1.8rem, 3.5vw, 2.4rem);
+    line-height: 1; color: var(--red);
+  }
+  .stat.stat-secondary .num { color: rgba(255,255,255,0.55); font-size: clamp(1.4rem, 2.8vw, 1.9rem); }
+  .stat .lbl {
+    font-family: 'Barlow Condensed', sans-serif; font-weight: 600;
+    font-size: 0.68rem; letter-spacing: 0.16em; text-transform: uppercase;
+    color: rgba(255,255,255,0.45); margin-top: 0.4rem;
+  }
+  @media (max-width: 580px) {
+    .stat { flex: 1 1 50%; border-bottom: 1px solid var(--border-dark); }
+    .stat:nth-child(2n) { border-right: none; }
+  }
+
+  /* ============================================================
+     SHARED SECTION
+  ============================================================ */
+  .section { padding: clamp(4rem, 8vw, 6.5rem) 0; }
+
+  /* ============================================================
+     FEATURES + WHY — merged on dark background
+  ============================================================ */
+  .features { background: var(--char2); }
+
+  /* Feature cards (4-up, icon + text) */
+  .feature-grid {
+    display: grid; grid-template-columns: repeat(2, 1fr);
+    gap: 1.25rem; margin-top: 3rem;
+  }
+  @media (min-width: 900px) { .feature-grid { grid-template-columns: repeat(4, 1fr); } }
+  @media (max-width: 540px)  { .feature-grid { grid-template-columns: 1fr; max-width: 400px; margin-left: auto; margin-right: auto; } }
+  .feat-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border-dark);
+    border-radius: 6px; padding: 1.75rem 1.5rem;
+  }
+  .feat-icon {
+    display: block; margin-bottom: 1rem; color: var(--red);
+    width: 28px; height: 28px;
+  }
+  .feat-icon svg { width: 100%; height: 100%; }
+  .feat-card h3 {
+    font-family: 'Barlow Condensed', sans-serif; font-weight: 800;
+    font-size: 1.15rem; letter-spacing: 0.02em;
+    color: #fff; margin-bottom: 0.5rem;
+  }
+  .feat-card p { font-size: 0.9rem; color: rgba(255,255,255,0.72); font-weight: 300; line-height: 1.55; }
+
+  /* Full-access photo cards (2x2, text overlaid on image — reference style) */
+  .access-grid {
+    display: grid; grid-template-columns: repeat(2, 1fr);
+    gap: 1.25rem; margin-top: 3rem;
+  }
+  @media (max-width: 680px) {
+    .access-grid { grid-template-columns: 1fr; max-width: 460px; margin-left: auto; margin-right: auto; }
+  }
+  .access-card {
+    position: relative; display: flex;
+    min-height: 320px; border-radius: 8px; overflow: hidden;
+    border: 1px solid var(--border-dark);
+  }
+  .access-card img {
+    position: absolute; inset: 0; width: 100%; height: 100%;
+    object-fit: cover; transition: transform 0.4s ease;
+  }
+  .access-card::after {
+    content: ""; position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.55) 38%, rgba(0,0,0,0.05) 72%);
+  }
+  .access-card:hover img { transform: scale(1.04); }
+  .access-body { position: relative; z-index: 1; margin-top: auto; padding: 1.5rem; }
+  .access-card h3 {
+    font-family: 'Barlow Condensed', sans-serif; font-weight: 800;
+    font-size: 1.35rem; text-transform: uppercase; letter-spacing: 0.02em;
+    color: #fff; margin-bottom: 0.4rem;
+  }
+  .access-card p { font-size: 0.9rem; color: rgba(255,255,255,0.82); font-weight: 300; line-height: 1.5; }
+
+  /* ============================================================
+     SOCIAL PROOF CALLOUT
+  ============================================================ */
+  .proof-band { background: var(--charcoal); padding: clamp(2.5rem, 5vw, 3.5rem) 0; }
+  .proof-inner {
+    display: flex; align-items: center; justify-content: center;
+    gap: clamp(2rem, 6vw, 5rem); flex-wrap: wrap;
+  }
+  .proof-number { text-align: center; }
+  .proof-stars { color: #F5A623; font-size: 1.6rem; letter-spacing: 0.12em; display: block; margin-bottom: 0.2rem; }
+  .proof-score {
+    font-family: 'Barlow Condensed', sans-serif; font-weight: 900;
+    font-size: clamp(3.5rem, 8vw, 5.5rem); color: #fff;
+    line-height: 1;
+  }
+  .proof-denom {
+    font-family: 'Barlow Condensed', sans-serif; font-weight: 600;
+    font-size: 0.78rem; letter-spacing: 0.22em; text-transform: uppercase;
+    color: rgba(255,255,255,0.45); display: block; margin-top: 0.3rem;
+  }
+  /* AI-generated summary of member reviews */
+  .ai-summary {
+    max-width: 440px; text-align: left;
+    border-left: 3px solid var(--red); padding-left: 1.5rem;
+  }
+  .ai-summary-head {
+    display: flex; align-items: center; gap: 0.55rem;
+    font-family: 'Barlow Condensed', sans-serif; font-weight: 700;
+    font-size: 0.8rem; letter-spacing: 0.16em; text-transform: uppercase;
+    color: #fff; margin-bottom: 0.9rem;
+  }
+  .ai-summary-head .ai-sub { color: rgba(255,255,255,0.45); letter-spacing: 0.08em; }
+  .ai-badge {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 22px; height: 22px; border-radius: 6px;
+    background: var(--red); color: #fff; flex-shrink: 0;
+  }
+  .ai-badge svg { width: 13px; height: 13px; }
+  .ai-points { list-style: none; display: grid; gap: 0.6rem; }
+  .ai-points li {
+    position: relative; padding-left: 1.5rem;
+    font-size: 0.92rem; line-height: 1.45; font-weight: 300;
+    color: rgba(255,255,255,0.82);
+  }
+  .ai-points li::before {
+    content: ""; position: absolute; left: 0; top: 0.3em;
+    width: 0.7rem; height: 0.4rem;
+    border-left: 2px solid var(--red); border-bottom: 2px solid var(--red);
+    transform: rotate(-45deg);
+  }
+
+  /* ============================================================
+     TESTIMONIALS
+  ============================================================ */
+  .testimonials { background: var(--cream); }
+  .t-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem; margin-top: 3rem; align-items: stretch;
+  }
+  @media (max-width: 860px) { .t-grid { grid-template-columns: 1fr; max-width: 500px; margin-left: auto; margin-right: auto; } }
+  .t-card {
+    background: #fff; border: 1px solid var(--border-light);
+    border-radius: 6px; padding: 1.75rem;
+    display: flex; flex-direction: column; gap: 1rem;
+  }
+  .t-card .stars { color: #F5A623; letter-spacing: 0.08em; font-size: 0.95rem; }
+  .t-card .quote {
+    font-family: 'DM Serif Display', serif; font-style: italic;
+    font-size: 1.1rem; line-height: 1.45; color: var(--charcoal); flex: 1;
+  }
+  .t-card .who { display: flex; align-items: center; gap: 0.75rem; margin-top: auto; }
+  .t-avatar {
+    width: 44px; height: 44px; border-radius: 9999px; flex-shrink: 0;
+    background: var(--charcoal); display: flex; align-items: center; justify-content: center;
+    font-family: 'Barlow Condensed', sans-serif; font-weight: 700;
+    font-size: 1rem; color: #fff; letter-spacing: 0;
+  }
+  .t-card .name {
+    font-family: 'Barlow Condensed', sans-serif; font-weight: 700;
+    font-size: 0.95rem; color: var(--charcoal);
+  }
+  .t-card .meta { font-size: 0.78rem; color: var(--muted); }
+
+  /* ============================================================
+     FAQ
+  ============================================================ */
+  .faq-section { background: var(--char2); border-top: 1px solid var(--border-dark); }
+  .faq { max-width: 740px; margin: 2.75rem auto 0; }
+  .faq details { border-bottom: 1px solid var(--border-dark); }
+  .faq summary {
+    list-style: none; cursor: pointer;
+    display: flex; justify-content: space-between; align-items: center; gap: 1rem;
+    padding: 1.2rem 0;
+    font-family: 'Barlow', sans-serif; font-weight: 600;
+    font-size: 1rem; color: #fff;
+  }
+  .faq summary::-webkit-details-marker { display: none; }
+  .faq summary::after { content: "+"; color: var(--red); font-size: 1.5rem; font-weight: 300; line-height: 1; flex-shrink: 0; transition: transform 0.2s; }
+  .faq details[open] summary::after { transform: rotate(45deg); }
+  .faq .faq-body { padding-bottom: 1.1rem; font-size: 0.95rem; color: rgba(255,255,255,0.62); font-weight: 300; max-width: 620px; }
+
+  /* ============================================================
+     LOCATION / MAP
+  ============================================================ */
+  .location-section { background: var(--cream); }
+  .location-grid {
+    display: grid; grid-template-columns: 1fr 1.15fr;
+    gap: clamp(2rem, 5vw, 3.5rem); align-items: center;
+  }
+  @media (max-width: 820px) { .location-grid { grid-template-columns: 1fr; } }
+  .location-details { list-style: none; margin: 1.5rem 0 1.75rem; display: grid; gap: 0.9rem; }
+  .location-details li { display: flex; align-items: flex-start; gap: 0.7rem; font-size: 1rem; color: var(--charcoal); line-height: 1.4; }
+  .location-details svg { width: 20px; height: 20px; color: var(--red); flex-shrink: 0; margin-top: 2px; }
+  .location-map {
+    border-radius: 10px; overflow: hidden;
+    border: 1px solid var(--border-light); background: #e9e7e1;
+    box-shadow: 0 24px 60px rgba(46,48,54,0.18);
+  }
+  .location-map iframe {
+    display: block; width: 100%; height: 100%; min-height: 380px; border: 0;
+    filter: grayscale(0.25) contrast(1.02);
+  }
+  @media (max-width: 820px) { .location-map iframe { min-height: 300px; } }
+
+  /* ============================================================
+     FINAL CTA
+  ============================================================ */
+  .cta-band {
+    background: var(--red); text-align: center;
+    padding: clamp(3.5rem, 8vw, 6rem) 0;
+  }
+  .cta-band h2 {
+    font-family: 'Barlow Condensed', sans-serif; font-weight: 900;
+    line-height: 0.96; font-size: clamp(2.2rem, 6vw, 4rem);
+    color: #fff; margin-bottom: 1.5rem;
+  }
+  .cta-band .cta-sub {
+    font-family: 'Barlow Condensed', sans-serif; font-weight: 600;
+    font-size: 0.78rem; letter-spacing: 0.2em; text-transform: uppercase;
+    color: rgba(255,255,255,0.7); margin-top: 0.9rem;
+  }
+
+  /* ============================================================
+     FOOTER
+  ============================================================ */
+  footer { background: var(--char2); border-top: 1px solid var(--border-dark); padding: 2.5rem 0; }
+  .foot { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1.5rem; }
+  .foot .logo { height: 26px; filter: brightness(0) invert(1); opacity: 0.85; }
+  .foot .links { display: flex; gap: 1.75rem; flex-wrap: wrap; }
+  .foot .links a {
+    font-family: 'Barlow Condensed', sans-serif; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.12em; font-size: 0.78rem;
+    color: rgba(255,255,255,0.5); transition: color 0.2s;
+  }
+  .foot .links a:hover { color: #fff; }
+  .foot-legal { color: rgba(255,255,255,0.3); font-size: 0.78rem; margin-top: 1.5rem; }
+
+  /* ============================================================
+     CRAFT — entrance motion, hover-lift, chalk-grain wildcard
+  ============================================================ */
+
+  /* Subtle, deliberate entrance (vibe: confident, not bouncy).
+     Elements start lowered + faded, reveal on scroll via IntersectionObserver. */
+  .reveal { opacity: 0; transform: translateY(18px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .reveal.in { opacity: 1; transform: none; }
+  /* Stagger children inside a revealed group */
+  .reveal.in .stagger > * { animation: rise 0.55s ease backwards; }
+  .reveal.in .stagger > *:nth-child(1) { animation-delay: 0.05s; }
+  .reveal.in .stagger > *:nth-child(2) { animation-delay: 0.13s; }
+  .reveal.in .stagger > *:nth-child(3) { animation-delay: 0.21s; }
+  .reveal.in .stagger > *:nth-child(4) { animation-delay: 0.29s; }
+  @keyframes rise { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+
+  /* Hover-lift on cards */
+  .t-card { transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease; }
+  .t-card:hover { transform: translateY(-4px); box-shadow: 0 14px 32px rgba(46,48,54,0.12); }
+
+  /* WILDCARD: faint chalk-grain over the dark sections only */
+  .features, .stats, .proof-band { position: relative; }
+  .features::before, .stats::before, .proof-band::before {
+    content: ""; position: absolute; inset: 0; z-index: 0; pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+    opacity: 0.05;
+  }
+  .features > .container, .stats > .container, .proof-band > .container { position: relative; z-index: 1; }
+
+  /* ============================================================
+     MOBILE STICKY CTA — keeps the action one tap away below the fold
+  ============================================================ */
+  .mobile-cta {
+    display: none;
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 70;
+    background: rgba(35,38,43,0.96); backdrop-filter: blur(10px);
+    border-top: 1px solid var(--border-dark);
+    padding: 0.7rem 1rem;
+    padding-bottom: calc(0.7rem + env(safe-area-inset-bottom));
+    box-shadow: 0 -6px 24px rgba(0,0,0,0.3);
+  }
+  .mobile-cta .btn { display: block; width: 100%; text-align: center; padding: 0.95rem; }
+  @media (max-width: 860px) {
+    .mobile-cta.is-visible { display: block; }
+    .lift-root { padding-bottom: 4.5rem; }
+  }
+
+  /* ============================================================
+     POST-SUBMIT MODAL — confirms the signup + invites a few
+     quick questions about the member's fitness journey
+  ============================================================ */
+  .modal-overlay {
+    position: fixed; inset: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: center;
+    padding: 1.5rem;
+    background: rgba(35,38,43,0.72);
+    -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px);
+    opacity: 0; visibility: hidden;
+    transition: opacity 0.25s ease, visibility 0.25s ease;
+  }
+  .modal-overlay.open { opacity: 1; visibility: visible; }
+  .modal {
+    background: #fff; border-radius: 10px;
+    width: 100%; max-width: 480px;
+    max-height: calc(100vh - 3rem); overflow-y: auto;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.45);
+    padding: 2.5rem 2rem 2rem; position: relative;
+    transform: translateY(16px) scale(0.98);
+    transition: transform 0.25s ease;
+  }
+  .modal-overlay.open .modal { transform: none; }
+  .modal-close {
+    position: absolute; top: 0.8rem; right: 0.9rem;
+    background: none; border: none; cursor: pointer;
+    font-size: 1.5rem; line-height: 1; color: var(--muted);
+    width: 2rem; height: 2rem; border-radius: 9999px;
+    display: flex; align-items: center; justify-content: center;
+    transition: color 0.2s, background 0.2s;
+  }
+  .modal-close:hover { color: var(--charcoal); background: var(--cream); }
+  .modal-check {
+    width: 54px; height: 54px; border-radius: 9999px;
+    background: rgba(225,71,71,0.12); color: var(--red);
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 1.1rem;
+  }
+  .modal-check svg { width: 28px; height: 28px; }
+  .modal h2 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900; font-size: 1.9rem; line-height: 1.02;
+    color: var(--charcoal); margin-bottom: 0.5rem;
+  }
+  .modal .modal-sub {
+    font-size: 0.95rem; color: var(--muted); font-weight: 300;
+    line-height: 1.5; margin-bottom: 1.5rem;
+  }
+  .modal .modal-sub strong { color: var(--charcoal); font-weight: 600; }
+  .modal-divider { border: none; border-top: 1px solid var(--border-light); margin: 0 0 1.4rem; }
+  .modal-invite {
+    font-family: 'Barlow Condensed', sans-serif; font-weight: 700;
+    font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--red); margin-bottom: 1.25rem;
+  }
+  .modal-q { margin-bottom: 1.25rem; }
+  .modal-q > label {
+    display: block; font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700; font-size: 0.8rem; letter-spacing: 0.06em;
+    text-transform: uppercase; color: var(--charcoal); margin-bottom: 0.55rem;
+  }
+  .modal-chips { display: flex; flex-wrap: wrap; gap: 0.45rem; }
+  .modal-chip {
+    font-family: 'Barlow Condensed', sans-serif; font-weight: 600;
+    font-size: 0.82rem; letter-spacing: 0.03em;
+    padding: 0.48rem 0.85rem; border-radius: 9999px;
+    border: 1px solid var(--border-light); background: #fff;
+    color: var(--charcoal); cursor: pointer;
+    transition: background 0.15s, border-color 0.15s, color 0.15s;
+  }
+  .modal-chip:hover { border-color: var(--red); }
+  .modal-chip.selected { background: var(--red); border-color: var(--red); color: #fff; }
+  .modal-q select {
+    width: 100%; background: var(--cream);
+    border: 1px solid var(--border-light); border-radius: 6px;
+    padding: 0.72rem 0.9rem; font-family: 'Barlow', sans-serif;
+    font-size: 16px; color: var(--charcoal); outline: none;
+    transition: border-color 0.2s;
+  }
+  .modal-q select:focus { border-color: var(--red); }
+  .modal-skip {
+    display: block; width: 100%; text-align: center;
+    background: none; border: none; cursor: pointer; margin-top: 0.9rem;
+    font-family: 'Barlow Condensed', sans-serif; font-weight: 600;
+    font-size: 0.76rem; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--muted); transition: color 0.2s;
+  }
+  .modal-skip:hover { color: var(--charcoal); }
+  .modal-step { display: none; }
+  .modal-step.active { display: block; }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+    .reveal { opacity: 1 !important; transform: none !important; }
+    .btn:hover, .t-card:hover { transform: none !important; box-shadow: none !important; }
+    .access-card:hover img { transform: none !important; }
+    .modal { transform: none !important; }
+  }
+`;
+
+const HTML = `<div class="lift-root"><!-- URGENCY BAR -->
+<div class="urgency-bar">
+  Your first 7 days at Lift STL are <strong>completely free</strong> — no commitment, no contract, no strings.
+</div>
+
+<!-- HEADER -->
+<header>
+  <div class="container nav">
+    <a href="#top"><img class="logo" src="https://zeisworks.github.io/lift-7-day-pass/assets/images/lift-logo-transparent.png" alt="Lift STL" /></a>
+    <div class="nav-right">
+      <a href="#claim" class="btn btn-red" style="padding:.65rem 1.5rem;font-size:.78rem;">Start Free Week</a>
+    </div>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero" id="top">
+  <div class="hero-motif">
+    <svg viewBox="0 0 520 360" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <g stroke="currentColor" stroke-width="1.4" vector-effect="non-scaling-stroke">
+        <polygon points="300,30 255,105 345,105" fill="none"/>
+        <polygon points="255,105 210,180 300,180" fill="none"/>
+        <polygon points="345,105 300,180 390,180" fill="none"/>
+        <polygon points="210,180 165,255 255,255" fill="none"/>
+        <polygon points="300,180 255,255 345,255" fill="none"/>
+        <polygon points="390,180 345,255 435,255" fill="none"/>
+        <polygon points="165,255 120,330 210,330" fill="none"/>
+        <polygon points="255,255 210,330 300,330" fill="rgba(225,71,71,0.16)"/>
+        <polygon points="345,255 300,330 390,330" fill="none"/>
+        <polygon points="435,255 390,330 480,330" fill="rgba(46,48,54,0.10)"/>
+        <polygon points="255,105 345,105 300,180" fill="none"/>
+        <polygon points="210,180 300,180 255,255" fill="none"/>
+        <polygon points="300,180 390,180 345,255" fill="none"/>
+        <polygon points="165,255 255,255 210,330" fill="none"/>
+        <polygon points="255,255 345,255 300,330" fill="none"/>
+        <polygon points="345,255 435,255 390,330" fill="none"/>
+        <line x1="300" y1="30" x2="460" y2="170" stroke-dasharray="5 7" opacity="0.8"/>
+      </g>
+      <g stroke="currentColor" stroke-width="1.4" vector-effect="non-scaling-stroke" fill="none">
+        <polygon points="70,250 130,250 100,198"/>
+      </g>
+    </svg>
+  </div>
+  <div class="container">
+    <div class="hero-inner">
+
+      <div class="hero-copy">
+        <span class="eyebrow">Free 7-Day Pass · Brentwood</span>
+        <h1>Train More.<br/><span class="accent">Deal With Less.</span></h1>
+        <p class="sub">Clean, organized, and built around one thing: strength training done at the highest level. No fluff, no chaos, no wasted reps. <strong>Come in, enjoy the work, leave better than you came.</strong></p>
+      </div>
+
+      <div class="hero-cta">
+        <a class="location-pill" href="https://maps.google.com/?q=8356+Musick+Memorial+Drive,+Brentwood,+MO+63144" target="_blank" rel="noopener">
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          8356 Musick Memorial Dr, Brentwood, MO 63144
+        </a>
+        <a href="#claim" class="btn btn-red btn-lg">Claim Your Free 7-Day Pass</a>
+        <p class="hero-cta-note">Takes 30 seconds · No commitment</p>
+      </div>
+
+      <div class="hero-media">
+        <video autoplay muted loop playsinline preload="auto" poster="https://zeisworks.github.io/lift-7-day-pass/assets/videos/hero-poster.jpg">
+          <source src="https://zeisworks.github.io/lift-7-day-pass/assets/videos/hero.mp4" type="video/mp4" />
+          <img src="https://zeisworks.github.io/lift-7-day-pass/assets/images/lift_stl_hero.webp" alt="Inside Lift STL" fetchpriority="high" />
+        </video>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- STATS STRIP -->
+<section class="stats">
+  <div class="container">
+    <div class="stats-inner">
+      <div class="stat"><div class="num">7</div><div class="lbl">Years Strong</div></div>
+      <div class="stat stat-secondary"><div class="num">8,600 sq ft</div><div class="lbl">Training Space</div></div>
+      <div class="stat"><div class="num">4.8★</div><div class="lbl">Google Rating</div></div>
+      <div class="stat"><div class="num">24/7</div><div class="lbl">Access</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES + WHY LIFT — merged, single dark section -->
+<section class="section features on-dark" id="access">
+  <div class="container">
+
+    <!-- Feature cards -->
+    <div class="center">
+      <h2 class="section-heading">7 Days of Free Access To:</h2>
+    </div>
+    <div class="access-grid reveal stagger">
+      <article class="access-card">
+        <img src="https://zeisworks.github.io/lift-7-day-pass/assets/images/facility-2.webp" alt="Open training floor with room to move" />
+        <div class="access-body">
+          <h3>No Crowds, No Waiting</h3>
+          <p>Plenty of space and equipment to go around. No fighting over a rack, no standing around waiting your turn.</p>
+        </div>
+      </article>
+      <article class="access-card">
+        <img src="https://zeisworks.github.io/lift-7-day-pass/assets/images/facility-6.webp" alt="Strength equipment on the Lift STL floor" />
+        <div class="access-body">
+          <h3>Elite Equipment</h3>
+          <p>Individually picked equipment for the best results. Sorinex racks and platforms. Equipment from Atlantis, Prime, Bootybuilder, Watson and more.</p>
+        </div>
+      </article>
+      <article class="access-card">
+        <img src="https://zeisworks.github.io/lift-7-day-pass/assets/images/infrared-sauna.webp?v=2" alt="Infrared sauna at Lift STL" />
+        <div class="access-body">
+          <h3>Infrared Sauna</h3>
+          <p>Recover like you train. Infrared sauna access is included with your pass — standard for every member, not a premium upsell.</p>
+        </div>
+      </article>
+      <article class="access-card">
+        <img src="https://zeisworks.github.io/lift-7-day-pass/assets/images/facility-interior.jpg" alt="Inside the Lift STL training floor" />
+        <div class="access-body">
+          <h3>24/7 Access, 365 Days a Year</h3>
+          <p>Train on your schedule, not ours. The doors are open around the clock, every single day of the year.</p>
+        </div>
+      </article>
+    </div>
+
+  </div>
+</section>
+
+<!-- SOCIAL PROOF -->
+<div class="proof-band">
+  <div class="container">
+    <div class="proof-inner">
+      <div class="proof-number">
+        <span class="proof-stars" aria-hidden="true">★★★★★</span>
+        <div class="proof-score">4.8</div>
+        <span class="proof-denom">out of 5 · 77 Google reviews</span>
+      </div>
+      <div class="ai-summary">
+        <ul class="ai-points">
+          <li>Elite, constantly-upgraded equipment — including specialty pieces you won't find at other gyms.</li>
+          <li>Expert, hands-on coaching from the staff and an owner who's on the floor.</li>
+          <li>A genuinely welcoming community — serious training, zero ego.</li>
+          <li>Spotless facility that rarely gets crowded — no waiting for a rack.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TESTIMONIALS -->
+<section class="section testimonials">
+  <div class="container">
+    <div class="center">
+      <h2 class="section-heading">Why You'll Want to Stay</h2>
+    </div>
+    <!-- Real Lift STL reviews (Google) -->
+    <div class="t-grid reveal stagger">
+      <div class="t-card">
+        <div class="stars" aria-hidden="true">★★★★★</div>
+        <p class="quote">"There is a sense of respect, focus, and support that's hard to find in most gyms. People here take their training seriously, but there's no ego. Just hard work, encouragement, and genuine camaraderie."</p>
+        <div class="who">
+          <div class="t-avatar" style="background:#3D4B5C;">J</div>
+          <div><div class="name">Jake Bailey</div><div class="meta">Google Review</div></div>
+        </div>
+      </div>
+      <div class="t-card">
+        <div class="stars" aria-hidden="true">★★★★★</div>
+        <p class="quote">"There are a lot of gyms — your big box clubs, powerlifting clubs, CrossFit clubs — and then Lift STL. I felt comfortable from the start: great people, respectful, helpful, and experts at what they do. You can't beat this gym."</p>
+        <div class="who">
+          <div class="t-avatar" style="background:#4A3B52;">D</div>
+          <div><div class="name">Daniel Keao</div><div class="meta">Google Review</div></div>
+        </div>
+      </div>
+      <div class="t-card">
+        <div class="stars" aria-hidden="true">★★★★★</div>
+        <p class="quote">"The attention to detail while selecting equipment was unprecedented in the area. But the personal training and programming put in by the staff is above all the best thing. These are real trainers that provide specific plans tailored to you."</p>
+        <div class="who">
+          <div class="t-avatar" style="background:#3B4A3F;">A</div>
+          <div><div class="name">Andy Atchison</div><div class="meta">Google Review</div></div>
+        </div>
+      </div>
+      <div class="t-card">
+        <div class="stars" aria-hidden="true">★★★★★</div>
+        <p class="quote">"Outstanding gym in a great location in Brentwood. The equipment is top notch and the facility is always clean. Most importantly, they have the best staff — you can tell the owner and his team are passionate about what they do."</p>
+        <div class="who">
+          <div class="t-avatar" style="background:#5C3D3D;">K</div>
+          <div><div class="name">Kevin Schnepp</div><div class="meta">Local Guide · Google Review</div></div>
+        </div>
+      </div>
+      <div class="t-card">
+        <div class="stars" aria-hidden="true">★★★★★</div>
+        <p class="quote">"LiftSTL might be the most aesthetically pleasing gym in town. The facility is beautiful, they're constantly upgrading equipment, and the atmosphere is incredibly welcoming. They also just added saunas, which I'm really excited about."</p>
+        <div class="who">
+          <div class="t-avatar" style="background:#45503B;">E</div>
+          <div><div class="name">Ed Pilgrim</div><div class="meta">Google Review</div></div>
+        </div>
+      </div>
+      <div class="t-card">
+        <div class="stars" aria-hidden="true">★★★★★</div>
+        <p class="quote">"When most gyms are obnoxiously busy in the evenings, Lift was chill. I didn't have to wait for any machines or carve out my space. Loved the space and vibe — plus cool equipment you won't see at many gyms."</p>
+        <div class="who">
+          <div class="t-avatar" style="background:#3B4F57;">S</div>
+          <div><div class="name">Sarah Jordan</div><div class="meta">Local Guide · Google Review</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="section faq-section on-dark">
+  <div class="container">
+    <div class="center">
+      <span class="eyebrow">Good to Know</span>
+      <h2 class="section-heading">Frequently Asked Questions</h2>
+    </div>
+    <!-- EDIT: confirm/fill every answer below -->
+    <div class="faq reveal">
+      <details open>
+        <summary>What's included in the 7-day free pass?</summary>
+        <p class="faq-body">Full access to the entire gym floor for a full week — every rack, free weight, turf, and conditioning station, plus the staff and community that make Lift, Lift. <!-- EDIT: add group classes or coaching if included --></p>
+      </details>
+      <details>
+        <summary>Is it really free? Do you need my credit card?</summary>
+        <p class="faq-body">Your first week is completely on us — no charge to claim it and nothing due during your trial. We do ask that you bring a photo ID and a card to keep on file when you arrive; it won't be charged during your free week. <!-- EDIT: confirm card-on-file / waiver policy --></p>
+      </details>
+      <details>
+        <summary>Who's eligible?</summary>
+        <p class="faq-body">First-time guests, 18 or older, who live within about 20 miles of the gym. One pass per person. <!-- EDIT: confirm residency or one-per-household rules --></p>
+      </details>
+      <details>
+        <summary>Where are you and what are your hours?</summary>
+        <!-- EDIT: fill in address, parking, and staffed vs. keycard hours -->
+        <p class="faq-body">We're in Brentwood, MO. Staffed hours and keycard access hours — check lift-stl.com for the latest.</p>
+      </details>
+      <details>
+        <summary>What if I just moved and my address isn't updated?</summary>
+        <p class="faq-body">No problem — reach out directly and we'll get you set up. The pass is for anyone new to Lift, regardless of where your ID says you live. <!-- EDIT: confirm this policy --></p>
+      </details>
+      <details>
+        <summary>What happens after my free week?</summary>
+        <p class="faq-body">If Lift's your place, we'll walk you through the membership options — no pressure, no contract. If it's not the right fit, no hard feelings and nothing owed. <!-- EDIT: add membership tiers if useful --></p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- LOCATION / MAP -->
+<section class="section location-section">
+  <div class="container">
+    <div class="location-grid">
+      <div class="location-info">
+        <span class="eyebrow">Find Us</span>
+        <h2 class="section-heading">Train With Us in Brentwood</h2>
+        <p class="section-lead">Right in the heart of Brentwood — about 15 minutes from anywhere in St. Louis. Swing by and see the space for yourself.</p>
+        <ul class="location-details">
+          <li>
+            <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            <span>8356 Musick Memorial Dr<br/>Brentwood, MO 63144</span>
+          </li>
+          <li>
+            <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg>
+            <span>Open 24 hours · 365 days a year<!-- EDIT: add staffed hours if useful --></span>
+          </li>
+        </ul>
+        <a class="btn btn-red btn-lg" href="https://www.google.com/maps/dir/?api=1&destination=8356+Musick+Memorial+Drive,+Brentwood,+MO+63144" target="_blank" rel="noopener">Get Directions</a>
+      </div>
+      <div class="location-map">
+        <iframe
+          title="Map to Lift STL — 8356 Musick Memorial Dr, Brentwood, MO 63144"
+          src="https://www.google.com/maps?q=8356+Musick+Memorial+Dr,+Brentwood,+MO+63144&output=embed"
+          loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<section class="cta-band">
+  <div class="container">
+    <h2>Your First Week<br/>Is On Us.</h2>
+    <a href="#claim" class="btn btn-white btn-lg">Start Your Free Week</a>
+    <p class="cta-sub">No commitment &nbsp;·&nbsp; No payment &nbsp;·&nbsp; No strings</p>
+  </div>
+</section>
+
+<!-- MOBILE STICKY CTA -->
+<div class="mobile-cta">
+  <a href="#claim" class="btn btn-red">Start My Free Week</a>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="foot">
+      <img class="logo" src="https://zeisworks.github.io/lift-7-day-pass/assets/images/lift-logo-transparent.png" alt="Lift STL" />
+      <div class="links">
+        <a href="https://lift-stl.com" target="_blank" rel="noopener">lift-stl.com</a>
+        <a href="https://instagram.com/liftstl" target="_blank" rel="noopener">Instagram</a>
+        <a href="#claim">Start Free Week</a>
+      </div>
+    </div>
+    <!-- EDIT: address -->
+    <p class="foot-legal">Lift STL &nbsp;·&nbsp; Brentwood, MO &nbsp;·&nbsp; © 2026 Lift STL. All rights reserved.</p>
+  </div>
+</footer>
+
+<!-- POST-SUBMIT MODAL -->
+<div class="modal-overlay" id="signup-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title" hidden>
+  <div class="modal">
+    <button type="button" class="modal-close" id="modal-close" aria-label="Close">&times;</button>
+
+    <!-- Step 0: the claim form -->
+    <div class="modal-step active" id="modal-step-0">
+      <h2 id="modal-title">Claim Your Free 7-Day Pass</h2>
+      <p class="modal-sub">Fill out the form and a coach will reach out — usually within the hour.</p>
+      <form id="claim-form" action="#" method="post">
+        <div class="form-row">
+          <label class="sr-only" for="first_name">First name</label>
+          <input id="first_name" type="text" name="first_name" placeholder="First name" autocomplete="given-name" required />
+          <label class="sr-only" for="last_name">Last name</label>
+          <input id="last_name" type="text" name="last_name" placeholder="Last name" autocomplete="family-name" required />
+        </div>
+        <div class="form-field">
+          <label class="sr-only" for="email">Email address</label>
+          <input id="email" type="email" name="email" placeholder="Email address" autocomplete="email" required />
+        </div>
+        <div class="form-field">
+          <label class="sr-only" for="phone">Phone number</label>
+          <input id="phone" type="tel" name="phone" placeholder="Phone number" autocomplete="tel" />
+        </div>
+        <div class="form-rules">
+          By submitting, you confirm you're a <strong>first-time guest</strong> at Lift STL, <strong>18 or older</strong>, a <strong>local resident within 20 miles</strong> of the gym, and that you'll bring a <strong>photo ID</strong> and a <strong>card to put on file</strong> when you arrive.
+        </div>
+        <button type="submit" class="btn btn-red btn-full btn-lg">Claim Your Free Pass</button>
+        <p class="form-disclaimer">Takes 30 seconds · No commitment</p>
+        <p class="form-disclaimer form-privacy">We only use your details to set up your free pass and contact you about it. No spam — we never sell or share your information.</p>
+      </form>
+    </div>
+
+    <!-- Step 1: confirmation + a few questions -->
+    <div class="modal-step" id="modal-step-1">
+      <span class="modal-check" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+      </span>
+      <h2>You're In — Your Free Week Is Reserved.</h2>
+      <p class="modal-sub">We've got your details and a coach will reach out <strong>usually within the hour</strong> to lock in your start. <strong>No commitment, no contract.</strong></p>
+      <hr class="modal-divider" />
+      <p class="modal-invite">While you're here — tell us about your journey</p>
+      <form id="journey-form">
+        <div class="modal-q">
+          <label>What's your main goal?</label>
+          <div class="modal-chips" data-group="goal" role="group" aria-label="Main goal">
+            <button type="button" class="modal-chip">Lose Fat</button>
+            <button type="button" class="modal-chip">Build Muscle</button>
+            <button type="button" class="modal-chip">Get Stronger</button>
+            <button type="button" class="modal-chip">Overall Health</button>
+            <button type="button" class="modal-chip">Sport Performance</button>
+          </div>
+          <input type="hidden" name="goal" />
+        </div>
+        <div class="modal-q">
+          <label>How often do you train right now?</label>
+          <div class="modal-chips" data-group="frequency" role="group" aria-label="Training frequency">
+            <button type="button" class="modal-chip">Just starting</button>
+            <button type="button" class="modal-chip">1–2× / week</button>
+            <button type="button" class="modal-chip">3–4× / week</button>
+            <button type="button" class="modal-chip">5+× / week</button>
+          </div>
+          <input type="hidden" name="frequency" />
+        </div>
+        <div class="modal-q">
+          <label for="journey-challenge">What's held you back before?</label>
+          <select id="journey-challenge" name="challenge">
+            <option value="" selected>Pick one (optional)</option>
+            <option>Staying consistent</option>
+            <option>Not knowing what to do</option>
+            <option>Finding the time</option>
+            <option>Staying motivated</option>
+            <option>Coming back after a break</option>
+            <option>Nothing — I'm ready</option>
+          </select>
+        </div>
+        <button type="submit" class="btn btn-red btn-full btn-lg">Send &amp; Finish</button>
+        <button type="button" class="modal-skip" id="modal-skip">Skip — I'll share later</button>
+      </form>
+    </div>
+
+    <!-- Step 2: thank-you confirmation -->
+    <div class="modal-step" id="modal-step-2">
+      <span class="modal-check" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+      </span>
+      <h2>Thanks — You're All Set.</h2>
+      <p class="modal-sub">That helps us tailor your first session. Keep an eye on your phone and email — we'll be in touch shortly to get you training. <strong>Welcome to Lift.</strong></p>
+      <button type="button" class="btn btn-red btn-full btn-lg" id="modal-done">Done</button>
+    </div>
+  </div>
+</div></div>`;
+
+
+function ensureFonts() {
+  if (!FONTS_URL || document.getElementById('lift-pass-fonts')) return;
+  var l = document.createElement('link');
+  l.id = 'lift-pass-fonts'; l.rel = 'stylesheet'; l.href = FONTS_URL;
+  document.head.appendChild(l);
+}
+function init(root) {
+  var mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+  var els = root.querySelectorAll('.reveal');
+  if (!('IntersectionObserver' in window) || mq.matches) {
+    els.forEach(function (el) { el.classList.add('in'); });
+  } else {
+    var io = new IntersectionObserver(function (en) {
+      en.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+    }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+    els.forEach(function (el) { io.observe(el); });
+  }
+  var vid = root.querySelector('.hero-media video');
+  if (vid && mq.matches) { vid.removeAttribute('autoplay'); vid.pause(); }
+  root.querySelectorAll('a[href="#top"]').forEach(function (el) {
+    el.addEventListener('click', function (e) { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); });
+  });
+  var bar = root.querySelector('.mobile-cta');
+  var heroCta = root.querySelector('.hero-cta');
+  if (bar && heroCta) {
+    if (!('IntersectionObserver' in window)) { bar.classList.add('is-visible'); }
+    else {
+      var io2 = new IntersectionObserver(function (en) {
+        en.forEach(function (e) { bar.classList.toggle('is-visible', !e.isIntersecting); });
+      }, { rootMargin: '0px 0px -10% 0px' });
+      io2.observe(heroCta);
+    }
+  }
+  var overlay = root.querySelector('#signup-modal');
+  if (!overlay) return;
+  var claimForm = root.querySelector('#claim-form');
+  var journeyForm = root.querySelector('#journey-form');
+  var steps = [root.querySelector('#modal-step-0'), root.querySelector('#modal-step-1'), root.querySelector('#modal-step-2')];
+  var lastFocus = null;
+  function showStep(n) { steps.forEach(function (el, i) { if (el) el.classList.toggle('active', i === n); }); }
+  function openModal(step) {
+    showStep(step || 0);
+    lastFocus = document.activeElement;
+    overlay.hidden = false;
+    requestAnimationFrame(function () { overlay.classList.add('open'); });
+    document.body.style.overflow = 'hidden';
+    var f = overlay.querySelector('.modal-step.active input, .modal-step.active button, #modal-close');
+    if (f) f.focus();
+  }
+  function closeModal() {
+    overlay.classList.remove('open');
+    document.body.style.overflow = '';
+    var onEnd = function () { overlay.hidden = true; overlay.removeEventListener('transitionend', onEnd); };
+    overlay.addEventListener('transitionend', onEnd);
+    setTimeout(function () { if (!overlay.classList.contains('open')) overlay.hidden = true; }, 350);
+    if (lastFocus && lastFocus.focus) lastFocus.focus();
+  }
+  root.querySelectorAll('a[href="#claim"], [data-claim]').forEach(function (el) {
+    el.addEventListener('click', function (e) { e.preventDefault(); openModal(0); });
+  });
+  if (claimForm) {
+    claimForm.addEventListener('submit', function (e) {
+      e.preventDefault();
+      // TODO: send lead data to your destination (Velo backend, fetch() to an endpoint, etc.)
+      // var data = Object.fromEntries(new FormData(claimForm).entries());
+      showStep(1);
+    });
+  }
+  overlay.querySelectorAll('.modal-chips').forEach(function (group) {
+    var hidden = group.parentNode.querySelector('input[type="hidden"]');
+    group.addEventListener('click', function (e) {
+      var chip = e.target.closest('.modal-chip'); if (!chip) return;
+      var was = chip.classList.contains('selected');
+      group.querySelectorAll('.modal-chip').forEach(function (c) { c.classList.remove('selected'); });
+      if (!was) { chip.classList.add('selected'); if (hidden) hidden.value = chip.textContent.trim(); }
+      else if (hidden) { hidden.value = ''; }
+    });
+  });
+  if (journeyForm) { journeyForm.addEventListener('submit', function (e) { e.preventDefault(); showStep(2); }); }
+  var mc = root.querySelector('#modal-close'); if (mc) mc.addEventListener('click', closeModal);
+  var ms = root.querySelector('#modal-skip'); if (ms) ms.addEventListener('click', closeModal);
+  var md = root.querySelector('#modal-done'); if (md) md.addEventListener('click', closeModal);
+  overlay.addEventListener('click', function (e) { if (e.target === overlay) closeModal(); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && overlay.classList.contains('open')) closeModal(); });
+}
+class LiftPass extends HTMLElement {
+  connectedCallback() {
+    if (this._mounted) return;
+    this._mounted = true;
+    ensureFonts();
+    var root = this.attachShadow({ mode: 'open' });
+    root.innerHTML = '<style>' + CSS + '</style>' + HTML;
+    init(root);
+  }
+}
+if (!customElements.get('lift-pass')) { customElements.define('lift-pass', LiftPass); }
