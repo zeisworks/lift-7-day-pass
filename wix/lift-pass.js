@@ -1157,10 +1157,15 @@ class LiftPass extends HTMLElement {
   connectedCallback() {
     if (this._mounted) return;
     this._mounted = true;
+    console.log('[lift-pass] connectedCallback — mounting');
     ensureFonts();
     var root = this.attachShadow({ mode: 'open' });
     root.innerHTML = '<style>' + CSS + '</style>' + HTML;
     init(root);
+    console.log('[lift-pass] mounted OK');
   }
 }
-if (!customElements.get('lift-pass')) { customElements.define('lift-pass', LiftPass); }
+if (!customElements.get('lift-pass')) {
+  customElements.define('lift-pass', LiftPass);
+  console.log('[lift-pass] custom element defined');
+}
