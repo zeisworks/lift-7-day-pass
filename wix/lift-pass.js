@@ -1109,11 +1109,22 @@ function init(root) {
   root.querySelectorAll('a[href="#claim"], [data-claim]').forEach(function (el) {
     el.addEventListener('click', function (e) { e.preventDefault(); openModal(0); });
   });
+  var leadEmail = '';
+  function postLead(payload) {
+    // Posts to the Velo backend http-function (backend/http-functions.js -> post_lead).
+    // Same-origin on the published Wix site, so a relative path works.
+    return fetch('/_functions/lead', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    }).catch(function () {});
+  }
   if (claimForm) {
     claimForm.addEventListener('submit', function (e) {
       e.preventDefault();
-      // TODO: send lead data to your destination (Velo backend, fetch() to an endpoint, etc.)
-      // var data = Object.fromEntries(new FormData(claimForm).entries());
+      var data = Object.fromEntries(new FormData(claimForm).entries());
+      leadEmail = data.email || '';
+      postLead(data);            // -> creates the Wix contact
       showStep(1);
     });
   }
@@ -1127,7 +1138,15 @@ function init(root) {
       else if (hidden) { hidden.value = ''; }
     });
   });
-  if (journeyForm) { journeyForm.addEventListener('submit', function (e) { e.preventDefault(); showStep(2); }); }
+  if (journeyForm) {
+    journeyForm.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var jd = Object.fromEntries(new FormData(journeyForm).entries());
+      jd.email = leadEmail;     // tie the answers to the contact created in step 0
+      postLead(jd);
+      showStep(2);
+    });
+  }
   var mc = root.querySelector('#modal-close'); if (mc) mc.addEventListener('click', closeModal);
   var ms = root.querySelector('#modal-skip'); if (ms) ms.addEventListener('click', closeModal);
   var md = root.querySelector('#modal-done'); if (md) md.addEventListener('click', closeModal);
