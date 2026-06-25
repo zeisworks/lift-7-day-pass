@@ -939,22 +939,8 @@ const HTML = `<div class="lift-root"><!-- URGENCY BAR -->
   <a href="#claim" class="btn btn-red">Start My Free Week</a>
 </div>
 
-<!-- FOOTER -->
-<footer>
-  <div class="container">
-    <div class="foot">
-      <img class="logo" src="https://zeisworks.github.io/lift-7-day-pass/assets/images/lift-logo-transparent.png" alt="Lift STL" />
-      <div class="links">
-        <a href="https://lift-stl.com" target="_blank" rel="noopener">lift-stl.com</a>
-        <a href="https://instagram.com/liftstl" target="_blank" rel="noopener">Instagram</a>
-        <a href="tel:+13142963117">314-296-3117</a>
-        <a href="#claim">Start Free Week</a>
-      </div>
-    </div>
-    <!-- EDIT: address -->
-    <p class="foot-legal">Lift STL &nbsp;·&nbsp; Brentwood, MO &nbsp;·&nbsp; © 2026 Lift STL. All rights reserved.</p>
-  </div>
-</footer>
+<!-- FOOTER: intentionally omitted in the Wix build — the Wix site footer renders
+     below this element. (The standalone index.html keeps its own footer.) -->
 
 <!-- POST-SUBMIT MODAL -->
 <div class="modal-overlay" id="signup-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title" hidden>
