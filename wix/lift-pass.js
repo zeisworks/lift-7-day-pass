@@ -1110,6 +1110,17 @@ function init(root) {
     el.addEventListener('click', function (e) { e.preventDefault(); openModal(0); });
   });
   var leadEmail = '';
+  // Fire a GA4 event on the parent window. GA is loaded site-wide via the Wix
+  // dashboard (Google Analytics integration), which exposes window.gtag here.
+  // No-ops safely if analytics hasn't loaded (or is blocked by consent tools).
+  function trackEvent(name, params) {
+    try {
+      if (typeof window.gtag === 'function') { window.gtag('event', name, params || {}); }
+      else if (window.dataLayer && window.dataLayer.push) {
+        window.dataLayer.push(Object.assign({ event: name }, params || {}));
+      }
+    } catch (err) { /* analytics must never break the form */ }
+  }
   function postLead(payload) {
     // Posts to the Velo backend http-function (backend/http-functions.js -> post_lead).
     // Same-origin on the published Wix site, so a relative path works.
@@ -1125,6 +1136,7 @@ function init(root) {
       var data = Object.fromEntries(new FormData(claimForm).entries());
       leadEmail = data.email || '';
       postLead(data);            // -> creates the Wix contact
+      trackEvent('generate_lead', { event_category: 'lead', form: '7-day-pass' });
       showStep(1);
     });
   }

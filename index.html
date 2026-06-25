@@ -1142,9 +1142,20 @@
       el.addEventListener('click', function (e) { e.preventDefault(); openModal(0); });
     });
 
+    // Fire a GA4 event (no-ops safely if analytics isn't loaded / is blocked).
+    function trackEvent(name, params) {
+      try {
+        if (typeof window.gtag === 'function') { window.gtag('event', name, params || {}); }
+        else if (window.dataLayer && window.dataLayer.push) {
+          window.dataLayer.push(Object.assign({ event: name }, params || {}));
+        }
+      } catch (err) { /* analytics must never break the form */ }
+    }
+
     if (claimForm) {
       claimForm.addEventListener('submit', function (e) {
         e.preventDefault();
+        trackEvent('generate_lead', { event_category: 'lead', form: '7-day-pass' });
         showStep(1);
         // NOTE: wire claimForm data to your booking/CRM here.
       });
