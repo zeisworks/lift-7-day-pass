@@ -6,44 +6,79 @@
 //   https://www.lift-stl.com/_functions/lead   (POST)
 // which lift-pass.js calls via fetch('/_functions/lead').
 //
+// What it does on every submission:
+//   1. Creates (or appends to) the contact from name / email / phone.
+//   2. Tags the contact with the "7 Days Free" label — created automatically the
+//      first time, reused after that.
+//   3. If the follow-up step sent goal / frequency / challenge, saves them into
+//      custom contact fields (Goal / Workout Frequency / Biggest Challenge) —
+//      also created automatically on first run.
+//
+// No manual dashboard setup is required — the label and custom fields are created
+// by the code via findOrCreateLabel / findOrCreateExtendedField.
+//
 // Docs:
 //   http-functions:  https://dev.wix.com/docs/velo/api-reference/wix-http-functions/introduction
 //   contacts:        https://dev.wix.com/docs/velo/api-reference/wix-crm-backend/contacts/introduction
 
-import { ok, badRequest } from 'wix-http-functions';
+import { ok, serverError } from 'wix-http-functions';
 import { contacts } from 'wix-crm-backend';
+
+// The endpoint is hit by an anonymous site visitor, so suppress the
+// Manage-Contacts permission check on the CRM calls.
+const AUTH = { suppressAuth: true };
+
+const LEAD_LABEL = '7 Days Free';
+
+const JSON_HEADERS = {
+  'Content-Type': 'application/json',
+  'Access-Control-Allow-Origin': '*'
+};
 
 export async function post_lead(request) {
   try {
     const b = await request.body.json();
 
+    // Core contact info — built from whatever this submission carries. The first
+    // step sends name/email/phone; the follow-up step sends just email + answers.
     const info = {
       name: { first: b.first_name || '', last: b.last_name || '' },
       emails: b.email ? [{ email: b.email }] : [],
       phones: b.phone ? [{ phone: b.phone }] : []
     };
 
-    // OPTIONAL — capture the journey answers (goal / frequency / challenge).
-    // To store these, create matching custom contact fields in your Wix dashboard
-    // (Contacts → manage custom fields) and put their field keys below. If you skip
-    // this, the core lead (name/email/phone) is still saved.
-    const extended = {};
-    if (b.goal)      extended['custom.goal'] = b.goal;
-    if (b.frequency) extended['custom.frequency'] = b.frequency;
-    if (b.challenge) extended['custom.challenge'] = b.challenge;
-    if (Object.keys(extended).length) info.extendedFields = extended;
+    // Follow-up answers -> custom fields. Ensure each field exists (idempotent),
+    // then attach its value keyed by the real key Wix returns (e.g. "custom.goal").
+    const answers = [
+      ['Goal', b.goal],
+      ['Workout Frequency', b.frequency],
+      ['Biggest Challenge', b.challenge]
+    ].filter(function (pair) { return pair[1]; });
 
-    await contacts.appendOrCreateContact(info);
+    if (answers.length) {
+      const extended = {};
+      for (const pair of answers) {
+        const res = await contacts.findOrCreateExtendedField(
+          { displayName: pair[0], dataType: 'TEXT' },
+          AUTH
+        );
+        extended[res.extendedField.key] = pair[1];
+      }
+      info.extendedFields = extended;
+    }
 
-    return ok({
-      headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' },
-      body: { ok: true }
-    });
+    // Create or append the contact (reconciles by email/phone).
+    const created = await contacts.appendOrCreateContact(info);
+    const contactId = created.contactId;
+
+    // Tag every lead with the "7 Days Free" label. labelKeys are appended, so
+    // re-labeling the same contact on the follow-up step is harmless.
+    const labelRes = await contacts.findOrCreateLabel(LEAD_LABEL, AUTH);
+    await contacts.labelContact(contactId, [labelRes.label.key], AUTH);
+
+    return ok({ headers: JSON_HEADERS, body: { ok: true, contactId: contactId } });
   } catch (err) {
-    return badRequest({
-      headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' },
-      body: { ok: false, error: String(err) }
-    });
+    return serverError({ headers: JSON_HEADERS, body: { ok: false, error: String(err) } });
   }
 }
 
