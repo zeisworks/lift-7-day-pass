@@ -164,6 +164,23 @@
   /* Scale-in when the video scrolls into view */
   .hero-media.reveal { opacity: 0; transform: scale(0.95) translateY(16px); transition: opacity 0.7s ease, transform 0.7s ease; }
   .hero-media.reveal.in { opacity: 1; transform: none; }
+  /* Hero CTA (opens the claim form popup) */
+  .hero-cta { margin-top: clamp(1.25rem, 3vw, 1.75rem); }
+  .hero-cta-note {
+    font-family: 'Barlow Condensed', sans-serif; font-weight: 600;
+    font-size: 0.72rem; letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--muted); margin-top: 0.7rem;
+  }
+  @media (max-width: 600px) { .hero-cta .btn { display: block; width: 100%; text-align: center; } }
+  /* Mobile: tighten the hero so the top of the video shows above the fold */
+  @media (max-width: 600px) {
+    .hero { padding-top: 1.1rem; padding-bottom: 1.5rem; }
+    .hero-copy h1 { font-size: 2.4rem; margin-bottom: 0.7rem; }
+    .hero-copy .sub { font-size: 0.96rem; line-height: 1.45; margin-bottom: 1rem; }
+    .hero-copy .location-pill { margin-bottom: 1rem; }
+    .hero-cta { margin-top: 0.9rem; }
+    .urgency-bar { font-size: 0.78rem; padding: 0.5rem 1rem; }
+  }
 
   /* Hero copy */
   .hero-copy .rating-pill {
@@ -235,15 +252,15 @@
     text-align: center; margin-top: 0.85rem; line-height: 1.4;
   }
   .form-rules {
-    background: rgba(0,0,0,0.26);
-    border-left: 3px solid #fff;
+    background: rgba(225,71,71,0.06);
+    border-left: 3px solid var(--red);
     border-radius: 4px;
     padding: 0.85rem 1rem;
     font-size: 0.78rem; line-height: 1.5;
-    color: rgba(255,255,255,0.92); font-weight: 300;
+    color: var(--charcoal); font-weight: 300;
     margin: 0.35rem 0 0.9rem;
   }
-  .form-rules strong { font-weight: 600; color: #fff; }
+  .form-rules strong { font-weight: 600; }
 
   /* ============================================================
      STATS STRIP
@@ -677,29 +694,9 @@
         </a>
       </div>
 
-      <div class="hero-form-col" id="claim">
-        <h2>Claim Your Free 7-Day Pass</h2>
-        <form action="#" method="post">
-          <div class="form-row">
-            <label class="sr-only" for="first_name">First name</label>
-            <input id="first_name" type="text" name="first_name" placeholder="First name" autocomplete="given-name" required />
-            <label class="sr-only" for="last_name">Last name</label>
-            <input id="last_name" type="text" name="last_name" placeholder="Last name" autocomplete="family-name" required />
-          </div>
-          <div class="form-field">
-            <label class="sr-only" for="email">Email address</label>
-            <input id="email" type="email" name="email" placeholder="Email address" autocomplete="email" required />
-          </div>
-          <div class="form-field">
-            <label class="sr-only" for="phone">Phone number</label>
-            <input id="phone" type="tel" name="phone" placeholder="Phone number" autocomplete="tel" />
-          </div>
-          <div class="form-rules">
-            By submitting, you confirm you're a <strong>first-time guest</strong> at Lift STL, <strong>18 or older</strong>, a <strong>local resident within 20 miles</strong> of the gym, and that you'll bring a <strong>photo ID</strong> and a <strong>card to put on file</strong> when you arrive.
-          </div>
-          <button type="submit" class="btn btn-white btn-full btn-lg">Claim Your Free Pass</button>
-          <p class="form-disclaimer" style="margin-top:.6rem;margin-bottom:-.25rem;">Takes 30 seconds · No commitment</p>
-        </form>
+      <div class="hero-cta">
+        <a href="#claim" class="btn btn-red btn-lg">Claim Your Free 7-Day Pass</a>
+        <p class="hero-cta-note">Takes 30 seconds · No commitment</p>
       </div>
 
       <div class="hero-media reveal">
@@ -921,12 +918,39 @@
   <div class="modal">
     <button type="button" class="modal-close" id="modal-close" aria-label="Close">&times;</button>
 
+    <!-- Step 0: the claim form -->
+    <div class="modal-step active" id="modal-step-0">
+      <h2 id="modal-title">Claim Your Free 7-Day Pass</h2>
+      <p class="modal-sub">Fill out the form and a coach will reach out — usually within the hour.</p>
+      <form id="claim-form" action="#" method="post">
+        <div class="form-row">
+          <label class="sr-only" for="first_name">First name</label>
+          <input id="first_name" type="text" name="first_name" placeholder="First name" autocomplete="given-name" required />
+          <label class="sr-only" for="last_name">Last name</label>
+          <input id="last_name" type="text" name="last_name" placeholder="Last name" autocomplete="family-name" required />
+        </div>
+        <div class="form-field">
+          <label class="sr-only" for="email">Email address</label>
+          <input id="email" type="email" name="email" placeholder="Email address" autocomplete="email" required />
+        </div>
+        <div class="form-field">
+          <label class="sr-only" for="phone">Phone number</label>
+          <input id="phone" type="tel" name="phone" placeholder="Phone number" autocomplete="tel" />
+        </div>
+        <div class="form-rules">
+          By submitting, you confirm you're a <strong>first-time guest</strong> at Lift STL, <strong>18 or older</strong>, a <strong>local resident within 20 miles</strong> of the gym, and that you'll bring a <strong>photo ID</strong> and a <strong>card to put on file</strong> when you arrive.
+        </div>
+        <button type="submit" class="btn btn-red btn-full btn-lg">Claim Your Free Pass</button>
+        <p class="form-disclaimer">Takes 30 seconds · No commitment</p>
+      </form>
+    </div>
+
     <!-- Step 1: confirmation + a few questions -->
-    <div class="modal-step active" id="modal-step-1">
+    <div class="modal-step" id="modal-step-1">
       <span class="modal-check" aria-hidden="true">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
       </span>
-      <h2 id="modal-title">You're In — Your Free Week Is Reserved.</h2>
+      <h2>You're In — Your Free Week Is Reserved.</h2>
       <p class="modal-sub">We've got your details and a coach will reach out <strong>usually within the hour</strong> to lock in your start. <strong>No commitment, no contract.</strong></p>
       <hr class="modal-divider" />
       <p class="modal-invite">While you're here — tell us about your journey</p>
@@ -1012,24 +1036,31 @@
     io.observe(vid);
   })();
 
-  // Post-submit modal: confirm the signup, then invite a few quick questions.
+  // Claim flow: CTA opens the form in a popup, then steps to confirmation + questions.
   (function () {
     var overlay = document.getElementById('signup-modal');
     if (!overlay) return;
-    var signupForm = document.querySelector('.hero-form-col form');
+    var claimForm = document.getElementById('claim-form');
     var journeyForm = document.getElementById('journey-form');
-    var step1 = document.getElementById('modal-step-1');
-    var step2 = document.getElementById('modal-step-2');
+    var steps = [
+      document.getElementById('modal-step-0'),
+      document.getElementById('modal-step-1'),
+      document.getElementById('modal-step-2')
+    ];
     var lastFocus = null;
 
-    function openModal() {
+    function showStep(n) {
+      steps.forEach(function (el, i) { if (el) el.classList.toggle('active', i === n); });
+    }
+    function openModal(step) {
+      showStep(step || 0);
       lastFocus = document.activeElement;
       overlay.hidden = false;
       // next frame so the transition runs
       requestAnimationFrame(function () { overlay.classList.add('open'); });
       document.body.classList.add('modal-locked');
-      var close = document.getElementById('modal-close');
-      if (close) close.focus();
+      var first = overlay.querySelector('.modal-step.active input, .modal-step.active button, #modal-close');
+      if (first) first.focus();
     }
     function closeModal() {
       overlay.classList.remove('open');
@@ -1043,17 +1074,17 @@
       setTimeout(function () { if (!overlay.classList.contains('open')) overlay.hidden = true; }, 350);
       if (lastFocus && lastFocus.focus) lastFocus.focus();
     }
-    function showStep(n) {
-      step1.classList.toggle('active', n === 1);
-      step2.classList.toggle('active', n === 2);
-    }
 
-    if (signupForm) {
-      signupForm.addEventListener('submit', function (e) {
+    // Any "claim" CTA opens the form popup at step 0.
+    document.querySelectorAll('a[href="#claim"], [data-claim]').forEach(function (el) {
+      el.addEventListener('click', function (e) { e.preventDefault(); openModal(0); });
+    });
+
+    if (claimForm) {
+      claimForm.addEventListener('submit', function (e) {
         e.preventDefault();
         showStep(1);
-        openModal();
-        // NOTE: wire signupForm data to your booking/CRM here.
+        // NOTE: wire claimForm data to your booking/CRM here.
       });
     }
 
