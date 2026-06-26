@@ -47,25 +47,26 @@ export async function post_lead(request) {
       phones: b.phone ? [{ phone: b.phone }] : []
     };
 
-    // Follow-up answers -> custom fields. Ensure each field exists (idempotent),
-    // then attach its value keyed by the real key Wix returns (e.g. "custom.goal").
-    const answers = [
+    // Follow-up answers -> a single freeform "note" on the contact. Wix has no API
+    // to write the contact's built-in Notes panel, so we consolidate the answers
+    // into one readable custom field ("7-Day Pass Notes") instead of cluttering the
+    // CRM with several separate fields.
+    const noteParts = [
       ['Goal', b.goal],
-      ['Workout Frequency', b.frequency],
-      ['Biggest Challenge', b.challenge],
-      ['Preferred Contact Method', b.contact_method]
-    ].filter(function (pair) { return pair[1]; });
+      ['Trains now', b.frequency],
+      ['Held back by', b.challenge],
+      ['Preferred contact', b.contact_method]
+    ].filter(function (pair) { return pair[1]; })
+     .map(function (pair) { return pair[0] + ': ' + pair[1]; });
 
-    if (answers.length) {
-      const extended = {};
-      for (const pair of answers) {
-        const res = await contacts.findOrCreateExtendedField(
-          { displayName: pair[0], dataType: 'TEXT' },
-          AUTH
-        );
-        extended[res.extendedField.key] = pair[1];
-      }
-      info.extendedFields = extended;
+    if (noteParts.length) {
+      const note = noteParts.join('  ·  ');
+      const field = await contacts.findOrCreateExtendedField(
+        { displayName: '7-Day Pass Notes', dataType: 'TEXT' },
+        AUTH
+      );
+      info.extendedFields = {};
+      info.extendedFields[field.extendedField.key] = note;
     }
 
     // Create or append the contact (reconciles by email/phone).
