@@ -658,7 +658,7 @@ const HTML = `<div class="lift-root"><!-- URGENCY BAR -->
 <!-- HEADER -->
 <header>
   <div class="container nav">
-    <a href="#top"><img class="logo" src="https://zeisworks.github.io/lift-7-day-pass/assets/images/lift-logo-transparent.png" alt="Lift STL" /></a>
+    <a href="#top"><img class="logo" src="https://static.wixstatic.com/media/194ffb_d94807faa1304d18817d9b2e8526052e~mv2.png" alt="Lift STL" /></a>
     <div class="nav-right">
       <a href="#claim" class="btn btn-red" style="padding:.65rem 1.5rem;font-size:.78rem;">Start Free Week</a>
     </div>
@@ -712,9 +712,9 @@ const HTML = `<div class="lift-root"><!-- URGENCY BAR -->
       </div>
 
       <div class="hero-media">
-        <video autoplay muted loop playsinline preload="auto" poster="https://zeisworks.github.io/lift-7-day-pass/assets/videos/hero-poster.jpg">
-          <source src="https://zeisworks.github.io/lift-7-day-pass/assets/videos/hero.mp4" type="video/mp4" />
-          <img src="https://zeisworks.github.io/lift-7-day-pass/assets/images/lift_stl_hero.webp" alt="Inside Lift STL" fetchpriority="high" />
+        <video autoplay muted loop playsinline preload="auto" poster="https://static.wixstatic.com/media/194ffb_d2bb4b931aff47eaa7d2600aafd783b9f001.jpg">
+          <source src="https://video.wixstatic.com/video/194ffb_d2bb4b931aff47eaa7d2600aafd783b9/720p/mp4/file.mp4" type="video/mp4" />
+          <img src="https://static.wixstatic.com/media/194ffb_d2bb4b931aff47eaa7d2600aafd783b9f001.jpg" alt="Inside Lift STL" fetchpriority="high" />
         </video>
       </div>
 
@@ -744,28 +744,28 @@ const HTML = `<div class="lift-root"><!-- URGENCY BAR -->
     </div>
     <div class="access-grid reveal stagger">
       <article class="access-card">
-        <img src="https://zeisworks.github.io/lift-7-day-pass/assets/images/facility-2.webp" alt="Open training floor with room to move" />
+        <img src="https://static.wixstatic.com/media/194ffb_284f29dd088a468681762e287bd61d86~mv2.webp" alt="Open training floor with room to move" />
         <div class="access-body">
           <h3>No Crowds, No Waiting</h3>
           <p>Plenty of space and equipment to go around. No fighting over a rack, no standing around waiting your turn.</p>
         </div>
       </article>
       <article class="access-card">
-        <img src="https://zeisworks.github.io/lift-7-day-pass/assets/images/facility-6.webp" alt="Strength equipment on the Lift STL floor" />
+        <img src="https://static.wixstatic.com/media/194ffb_e47a71ceb3a74911bdc40c751f8e9b82~mv2.webp" alt="Strength equipment on the Lift STL floor" />
         <div class="access-body">
           <h3>Elite Equipment</h3>
           <p>Individually picked equipment for the best results. Sorinex racks and platforms. Equipment from Atlantis, Prime, Bootybuilder, Watson and more.</p>
         </div>
       </article>
       <article class="access-card">
-        <img src="https://zeisworks.github.io/lift-7-day-pass/assets/images/infrared-sauna.webp?v=2" alt="Infrared sauna at Lift STL" />
+        <img src="https://static.wixstatic.com/media/194ffb_48c6d6fe398c4754b772539d6a03ebc3~mv2.webp" alt="Infrared sauna at Lift STL" />
         <div class="access-body">
           <h3>Infrared Sauna</h3>
           <p>Recover like you train. Infrared sauna access is included with your pass — standard for every member, not a premium upsell.</p>
         </div>
       </article>
       <article class="access-card">
-        <img src="https://zeisworks.github.io/lift-7-day-pass/assets/images/facility-interior.jpg" alt="Inside the Lift STL training floor" />
+        <img src="https://static.wixstatic.com/media/194ffb_1ca8918a49704b0f99670dd172f0d2a2~mv2.jpg" alt="Inside the Lift STL training floor" />
         <div class="access-body">
           <h3>24/7 Access, 365 Days a Year</h3>
           <p>Train on your schedule, not ours. The doors are open around the clock, every single day of the year.</p>
@@ -939,21 +939,8 @@ const HTML = `<div class="lift-root"><!-- URGENCY BAR -->
   <a href="#claim" class="btn btn-red">Start My Free Week</a>
 </div>
 
-<!-- FOOTER -->
-<footer>
-  <div class="container">
-    <div class="foot">
-      <img class="logo" src="https://zeisworks.github.io/lift-7-day-pass/assets/images/lift-logo-transparent.png" alt="Lift STL" />
-      <div class="links">
-        <a href="https://lift-stl.com" target="_blank" rel="noopener">lift-stl.com</a>
-        <a href="https://instagram.com/liftstl" target="_blank" rel="noopener">Instagram</a>
-        <a href="#claim">Start Free Week</a>
-      </div>
-    </div>
-    <!-- EDIT: address -->
-    <p class="foot-legal">Lift STL &nbsp;·&nbsp; Brentwood, MO &nbsp;·&nbsp; © 2026 Lift STL. All rights reserved.</p>
-  </div>
-</footer>
+<!-- FOOTER: intentionally omitted in the Wix build — the Wix site footer renders
+     below this element. (The standalone index.html keeps its own footer.) -->
 
 <!-- POST-SUBMIT MODAL -->
 <div class="modal-overlay" id="signup-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title" hidden>
@@ -977,7 +964,7 @@ const HTML = `<div class="lift-root"><!-- URGENCY BAR -->
         </div>
         <div class="form-field">
           <label class="sr-only" for="phone">Phone number</label>
-          <input id="phone" type="tel" name="phone" placeholder="Phone number" autocomplete="tel" />
+          <input id="phone" type="tel" name="phone" placeholder="Phone number" autocomplete="tel" required />
         </div>
         <div class="form-rules">
           By submitting, you confirm you're a <strong>first-time guest</strong> at Lift STL, <strong>18 or older</strong>, a <strong>local resident within 20 miles</strong> of the gym, and that you'll bring a <strong>photo ID</strong> and a <strong>card to put on file</strong> when you arrive.
@@ -1030,6 +1017,15 @@ const HTML = `<div class="lift-root"><!-- URGENCY BAR -->
             <option>Coming back after a break</option>
             <option>Nothing — I'm ready</option>
           </select>
+        </div>
+        <div class="modal-q">
+          <label>Preferred contact method?</label>
+          <div class="modal-chips" data-group="contact_method" role="group" aria-label="Preferred contact method">
+            <button type="button" class="modal-chip">Text</button>
+            <button type="button" class="modal-chip">Call</button>
+            <button type="button" class="modal-chip">Email</button>
+          </div>
+          <input type="hidden" name="contact_method" />
         </div>
         <button type="submit" class="btn btn-red btn-full btn-lg">Send &amp; Finish</button>
         <button type="button" class="modal-skip" id="modal-skip">Skip — I'll share later</button>
@@ -1109,11 +1105,34 @@ function init(root) {
   root.querySelectorAll('a[href="#claim"], [data-claim]').forEach(function (el) {
     el.addEventListener('click', function (e) { e.preventDefault(); openModal(0); });
   });
+  var leadEmail = '';
+  // Fire a GA4 event on the parent window. GA is loaded site-wide via the Wix
+  // dashboard (Google Analytics integration), which exposes window.gtag here.
+  // No-ops safely if analytics hasn't loaded (or is blocked by consent tools).
+  function trackEvent(name, params) {
+    try {
+      if (typeof window.gtag === 'function') { window.gtag('event', name, params || {}); }
+      else if (window.dataLayer && window.dataLayer.push) {
+        window.dataLayer.push(Object.assign({ event: name }, params || {}));
+      }
+    } catch (err) { /* analytics must never break the form */ }
+  }
+  function postLead(payload) {
+    // Posts to the Velo backend http-function (backend/http-functions.js -> post_lead).
+    // Same-origin on the published Wix site, so a relative path works.
+    return fetch('/_functions/lead', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    }).catch(function () {});
+  }
   if (claimForm) {
     claimForm.addEventListener('submit', function (e) {
       e.preventDefault();
-      // TODO: send lead data to your destination (Velo backend, fetch() to an endpoint, etc.)
-      // var data = Object.fromEntries(new FormData(claimForm).entries());
+      var data = Object.fromEntries(new FormData(claimForm).entries());
+      leadEmail = data.email || '';
+      postLead(data);            // -> creates the Wix contact
+      trackEvent('generate_lead', { event_category: 'lead', form: '7-day-pass' });
       showStep(1);
     });
   }
@@ -1127,7 +1146,15 @@ function init(root) {
       else if (hidden) { hidden.value = ''; }
     });
   });
-  if (journeyForm) { journeyForm.addEventListener('submit', function (e) { e.preventDefault(); showStep(2); }); }
+  if (journeyForm) {
+    journeyForm.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var jd = Object.fromEntries(new FormData(journeyForm).entries());
+      jd.email = leadEmail;     // tie the answers to the contact created in step 0
+      postLead(jd);
+      showStep(2);
+    });
+  }
   var mc = root.querySelector('#modal-close'); if (mc) mc.addEventListener('click', closeModal);
   var ms = root.querySelector('#modal-skip'); if (ms) ms.addEventListener('click', closeModal);
   var md = root.querySelector('#modal-done'); if (md) md.addEventListener('click', closeModal);

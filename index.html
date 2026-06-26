@@ -5,6 +5,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Lift STL — 7 Days Free</title>
 
+<!-- Google Analytics 4 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-LCLPZLMWKZ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-LCLPZLMWKZ');
+</script>
+
 <!-- LCP: warm up font + hero asset connections, preload the hero poster -->
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -958,6 +967,7 @@
       <div class="links">
         <a href="https://lift-stl.com" target="_blank" rel="noopener">lift-stl.com</a>
         <a href="https://instagram.com/liftstl" target="_blank" rel="noopener">Instagram</a>
+        <a href="tel:+13142963117">314-296-3117</a>
         <a href="#claim">Start Free Week</a>
       </div>
     </div>
@@ -988,7 +998,7 @@
         </div>
         <div class="form-field">
           <label class="sr-only" for="phone">Phone number</label>
-          <input id="phone" type="tel" name="phone" placeholder="Phone number" autocomplete="tel" />
+          <input id="phone" type="tel" name="phone" placeholder="Phone number" autocomplete="tel" required />
         </div>
         <div class="form-rules">
           By submitting, you confirm you're a <strong>first-time guest</strong> at Lift STL, <strong>18 or older</strong>, a <strong>local resident within 20 miles</strong> of the gym, and that you'll bring a <strong>photo ID</strong> and a <strong>card to put on file</strong> when you arrive.
@@ -1041,6 +1051,15 @@
             <option>Coming back after a break</option>
             <option>Nothing — I'm ready</option>
           </select>
+        </div>
+        <div class="modal-q">
+          <label>Preferred contact method?</label>
+          <div class="modal-chips" data-group="contact_method" role="group" aria-label="Preferred contact method">
+            <button type="button" class="modal-chip">Text</button>
+            <button type="button" class="modal-chip">Call</button>
+            <button type="button" class="modal-chip">Email</button>
+          </div>
+          <input type="hidden" name="contact_method" />
         </div>
         <button type="submit" class="btn btn-red btn-full btn-lg">Send &amp; Finish</button>
         <button type="button" class="modal-skip" id="modal-skip">Skip — I'll share later</button>
@@ -1142,11 +1161,37 @@
       el.addEventListener('click', function (e) { e.preventDefault(); openModal(0); });
     });
 
+    // Fire a GA4 event (no-ops safely if analytics isn't loaded / is blocked).
+    function trackEvent(name, params) {
+      try {
+        if (typeof window.gtag === 'function') { window.gtag('event', name, params || {}); }
+        else if (window.dataLayer && window.dataLayer.push) {
+          window.dataLayer.push(Object.assign({ event: name }, params || {}));
+        }
+      } catch (err) { /* analytics must never break the form */ }
+    }
+
+    // Leads POST to the Wix Velo http-function on the main site (cross-origin;
+    // the backend sends Access-Control-Allow-Origin: * so this works from the
+    // join.lift-stl.com subdomain). Leads land in Wix Contacts.
+    var LEAD_ENDPOINT = 'https://www.lift-stl.com/_functions/lead';
+    var leadEmail = '';
+    function postLead(payload) {
+      return fetch(LEAD_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      }).catch(function () {});
+    }
+
     if (claimForm) {
       claimForm.addEventListener('submit', function (e) {
         e.preventDefault();
+        var data = Object.fromEntries(new FormData(claimForm).entries());
+        leadEmail = data.email || '';
+        postLead(data);            // -> creates the Wix contact + "7 Days Free" label
+        trackEvent('generate_lead', { event_category: 'lead', form: '7-day-pass' });
         showStep(1);
-        // NOTE: wire claimForm data to your booking/CRM here.
       });
     }
 
@@ -1166,8 +1211,10 @@
     if (journeyForm) {
       journeyForm.addEventListener('submit', function (e) {
         e.preventDefault();
+        var jd = Object.fromEntries(new FormData(journeyForm).entries());
+        jd.email = leadEmail;      // tie the answers to the contact created in step 0
+        postLead(jd);              // -> adds the consolidated "7-Day Pass Notes"
         showStep(2);
-        // NOTE: wire journey answers (goal / frequency / challenge) to your CRM here.
       });
     }
 
