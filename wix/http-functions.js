@@ -52,7 +52,8 @@ export async function post_lead(request) {
     const answers = [
       ['Goal', b.goal],
       ['Workout Frequency', b.frequency],
-      ['Biggest Challenge', b.challenge]
+      ['Biggest Challenge', b.challenge],
+      ['Preferred Contact Method', b.contact_method]
     ].filter(function (pair) { return pair[1]; });
 
     if (answers.length) {

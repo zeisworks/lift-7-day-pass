@@ -964,7 +964,7 @@ const HTML = `<div class="lift-root"><!-- URGENCY BAR -->
         </div>
         <div class="form-field">
           <label class="sr-only" for="phone">Phone number</label>
-          <input id="phone" type="tel" name="phone" placeholder="Phone number" autocomplete="tel" />
+          <input id="phone" type="tel" name="phone" placeholder="Phone number" autocomplete="tel" required />
         </div>
         <div class="form-rules">
           By submitting, you confirm you're a <strong>first-time guest</strong> at Lift STL, <strong>18 or older</strong>, a <strong>local resident within 20 miles</strong> of the gym, and that you'll bring a <strong>photo ID</strong> and a <strong>card to put on file</strong> when you arrive.
@@ -1017,6 +1017,15 @@ const HTML = `<div class="lift-root"><!-- URGENCY BAR -->
             <option>Coming back after a break</option>
             <option>Nothing — I'm ready</option>
           </select>
+        </div>
+        <div class="modal-q">
+          <label>Preferred contact method?</label>
+          <div class="modal-chips" data-group="contact_method" role="group" aria-label="Preferred contact method">
+            <button type="button" class="modal-chip">Text</button>
+            <button type="button" class="modal-chip">Call</button>
+            <button type="button" class="modal-chip">Email</button>
+          </div>
+          <input type="hidden" name="contact_method" />
         </div>
         <button type="submit" class="btn btn-red btn-full btn-lg">Send &amp; Finish</button>
         <button type="button" class="modal-skip" id="modal-skip">Skip — I'll share later</button>
