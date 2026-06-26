@@ -658,7 +658,7 @@ const HTML = `<div class="lift-root"><!-- URGENCY BAR -->
 <!-- HEADER -->
 <header>
   <div class="container nav">
-    <a href="#top"><img class="logo" src="https://zeisworks.github.io/lift-7-day-pass/assets/images/lift-logo-transparent.png" alt="Lift STL" /></a>
+    <a href="#top"><img class="logo" src="https://static.wixstatic.com/media/194ffb_d94807faa1304d18817d9b2e8526052e~mv2.png" alt="Lift STL" /></a>
     <div class="nav-right">
       <a href="#claim" class="btn btn-red" style="padding:.65rem 1.5rem;font-size:.78rem;">Start Free Week</a>
     </div>
@@ -712,9 +712,9 @@ const HTML = `<div class="lift-root"><!-- URGENCY BAR -->
       </div>
 
       <div class="hero-media">
-        <video autoplay muted loop playsinline preload="auto" poster="https://zeisworks.github.io/lift-7-day-pass/assets/videos/hero-poster.jpg">
-          <source src="https://zeisworks.github.io/lift-7-day-pass/assets/videos/hero.mp4" type="video/mp4" />
-          <img src="https://zeisworks.github.io/lift-7-day-pass/assets/images/lift_stl_hero.webp" alt="Inside Lift STL" fetchpriority="high" />
+        <video autoplay muted loop playsinline preload="auto" poster="https://static.wixstatic.com/media/194ffb_d2bb4b931aff47eaa7d2600aafd783b9f001.jpg">
+          <source src="https://video.wixstatic.com/video/194ffb_d2bb4b931aff47eaa7d2600aafd783b9/720p/mp4/file.mp4" type="video/mp4" />
+          <img src="https://static.wixstatic.com/media/194ffb_d2bb4b931aff47eaa7d2600aafd783b9f001.jpg" alt="Inside Lift STL" fetchpriority="high" />
         </video>
       </div>
 
@@ -744,28 +744,28 @@ const HTML = `<div class="lift-root"><!-- URGENCY BAR -->
     </div>
     <div class="access-grid reveal stagger">
       <article class="access-card">
-        <img src="https://zeisworks.github.io/lift-7-day-pass/assets/images/facility-2.webp" alt="Open training floor with room to move" />
+        <img src="https://static.wixstatic.com/media/194ffb_284f29dd088a468681762e287bd61d86~mv2.webp" alt="Open training floor with room to move" />
         <div class="access-body">
           <h3>No Crowds, No Waiting</h3>
           <p>Plenty of space and equipment to go around. No fighting over a rack, no standing around waiting your turn.</p>
         </div>
       </article>
       <article class="access-card">
-        <img src="https://zeisworks.github.io/lift-7-day-pass/assets/images/facility-6.webp" alt="Strength equipment on the Lift STL floor" />
+        <img src="https://static.wixstatic.com/media/194ffb_e47a71ceb3a74911bdc40c751f8e9b82~mv2.webp" alt="Strength equipment on the Lift STL floor" />
         <div class="access-body">
           <h3>Elite Equipment</h3>
           <p>Individually picked equipment for the best results. Sorinex racks and platforms. Equipment from Atlantis, Prime, Bootybuilder, Watson and more.</p>
         </div>
       </article>
       <article class="access-card">
-        <img src="https://zeisworks.github.io/lift-7-day-pass/assets/images/infrared-sauna.webp?v=2" alt="Infrared sauna at Lift STL" />
+        <img src="https://static.wixstatic.com/media/194ffb_48c6d6fe398c4754b772539d6a03ebc3~mv2.webp" alt="Infrared sauna at Lift STL" />
         <div class="access-body">
           <h3>Infrared Sauna</h3>
           <p>Recover like you train. Infrared sauna access is included with your pass — standard for every member, not a premium upsell.</p>
         </div>
       </article>
       <article class="access-card">
-        <img src="https://zeisworks.github.io/lift-7-day-pass/assets/images/facility-interior.jpg" alt="Inside the Lift STL training floor" />
+        <img src="https://static.wixstatic.com/media/194ffb_1ca8918a49704b0f99670dd172f0d2a2~mv2.jpg" alt="Inside the Lift STL training floor" />
         <div class="access-body">
           <h3>24/7 Access, 365 Days a Year</h3>
           <p>Train on your schedule, not ours. The doors are open around the clock, every single day of the year.</p>
