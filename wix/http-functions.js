@@ -89,6 +89,7 @@ export async function post_lead(request) {
     // at the end of the funnel (finish OR skip/close) carrying name/phone + any
     // answers — so there's a single complete card per lead. Best-effort: must never
     // break lead capture.
+    let inboxStatus = 'not-attempted';
     try {
       const fields = [];
       const addField = function (label, value) { if (value) fields.push({ name: label, value: String(value) }); };
@@ -101,7 +102,11 @@ export async function post_lead(request) {
       addField('Held back by', b.challenge);
       addField('Preferred contact', b.contact_method);
 
-      if (b.send_inbox && fields.length) {
+      if (!b.send_inbox) {
+        inboxStatus = 'skipped: no send_inbox flag';
+      } else if (!fields.length) {
+        inboxStatus = 'skipped: no fields';
+      } else {
         const convo = await elevate(conversations.getOrCreateConversation)({ contactId: contactId });
         await elevate(messages.sendMessage)(convo.conversation._id, {
           direction: 'PARTICIPANT_TO_BUSINESS',
@@ -115,10 +120,11 @@ export async function post_lead(request) {
             }
           }
         });
+        inboxStatus = 'sent';
       }
-    } catch (e) { /* inbox message is best-effort */ }
+    } catch (e) { inboxStatus = 'error: ' + String(e); }
 
-    return ok({ headers: JSON_HEADERS, body: { ok: true, contactId: contactId } });
+    return ok({ headers: JSON_HEADERS, body: { ok: true, contactId: contactId, inbox: inboxStatus } });
   } catch (err) {
     return serverError({ headers: JSON_HEADERS, body: { ok: false, error: String(err) } });
   }
