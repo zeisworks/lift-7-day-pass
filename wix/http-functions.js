@@ -22,7 +22,7 @@
 //   contacts:        https://dev.wix.com/docs/velo/api-reference/wix-crm-backend/contacts/introduction
 
 import { ok, serverError } from 'wix-http-functions';
-import { contacts } from 'wix-crm-backend';
+import { contacts, notifications } from 'wix-crm-backend';
 
 // The endpoint is hit by an anonymous site visitor, so suppress the
 // Manage-Contacts permission check on the CRM calls.
@@ -59,8 +59,8 @@ export async function post_lead(request) {
     ].filter(function (pair) { return pair[1]; })
      .map(function (pair) { return pair[0] + ': ' + pair[1]; });
 
-    if (noteParts.length) {
-      const note = noteParts.join('  ·  ');
+    const note = noteParts.join('  ·  ');
+    if (note) {
       const field = await contacts.findOrCreateExtendedField(
         { displayName: '7-Day Pass Notes', dataType: 'TEXT' },
         AUTH
@@ -77,6 +77,25 @@ export async function post_lead(request) {
     // re-labeling the same contact on the follow-up step is harmless.
     const labelRes = await contacts.findOrCreateLabel(LEAD_LABEL, AUTH);
     await contacts.labelContact(contactId, [labelRes.label.key], AUTH);
+
+    // Ping the owner in Wix (Dashboard bell + Wix Owner app). Fires on each
+    // submission; the body carries whatever this step collected — contact basics
+    // on step 1, the consolidated extra info on the follow-up step. Notification
+    // failures must never break lead capture, so this is isolated.
+    try {
+      const name = ((b.first_name || '') + ' ' + (b.last_name || '')).trim();
+      const parts = [];
+      if (name)     parts.push(name);
+      if (b.email)  parts.push(b.email);
+      if (b.phone)  parts.push(b.phone);
+      if (note)     parts.push(note);
+      notifications.notify(parts.join('  ·  ') || 'New 7-Day Pass lead', ['Dashboard', 'Mobile'], {
+        title: note ? '7-Day Pass — follow-up details' : 'New 7-Day Pass lead',
+        actionTitle: 'View contact',
+        actionTarget: { url: 'https://www.lift-stl.com/dashboard/contacts' },
+        recipients: { role: 'Owner' }
+      });
+    } catch (e) { /* notification is best-effort */ }
 
     return ok({ headers: JSON_HEADERS, body: { ok: true, contactId: contactId } });
   } catch (err) {
