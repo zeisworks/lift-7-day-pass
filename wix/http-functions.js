@@ -10,14 +10,12 @@
 //   1. Creates (or appends to) the contact from name / email / phone.
 //   2. Tags the contact with the "7 Days Free" label — created automatically the
 //      first time, reused after that.
-//   3. If the follow-up step sent goal / frequency / challenge / preferred contact,
-//      saves them as one consolidated "7-Day Pass Notes" field on the contact
-//      (created automatically on first run).
-//   4. Posts the lead into the Wix Inbox as a form-style message on the contact's
-//      conversation, so the details show in Inbox (and ping the Wix Owner app).
+//   3. Posts the lead into the Wix Inbox as a form-style message on the contact's
+//      conversation (name/phone + any follow-up answers), so it shows in Inbox and
+//      pings the Wix Owner app.
 //
-// No manual dashboard setup is required — the label and the note field are created
-// by the code via findOrCreateLabel / findOrCreateExtendedField.
+// No manual dashboard setup is required — the label is created by the code via
+// findOrCreateLabel.
 //
 // Docs:
 //   http-functions:  https://dev.wix.com/docs/velo/api-reference/wix-http-functions/introduction
@@ -52,27 +50,9 @@ export async function post_lead(request) {
       phones: b.phone ? [{ phone: b.phone }] : []
     };
 
-    // Follow-up answers -> a single freeform "note" on the contact. Wix has no API
-    // to write the contact's built-in Notes panel, so we consolidate the answers
-    // into one readable custom field ("7-Day Pass Notes") instead of cluttering the
-    // CRM with several separate fields.
-    const noteParts = [
-      ['Goal', b.goal],
-      ['Trains now', b.frequency],
-      ['Held back by', b.challenge],
-      ['Preferred contact', b.contact_method]
-    ].filter(function (pair) { return pair[1]; })
-     .map(function (pair) { return pair[0] + ': ' + pair[1]; });
-
-    const note = noteParts.join('  ·  ');
-    if (note) {
-      const field = await contacts.findOrCreateExtendedField(
-        { displayName: '7-Day Pass Notes', dataType: 'TEXT' },
-        AUTH
-      );
-      info.extendedFields = {};
-      info.extendedFields[field.extendedField.key] = note;
-    }
+    // Any follow-up answers travel in the Inbox card below — not as a contact
+    // custom field (that path hit Wix INVALID_FIELD_NAME and isn't needed now).
+    const hasAnswers = !!(b.goal || b.frequency || b.challenge || b.contact_method);
 
     // Create or append the contact (reconciles by email/phone).
     const created = await contacts.appendOrCreateContact(info);
@@ -115,7 +95,7 @@ export async function post_lead(request) {
             previewText: 'New 7-Day Pass lead',
             form: {
               title: '7-Day Pass — Free Week',
-              description: note ? 'Lead + follow-up details' : 'New lead',
+              description: hasAnswers ? 'Lead + follow-up details' : 'New lead',
               fields: fields
             }
           }
