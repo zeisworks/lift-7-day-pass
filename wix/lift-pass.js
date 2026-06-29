@@ -1095,6 +1095,9 @@ function init(root) {
     if (f) f.focus();
   }
   function closeModal() {
+    // If they started the funnel but didn't finish the questions (skip/X/Esc),
+    // still post the single consolidated Inbox card with whatever we have.
+    if (leadStarted && !cardSent) finishLead({});
     overlay.classList.remove('open');
     document.body.style.overflow = '';
     var onEnd = function () { overlay.hidden = true; overlay.removeEventListener('transitionend', onEnd); };
@@ -1126,12 +1129,24 @@ function init(root) {
       body: JSON.stringify(payload)
     }).catch(function () {});
   }
+  var leadInfo = {};       // name/email/phone stashed from the claim form
+  var cardSent = false;    // ensures exactly one consolidated Inbox card per lead
+  var leadStarted = false;
+  // Fires once at the end of the funnel (finish OR skip/close). Merges the stashed
+  // contact info with any follow-up answers and tells the backend to post the card.
+  function finishLead(extra) {
+    if (cardSent) return;
+    cardSent = true;
+    postLead(Object.assign({}, leadInfo, extra || {}, { send_inbox: '1' }));
+  }
   if (claimForm) {
     claimForm.addEventListener('submit', function (e) {
       e.preventDefault();
       var data = Object.fromEntries(new FormData(claimForm).entries());
       leadEmail = data.email || '';
-      postLead(data);            // -> creates the Wix contact
+      leadInfo = data;           // stash for the single consolidated card
+      leadStarted = true;
+      postLead(data);            // -> creates the Wix contact now (no card yet)
       trackEvent('generate_lead', { event_category: 'lead', form: '7-day-pass' });
       showStep(1);
     });
@@ -1150,8 +1165,7 @@ function init(root) {
     journeyForm.addEventListener('submit', function (e) {
       e.preventDefault();
       var jd = Object.fromEntries(new FormData(journeyForm).entries());
-      jd.email = leadEmail;     // tie the answers to the contact created in step 0
-      postLead(jd);
+      finishLead(jd);           // -> single card with contact info + the answers
       showStep(2);
     });
   }

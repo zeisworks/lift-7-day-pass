@@ -83,10 +83,12 @@ export async function post_lead(request) {
     const labelRes = await contacts.findOrCreateLabel(LEAD_LABEL, AUTH);
     await contacts.labelContact(contactId, [labelRes.label.key], AUTH);
 
-    // Post the lead into the Wix Inbox as a form-style message on this contact's
-    // conversation. Shows up in Inbox (and pings the Wix Owner app). Fires on each
-    // submission with whatever it collected — contact basics on the first step, the
-    // follow-up answers on the second. Best-effort: must never break lead capture.
+    // Post the lead into the Wix Inbox as ONE consolidated form-style message on
+    // this contact's conversation (shows in Inbox + pings the Wix Owner app). The
+    // frontend creates the contact on the claim form, then fires `send_inbox` once
+    // at the end of the funnel (finish OR skip/close) carrying name/phone + any
+    // answers — so there's a single complete card per lead. Best-effort: must never
+    // break lead capture.
     try {
       const fields = [];
       const addField = function (label, value) { if (value) fields.push({ name: label, value: String(value) }); };
@@ -99,7 +101,7 @@ export async function post_lead(request) {
       addField('Held back by', b.challenge);
       addField('Preferred contact', b.contact_method);
 
-      if (fields.length) {
+      if (b.send_inbox && fields.length) {
         const convo = await elevate(conversations.getOrCreateConversation)({ contactId: contactId });
         await elevate(messages.sendMessage)(convo.conversation._id, {
           direction: 'PARTICIPANT_TO_BUSINESS',
