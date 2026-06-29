@@ -10,11 +10,13 @@
 //   1. Creates (or appends to) the contact from name / email / phone.
 //   2. Tags the contact with the "7 Days Free" label — created automatically the
 //      first time, reused after that.
-//   3. If the follow-up step sent goal / frequency / challenge, saves them into
-//      custom contact fields (Goal / Workout Frequency / Biggest Challenge) —
-//      also created automatically on first run.
+//   3. If the follow-up step sent goal / frequency / challenge / preferred contact,
+//      saves them as one consolidated "7-Day Pass Notes" field on the contact
+//      (created automatically on first run).
+//   4. Pings the site owner (Wix Dashboard bell + Wix Owner app) with the lead and
+//      any extra info collected.
 //
-// No manual dashboard setup is required — the label and custom fields are created
+// No manual dashboard setup is required — the label and the note field are created
 // by the code via findOrCreateLabel / findOrCreateExtendedField.
 //
 // Docs:
