@@ -13,8 +13,8 @@
 //   3. If the follow-up step sent goal / frequency / challenge / preferred contact,
 //      saves them as one consolidated "7-Day Pass Notes" field on the contact
 //      (created automatically on first run).
-//   4. Pings the site owner (Wix Dashboard bell + Wix Owner app) with the lead and
-//      any extra info collected.
+//   4. Posts the lead into the Wix Inbox as a form-style message on the contact's
+//      conversation, so the details show in Inbox (and ping the Wix Owner app).
 //
 // No manual dashboard setup is required — the label and the note field are created
 // by the code via findOrCreateLabel / findOrCreateExtendedField.
@@ -22,9 +22,12 @@
 // Docs:
 //   http-functions:  https://dev.wix.com/docs/velo/api-reference/wix-http-functions/introduction
 //   contacts:        https://dev.wix.com/docs/velo/api-reference/wix-crm-backend/contacts/introduction
+//   inbox:           https://dev.wix.com/docs/velo/apis/wix-inbox-v2/introduction
 
 import { ok, serverError } from 'wix-http-functions';
-import { contacts, notifications } from 'wix-crm-backend';
+import { contacts } from 'wix-crm-backend';
+import { conversations, messages } from 'wix-inbox.v2';
+import { elevate } from 'wix-auth';
 
 // The endpoint is hit by an anonymous site visitor, so suppress the
 // Manage-Contacts permission check on the CRM calls.
@@ -80,24 +83,38 @@ export async function post_lead(request) {
     const labelRes = await contacts.findOrCreateLabel(LEAD_LABEL, AUTH);
     await contacts.labelContact(contactId, [labelRes.label.key], AUTH);
 
-    // Ping the owner in Wix (Dashboard bell + Wix Owner app). Fires on each
-    // submission; the body carries whatever this step collected — contact basics
-    // on step 1, the consolidated extra info on the follow-up step. Notification
-    // failures must never break lead capture, so this is isolated.
+    // Post the lead into the Wix Inbox as a form-style message on this contact's
+    // conversation. Shows up in Inbox (and pings the Wix Owner app). Fires on each
+    // submission with whatever it collected — contact basics on the first step, the
+    // follow-up answers on the second. Best-effort: must never break lead capture.
     try {
-      const name = ((b.first_name || '') + ' ' + (b.last_name || '')).trim();
-      const parts = [];
-      if (name)     parts.push(name);
-      if (b.email)  parts.push(b.email);
-      if (b.phone)  parts.push(b.phone);
-      if (note)     parts.push(note);
-      notifications.notify(parts.join('  ·  ') || 'New 7-Day Pass lead', ['Dashboard', 'Mobile'], {
-        title: note ? '7-Day Pass — follow-up details' : 'New 7-Day Pass lead',
-        actionTitle: 'View contact',
-        actionTarget: { url: 'https://www.lift-stl.com/dashboard/contacts' },
-        recipients: { role: 'Owner' }
-      });
-    } catch (e) { /* notification is best-effort */ }
+      const fields = [];
+      const addField = function (label, value) { if (value) fields.push({ name: label, value: String(value) }); };
+      addField('First Name', b.first_name);
+      addField('Last Name', b.last_name);
+      addField('Email', b.email);
+      addField('Phone', b.phone);
+      addField('Goal', b.goal);
+      addField('Trains now', b.frequency);
+      addField('Held back by', b.challenge);
+      addField('Preferred contact', b.contact_method);
+
+      if (fields.length) {
+        const convo = await elevate(conversations.getOrCreateConversation)({ contactId: contactId });
+        await elevate(messages.sendMessage)(convo.conversation._id, {
+          direction: 'PARTICIPANT_TO_BUSINESS',
+          visibility: 'BUSINESS',
+          content: {
+            previewText: 'New 7-Day Pass lead',
+            form: {
+              title: '7-Day Pass — Free Week',
+              description: note ? 'Lead + follow-up details' : 'New lead',
+              fields: fields
+            }
+          }
+        });
+      }
+    } catch (e) { /* inbox message is best-effort */ }
 
     return ok({ headers: JSON_HEADERS, body: { ok: true, contactId: contactId } });
   } catch (err) {
