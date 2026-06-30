@@ -74,7 +74,7 @@ export async function post_lead(request) {
 
     // Any follow-up answers travel in the Inbox card below — not as a contact
     // custom field (that path hit Wix INVALID_FIELD_NAME and isn't needed now).
-    const hasAnswers = !!(b.goal || b.frequency || b.challenge || b.contact_method);
+    const hasAnswers = !!(b.goal || b.frequency || b.challenge || b.contact_method || b.message);
 
     // Create or append the contact (reconciles by email/phone).
     const created = await contacts.appendOrCreateContact(info);
@@ -104,6 +104,7 @@ export async function post_lead(request) {
       addField('Trains now', b.frequency);
       addField('Held back by', b.challenge);
       addField('Preferred contact', b.contact_method);
+      addField('Message', b.message);
 
       if (!b.send_inbox) {
         inboxStatus = 'skipped: no send_inbox flag';
