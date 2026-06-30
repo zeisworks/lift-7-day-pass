@@ -1,20 +1,24 @@
-// Velo backend — save 7-day-pass leads into Wix CRM (Contacts).
+// Velo backend — save landing-page leads into Wix CRM (Contacts).
+//
+// Shared by every Lift landing page (7-day-pass + personal-training). Each page
+// posts a `source` so the lead is labeled and filed correctly; older pages that
+// don't send one fall back to the 7-day-pass treatment.
 //
 // WHERE THIS GOES: in the Wix Velo sidebar, under **Backend**, click the ▼ next to
 // the + and choose "Expose site API" — that creates a file named exactly
 // `http-functions.js`. Paste this in. It publishes an endpoint at:
 //   https://www.lift-stl.com/_functions/lead   (POST)
-// which lift-pass.js calls via fetch('/_functions/lead').
+// which the landing pages call via fetch('/_functions/lead').
 //
 // What it does on every submission:
 //   1. Creates (or appends to) the contact from name / email / phone.
-//   2. Tags the contact with the "7 Days Free" label — created automatically the
-//      first time, reused after that.
+//   2. Tags the contact with the source's label (e.g. "7 Days Free" or "Personal
+//      Training") — created automatically the first time, reused after that.
 //   3. Posts the lead into the Wix Inbox as a form-style message on the contact's
 //      conversation (name/phone + any follow-up answers), so it shows in Inbox and
 //      pings the Wix Owner app.
 //
-// No manual dashboard setup is required — the label is created by the code via
+// No manual dashboard setup is required — labels are created by the code via
 // findOrCreateLabel.
 //
 // Docs:
@@ -31,7 +35,22 @@ import { elevate } from 'wix-auth';
 // Manage-Contacts permission check on the CRM calls.
 const AUTH = { suppressAuth: true };
 
-const LEAD_LABEL = '7 Days Free';
+// Leads can arrive from more than one landing page. Each page posts a `source`
+// so the contact gets the right label and the Inbox card the right title. The
+// 7-day-pass page predates `source`, so an absent/unknown source falls back to it.
+const LEAD_SOURCES = {
+  '7-day-pass': {
+    label: '7 Days Free',
+    cardTitle: '7-Day Pass — Free Week',
+    previewText: 'New 7-Day Pass lead'
+  },
+  'personal-training': {
+    label: 'Personal Training',
+    cardTitle: 'Personal Training — Evaluation Request',
+    previewText: 'New Personal Training lead'
+  }
+};
+const DEFAULT_SOURCE = '7-day-pass';
 
 const JSON_HEADERS = {
   'Content-Type': 'application/json',
@@ -41,6 +60,9 @@ const JSON_HEADERS = {
 export async function post_lead(request) {
   try {
     const b = await request.body.json();
+
+    // Resolve which landing page this lead came from (label + Inbox card copy).
+    const source = LEAD_SOURCES[b.source] || LEAD_SOURCES[DEFAULT_SOURCE];
 
     // Core contact info — built from whatever this submission carries. The first
     // step sends name/email/phone; the follow-up step sends just email + answers.
@@ -58,9 +80,10 @@ export async function post_lead(request) {
     const created = await contacts.appendOrCreateContact(info);
     const contactId = created.contactId;
 
-    // Tag every lead with the "7 Days Free" label. labelKeys are appended, so
-    // re-labeling the same contact on the follow-up step is harmless.
-    const labelRes = await contacts.findOrCreateLabel(LEAD_LABEL, AUTH);
+    // Tag every lead with its source label (e.g. "7 Days Free" or "Personal
+    // Training"). labelKeys are appended, so re-labeling on the follow-up step is
+    // harmless.
+    const labelRes = await contacts.findOrCreateLabel(source.label, AUTH);
     await contacts.labelContact(contactId, [labelRes.label.key], AUTH);
 
     // Post the lead into the Wix Inbox as ONE consolidated form-style message on
@@ -92,9 +115,9 @@ export async function post_lead(request) {
           direction: 'PARTICIPANT_TO_BUSINESS',
           visibility: 'BUSINESS',
           content: {
-            previewText: 'New 7-Day Pass lead',
+            previewText: source.previewText,
             form: {
-              title: '7-Day Pass — Free Week',
+              title: source.cardTitle,
               description: hasAnswers ? 'Lead + follow-up details' : 'New lead',
               fields: fields
             }
