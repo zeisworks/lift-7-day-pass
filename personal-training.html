@@ -761,14 +761,16 @@
   }
   .modal-chip:hover { border-color: var(--red); }
   .modal-chip.selected { background: var(--red); border-color: var(--red); color: #fff; }
-  .modal-q select {
+  .modal-q select, .modal-q textarea {
     width: 100%; background: var(--cream);
     border: 1px solid var(--border-light); border-radius: 6px;
     padding: 0.72rem 0.9rem; font-family: 'Barlow', sans-serif;
     font-size: 16px; color: var(--charcoal); outline: none;
     transition: border-color 0.2s;
   }
-  .modal-q select:focus { border-color: var(--red); }
+  .modal-q textarea { resize: vertical; min-height: 4.5rem; line-height: 1.45; }
+  .modal-q textarea::placeholder { color: var(--muted); }
+  .modal-q select:focus, .modal-q textarea:focus { border-color: var(--red); }
   .modal-skip {
     display: block; width: 100%; text-align: center;
     background: none; border: none; cursor: pointer; margin-top: 0.9rem;
@@ -1332,6 +1334,10 @@
             <button type="button" class="modal-chip">Email</button>
           </div>
           <input type="hidden" name="contact_method" />
+        </div>
+        <div class="modal-q">
+          <label for="journey-message">Anything we should know? <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--muted);">(optional)</span></label>
+          <textarea id="journey-message" name="message" rows="3" placeholder="Injuries, schedule, what you're hoping to get out of training…"></textarea>
         </div>
         <button type="submit" class="btn btn-red btn-full btn-lg">Send &amp; Finish</button>
         <button type="button" class="modal-skip" id="modal-skip">Skip — I'll share later</button>
