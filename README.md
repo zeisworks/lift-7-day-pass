@@ -9,10 +9,21 @@ The offer is framed around the open **Brentwood** gym (7 years, ~550 members, 8,
 ## Files
 
 ```
-index.html            Self-contained page (inline CSS, no build step)
-assets/images/        Logo, facility photos, testimonial photos
-assets/videos/        Hero background video + poster
+index.html              "7 Days Free" funnel — self-contained page (inline CSS, no build step)
+personal-training.html  Personal-training funnel — same method/branding, evaluation + packages
+assets/images/          Logo, facility photos, testimonial photos
+assets/videos/          Hero background video + poster
+wix/http-functions.js   Shared Velo lead endpoint (labels leads by page via `source`)
 ```
+
+Both pages share the brand DNA and lead-capture flow. `personal-training.html`
+mirrors the live **lift-stl.com/personal-training** offer (custom evaluation,
+1-on-1 / sports / weight-loss / small-group / online programs, and the session
+packages). It posts leads to the same Wix endpoint with `source: 'personal-training'`,
+so they're tagged **Personal Training** instead of **7 Days Free**.
+
+Once deployed it lives at
+**https://zeisworks.github.io/lift-7-day-pass/personal-training.html**.
 
 ## Preview locally
 
