@@ -23,7 +23,8 @@ packages). It posts leads to the same Wix endpoint with `source: 'personal-train
 so they're tagged **Personal Training** instead of **7 Days Free**.
 
 Once deployed it lives at
-**https://zeisworks.github.io/lift-7-day-pass/personal-training.html**.
+**https://join.lift-stl.com/personal-training.html** (alongside the 7 Days Free
+funnel at **https://join.lift-stl.com/**).
 
 ## Preview locally
 
