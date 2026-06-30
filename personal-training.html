@@ -439,9 +439,55 @@
   }
 
   /* ============================================================
+     TRANSFORMATIONS — before/after gallery
+  ============================================================ */
+  .xform-grid {
+    display: grid; grid-template-columns: 1fr; gap: 1.5rem; margin-top: 3rem;
+  }
+  @media (min-width: 640px) { .xform-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 980px) { .xform-grid { grid-template-columns: repeat(3, 1fr); } }
+  .xform-card {
+    background: #fff; border-radius: 10px; overflow: hidden;
+    border: 1px solid var(--border-light);
+    box-shadow: 0 16px 40px rgba(46,48,54,0.16);
+    display: flex; flex-direction: column;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .xform-card:hover { transform: translateY(-5px); box-shadow: 0 24px 54px rgba(46,48,54,0.24); }
+  .xform-card img {
+    display: block; width: 100%; aspect-ratio: 1 / 1; object-fit: cover;
+    border-bottom: 1px solid var(--border-light);
+  }
+  .xform-cap {
+    padding: 1.1rem 1.3rem 1.25rem;
+    display: flex; align-items: center; gap: 0.85rem;
+  }
+  .xform-badge {
+    flex-shrink: 0; display: flex; align-items: center; justify-content: center;
+    width: 40px; height: 40px; border-radius: 9999px;
+    background: rgba(225,71,71,0.1); color: var(--red);
+  }
+  .xform-badge svg { width: 20px; height: 20px; }
+  .xform-tag {
+    display: block;
+    font-family: 'Barlow Condensed', sans-serif; font-weight: 800;
+    font-size: 1.12rem; line-height: 1.05; text-transform: uppercase;
+    letter-spacing: 0.02em; color: var(--charcoal);
+  }
+  .xform-sub {
+    display: block;
+    font-family: 'Barlow Condensed', sans-serif; font-weight: 600;
+    font-size: 0.7rem; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--red); margin-top: 0.2rem;
+  }
+
+  /* ============================================================
      TESTIMONIALS
   ============================================================ */
   .testimonials { background: var(--cream); }
+  .t-subhead {
+    text-align: center; margin-top: clamp(3.5rem, 7vw, 5rem);
+  }
   .t-grid {
     display: grid; grid-template-columns: repeat(3, 1fr);
     gap: 1.25rem; margin-top: 3rem; align-items: stretch;
@@ -952,7 +998,7 @@
         </div>
       </article>
       <article class="access-card">
-        <img src="./assets/images/transformation-4.webp" alt="Member weight-loss transformation" />
+        <img src="./assets/images/facility-5.webp" alt="Lift STL training floor" />
         <div class="access-body">
           <h3>Weight Loss &amp; Body Comp</h3>
           <p>High-intensity work to burn fat and build lean muscle, paired with nutrition coaching and body-composition tracking.</p>
@@ -999,15 +1045,53 @@
       <h2 class="section-heading">Real People. Real Results.</h2>
       <p class="section-lead">"Before and after" looks different for everyone. We measure results and make adjustments at every step — here are a few of the people who set, met, and built on their goals.</p>
     </div>
+
+    <!-- Before/after gallery. To add a transformation, copy one .xform-card and
+         drop the new before/after image into assets/images/. -->
+    <div class="xform-grid reveal stagger">
+      <figure class="xform-card">
+        <img src="./assets/images/transformation-6.webp" alt="Ryan Finley before and after — 8-week transformation at Lift STL" loading="lazy" />
+        <figcaption class="xform-cap">
+          <span class="xform-badge" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h7l-1 8 10-12h-7z"/></svg>
+          </span>
+          <span>
+            <span class="xform-tag">8-Week Transformation</span>
+            <span class="xform-sub">Ryan Finley · Personal Training</span>
+          </span>
+        </figcaption>
+      </figure>
+      <figure class="xform-card">
+        <img src="./assets/images/transformation-1.webp" alt="Lift STL member before and after transformation" loading="lazy" />
+        <figcaption class="xform-cap">
+          <span class="xform-badge" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h7l-1 8 10-12h-7z"/></svg>
+          </span>
+          <span>
+            <span class="xform-tag">Before &amp; After</span>
+            <span class="xform-sub">Lift STL Member</span>
+          </span>
+        </figcaption>
+      </figure>
+      <figure class="xform-card">
+        <img src="./assets/images/transformation-4.webp" alt="Lift STL member before and after — one year of progress" loading="lazy" />
+        <figcaption class="xform-cap">
+          <span class="xform-badge" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h7l-1 8 10-12h-7z"/></svg>
+          </span>
+          <span>
+            <span class="xform-tag">One Year of Progress</span>
+            <span class="xform-sub">Lift STL Member</span>
+          </span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <!-- In their words -->
+    <div class="t-subhead">
+      <span class="eyebrow">In Their Words</span>
+    </div>
     <div class="t-grid reveal stagger">
-      <div class="t-card">
-        <div class="stars" aria-hidden="true">★★★★★</div>
-        <p class="quote">"What I like most about Eric is how specific he is with his approach. He customized a workout to help fix my imbalances, which helped my performance."</p>
-        <div class="who">
-          <div class="t-avatar" style="background:#3D4B5C;">C</div>
-          <div><div class="name">Cole Miller</div><div class="meta">Personal Training Client</div></div>
-        </div>
-      </div>
       <div class="t-card">
         <div class="stars" aria-hidden="true">★★★★★</div>
         <p class="quote">"Working with Lift was the driving force that led me to finally achieving my goals. I learned from some of the top fitness experts in my city how to lose weight quickly and keep the muscle on."</p>
@@ -1018,34 +1102,18 @@
       </div>
       <div class="t-card">
         <div class="stars" aria-hidden="true">★★★★★</div>
+        <p class="quote">"What I like most about Eric is how specific he is with his approach. He customized a workout to help fix my imbalances, which helped my performance."</p>
+        <div class="who">
+          <div class="t-avatar" style="background:#3D4B5C;">C</div>
+          <div><div class="name">Cole Miller</div><div class="meta">Personal Training Client</div></div>
+        </div>
+      </div>
+      <div class="t-card">
+        <div class="stars" aria-hidden="true">★★★★★</div>
         <p class="quote">"The personal training and programming put in by the staff is above all the best thing. These are real trainers that provide specific plans tailored to you."</p>
         <div class="who">
           <div class="t-avatar" style="background:#3B4A3F;">A</div>
           <div><div class="name">Andy Atchison</div><div class="meta">Google Review</div></div>
-        </div>
-      </div>
-      <div class="t-card">
-        <div class="stars" aria-hidden="true">★★★★★</div>
-        <p class="quote">"I felt comfortable from the start: great people, respectful, helpful, and experts at what they do. You can't beat this gym."</p>
-        <div class="who">
-          <div class="t-avatar" style="background:#5C3D3D;">D</div>
-          <div><div class="name">Daniel Keao</div><div class="meta">Google Review</div></div>
-        </div>
-      </div>
-      <div class="t-card">
-        <div class="stars" aria-hidden="true">★★★★★</div>
-        <p class="quote">"Most importantly, they have the best staff — you can tell the owner and his team are passionate about what they do."</p>
-        <div class="who">
-          <div class="t-avatar" style="background:#45503B;">K</div>
-          <div><div class="name">Kevin Schnepp</div><div class="meta">Local Guide · Google Review</div></div>
-        </div>
-      </div>
-      <div class="t-card">
-        <div class="stars" aria-hidden="true">★★★★★</div>
-        <p class="quote">"People here take their training seriously, but there's no ego. Just hard work, encouragement, and genuine camaraderie."</p>
-        <div class="who">
-          <div class="t-avatar" style="background:#3B4F57;">J</div>
-          <div><div class="name">Jake Bailey</div><div class="meta">Google Review</div></div>
         </div>
       </div>
     </div>
