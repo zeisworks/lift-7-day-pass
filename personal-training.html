@@ -1336,6 +1336,19 @@
           <input type="hidden" name="contact_method" />
         </div>
         <div class="modal-q">
+          <label>Which days work best to train? <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--muted);">(pick any)</span></label>
+          <div class="modal-chips" data-group="days" data-multi role="group" aria-label="Preferred training days">
+            <button type="button" class="modal-chip">Mon</button>
+            <button type="button" class="modal-chip">Tue</button>
+            <button type="button" class="modal-chip">Wed</button>
+            <button type="button" class="modal-chip">Thu</button>
+            <button type="button" class="modal-chip">Fri</button>
+            <button type="button" class="modal-chip">Sat</button>
+            <button type="button" class="modal-chip">Sun</button>
+          </div>
+          <input type="hidden" name="days" />
+        </div>
+        <div class="modal-q">
           <label for="journey-message">Anything we should know? <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--muted);">(optional)</span></label>
           <textarea id="journey-message" name="message" rows="3" placeholder="Injuries, schedule, what you're hoping to get out of training…"></textarea>
         </div>
@@ -1499,16 +1512,29 @@
       });
     }
 
-    // Single-select chip groups -> mirror value into the hidden input.
+    // Chip groups -> mirror the selection into the hidden input. Groups marked
+    // [data-multi] allow several selections (value = comma-joined); the rest are
+    // single-select. Either way we recompute the value from the selected chips.
     overlay.querySelectorAll('.modal-chips').forEach(function (group) {
       var hidden = group.parentNode.querySelector('input[type="hidden"]');
+      var multi = group.hasAttribute('data-multi');
       group.addEventListener('click', function (e) {
         var chip = e.target.closest('.modal-chip');
         if (!chip) return;
-        var wasSelected = chip.classList.contains('selected');
-        group.querySelectorAll('.modal-chip').forEach(function (c) { c.classList.remove('selected'); });
-        if (!wasSelected) { chip.classList.add('selected'); if (hidden) hidden.value = chip.textContent.trim(); }
-        else if (hidden) { hidden.value = ''; }
+        if (multi) {
+          chip.classList.toggle('selected');
+        } else {
+          var wasSelected = chip.classList.contains('selected');
+          group.querySelectorAll('.modal-chip').forEach(function (c) { c.classList.remove('selected'); });
+          if (!wasSelected) chip.classList.add('selected');
+        }
+        if (hidden) {
+          var vals = Array.prototype.map.call(
+            group.querySelectorAll('.modal-chip.selected'),
+            function (c) { return c.textContent.trim(); }
+          );
+          hidden.value = vals.join(', ');
+        }
       });
     });
 
