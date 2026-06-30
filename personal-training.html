@@ -162,6 +162,7 @@
   }
   /* Video moved below the form (reference layout) */
   .hero-media {
+    position: relative;
     margin-top: clamp(1.5rem, 3vw, 2.25rem);
     border-radius: 10px; overflow: hidden;
     border: 1px solid var(--border-light);
@@ -170,6 +171,29 @@
   .hero-media video {
     display: block; width: 100%; height: auto;
     aspect-ratio: 16 / 9; object-fit: cover;
+  }
+  /* Click-to-play overlay — poster stays until the visitor opts in (plays with sound) */
+  .hero-play {
+    position: absolute; inset: 0; z-index: 2; width: 100%;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 0.9rem; border: none; cursor: pointer;
+    background: linear-gradient(180deg, rgba(35,38,43,0.15) 0%, rgba(35,38,43,0.5) 100%);
+    transition: opacity 0.25s ease, visibility 0.25s ease;
+  }
+  .hero-play.is-hidden { opacity: 0; visibility: hidden; }
+  .hero-play-badge {
+    display: flex; align-items: center; justify-content: center;
+    width: 72px; height: 72px; border-radius: 9999px;
+    background: var(--red); color: #fff;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+    transition: transform 0.15s ease, background 0.2s ease;
+  }
+  .hero-play:hover .hero-play-badge { transform: scale(1.06); background: var(--red-dk); }
+  .hero-play-badge svg { width: 26px; height: 26px; margin-left: 3px; }
+  .hero-play-label {
+    font-family: 'Barlow Condensed', sans-serif; font-weight: 700;
+    font-size: 0.8rem; letter-spacing: 0.16em; text-transform: uppercase;
+    color: #fff; text-shadow: 0 1px 6px rgba(0,0,0,0.5);
   }
   /* Hero CTA (opens the claim form popup) */
   .hero-cta { margin-top: 0; display: flex; flex-direction: column; align-items: flex-start; gap: 0.85rem; }
@@ -830,10 +854,16 @@
       </div>
 
       <div class="hero-media">
-        <video autoplay muted loop playsinline preload="auto" poster="./assets/videos/evaluation-poster.jpg">
+        <video playsinline preload="none" poster="./assets/videos/evaluation-poster.jpg">
           <source src="./assets/videos/evaluation.mp4" type="video/mp4" />
           <img src="./assets/videos/evaluation-poster.jpg" alt="Lift STL personal training evaluation" fetchpriority="high" />
         </video>
+        <button type="button" class="hero-play" aria-label="Play the evaluation video">
+          <span class="hero-play-badge" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+          </span>
+          <span class="hero-play-label">Watch · 1-Minute Look</span>
+        </button>
       </div>
 
     </div>
@@ -1349,14 +1379,22 @@
     io.observe(heroCta);
   })();
 
-  // Hero video autoplays on load; pause it only for reduced-motion users.
+  // Hero video is click-to-play with sound: the poster shows until the visitor
+  // opts in, so we never autodownload the clip or play audio unprompted.
   (function () {
-    var vid = document.querySelector('.hero-media video');
-    if (!vid) return;
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      vid.removeAttribute('autoplay');
-      vid.pause();
-    }
+    var wrap = document.querySelector('.hero-media');
+    if (!wrap) return;
+    var vid = wrap.querySelector('video');
+    var btn = wrap.querySelector('.hero-play');
+    if (!vid || !btn) return;
+    btn.addEventListener('click', function () {
+      vid.setAttribute('controls', '');
+      vid.muted = false;
+      var p = vid.play();
+      if (p && p.catch) p.catch(function () { /* leave native controls for manual play */ });
+      btn.classList.add('is-hidden');
+      try { if (typeof window.gtag === 'function') window.gtag('event', 'video_play', { event_category: 'engagement', video: 'evaluation' }); } catch (err) { /* analytics must never break playback */ }
+    });
   })();
 
   // Claim flow: CTA opens the form in a popup, then steps to confirmation + questions.
