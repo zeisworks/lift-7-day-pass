@@ -102,7 +102,7 @@ const CSS = `
     border-bottom: 1px solid var(--border-light);
   }
   .nav { display: flex; align-items: center; justify-content: space-between; height: 62px; }
-  .nav .logo { height: 28px; width: auto; }
+  .nav .logo { height: 34px; width: auto; }
   .nav-right { display: flex; align-items: center; gap: 1rem; }
   .nav-rating {
     font-family: 'Barlow Condensed', sans-serif;
@@ -658,7 +658,7 @@ const HTML = `<div class="lift-root"><!-- URGENCY BAR -->
 <!-- HEADER -->
 <header>
   <div class="container nav">
-    <a href="#top"><img class="logo" src="https://static.wixstatic.com/media/194ffb_d94807faa1304d18817d9b2e8526052e~mv2.png" alt="Lift STL" /></a>
+    <a href="https://lift-stl.com" target="_blank" rel="noopener"><img class="logo" src="https://static.wixstatic.com/media/194ffb_d94807faa1304d18817d9b2e8526052e~mv2.png" alt="Lift STL" /></a>
     <div class="nav-right">
       <a href="#claim" class="btn btn-red" style="padding:.65rem 1.5rem;font-size:.78rem;">Start Free Week</a>
     </div>
